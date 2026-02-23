@@ -18,7 +18,7 @@ const cardVariant = {
 
 export default function Recruiters({ data }) {
   const title = data?.title || "Recruiters";
-  const images = data?.images || [];
+  const items = data?.items || [];
 
   return (
     <section id="recruiters" className="bg-[#f7f9fc] py-12 sm:py-14 md:py-16">
@@ -35,10 +35,10 @@ export default function Recruiters({ data }) {
           {title}
         </motion.h2>
 
-        {images.length > 0 && (
+        {items.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 mt-8 sm:mt-10">
 
-            {images.map((img, i) => (
+            {items.map((item, i) => (
               <motion.div
                 key={i}
                 variants={cardVariant}
@@ -49,11 +49,12 @@ export default function Recruiters({ data }) {
                 className="bg-white rounded-xl p-4 sm:p-5 md:p-6 flex items-center justify-center shadow hover:-translate-y-1 transition"
               >
                 <LazyLoadImage
-                  src={resolveImageUrl(img)}
-                  alt={`Recruiter ${i + 1}`}
+                  src={resolveImageUrl(item.logo)}
+                  alt={item.name || `Recruiter ${i + 1}`}
                   effect="blur"
                   className="max-h-8 sm:max-h-9 md:max-h-10 w-auto grayscale hover:grayscale-0 transition"
                 />
+                <p className=" ml-2 text-md sm:text-sm md:text-base text-center mt-2 text-gray-700">{item.name}</p>
               </motion.div>
             ))}
 
