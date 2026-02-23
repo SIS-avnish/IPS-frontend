@@ -63,6 +63,7 @@ export default function IbmrPage() {
         <About
           about={sections.about}
           features={sections.campus_to_business_boardroom}
+          whyChooseData={sections.why_choose}
         />
       )}
       {sections.experience_learn && <Advantage data={sections.experience_learn} />}
