@@ -38,27 +38,32 @@ export default function Recruiters({ data }) {
         {items.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 mt-8 sm:mt-10">
 
-            {items.map((item, i) => (
-              <motion.div
-                key={i}
-                variants={cardVariant}
-                initial="hidden"
-                whileInView="visible"
-                custom={i}
-                viewport={{ once: true, amount: 0.1 }}
-                className="bg-white rounded-xl p-4 sm:p-5 md:p-6 flex items-center justify-center shadow hover:-translate-y-1 transition"
-              >
-                <LazyLoadImage
-                  src={resolveImageUrl(item.logo)}
-                  alt={item.name || `Recruiter ${i + 1}`}
-                  effect="blur"
-                  className="max-h-8 sm:max-h-9 md:max-h-10 w-auto grayscale hover:grayscale-0 transition"
-                />
-                <p className=" ml-2 text-md sm:text-sm md:text-base text-center mt-2 text-gray-700">{item.name}</p>
-              </motion.div>
-            ))}
+      {items.map((item, i) => (
+        <motion.div
+          key={i}
+          variants={cardVariant}
+          initial="hidden"
+          whileInView="visible"
+          custom={i}
+          viewport={{ once: true, amount: 0.1 }}
+          className="bg-white rounded-xl p-4 sm:p-5 md:p-6 flex flex-col items-center justify-center shadow hover:-translate-y-1 transition"
+        >
+          {/* LOGO */}
+          <LazyLoadImage
+            src={resolveImageUrl(item.logo)}
+            alt={item.name || `Recruiter ${i + 1}`}
+            effect="blur"
+            className="max-h-8 sm:max-h-9 md:max-h-10 w-auto transition"
+          />
 
-          </div>
+          {/* NAME UNDER LOGO */}
+          <p className="text-md sm:text-sm md:text-base text-center mt-2 text-gray-700">
+            {item.name}
+          </p>
+        </motion.div>
+      ))}
+
+    </div>
         )}
 
       </div>

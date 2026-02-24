@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
+import { fetchPageData } from "../services/api";
 import { MapPin, Phone, Mail, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -15,6 +18,52 @@ const cardVariant = {
 };
 
 export default function Contact() {
+  const { collegeSlug } = useParams();
+  const [sections, setSections] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchPageData(collegeSlug, "contact")
+      .then((data) => {
+        setSections(data.sections);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch contact page data:", err);
+        setError("Failed to load page data.");
+      })
+      .finally(() => setLoading(false));
+  }, [collegeSlug]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-600 text-lg">
+        {error}
+      </div>
+    );
+  }
+
+  const hero = sections?.hero;
+  const contact = sections?.contact_us;
+
+  // Split phone string into individual numbers
+  const phoneNumbers = contact?.phone
+    ? contact.phone.split(",").map((p) => p.trim())
+    : [];
+
+  // Split address by newline for line breaks
+  const addressLines = contact?.address
+    ? contact.address.split("\n")
+    : [];
+
   return (
     <>
       {/* CONTACT SECTION */}
@@ -30,7 +79,7 @@ export default function Contact() {
             className="mb-6"
           >
             <h2 className="text-2xl sm:text-3xl font-semibold text-[#002147]">
-              Contact Us
+              {hero?.description || "Contact Us"}
             </h2>
             <div className="w-16 h-[2px] bg-[#002147] mt-2"></div>
           </motion.div>
@@ -39,18 +88,26 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 py-6">
 
             <Info icon={<MapPin size={20} />} >
-              IPS Academy, AB Road,<br />
-              Rajendra Nagar, Indore (M.P)
+              {addressLines.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < addressLines.length - 1 && <br />}
+                </span>
+              ))}
             </Info>
 
             <Info icon={<Phone size={20} />} >
-              +91 92294 98055 <br />
-              +91 99778 35161
+              {phoneNumbers.map((num, i) => (
+                <span key={i}>
+                  {num}
+                  {i < phoneNumbers.length - 1 && <br />}
+                </span>
+              ))}
             </Info>
 
             <Info icon={<Mail size={20} />} >
-              <a href="mailto:info@ipsacademy.org" className="underline">
-                info@ipsacademy.org
+              <a href={`mailto:${contact?.email}`} className="underline">
+                {contact?.email}
               </a>
             </Info>
 
@@ -143,10 +200,24 @@ export default function Contact() {
 
       {/* MAP */}
       <div className="w-full">
-        <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.123456789!2d75.857123!3d22.719567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962e4a8abcd1234%3A0x1234567890abcdef!2sRP%20Education%20%26%20Bridge!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"
-        allowfullscreen="" loading="lazy" width="100%" height="600px">
-    </iframe>
+        {contact?.map ? (
+          <iframe
+            src={contact.map}
+            allowFullScreen=""
+            loading="lazy"
+            width="100%"
+            height="600px"
+            style={{ border: 0 }}
+          ></iframe>
+        ) : (
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.123456789!2d75.857123!3d22.719567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962e4a8abcd1234%3A0x1234567890abcdef!2sRP%20Education%20%26%20Bridge!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"
+            allowFullScreen=""
+            loading="lazy"
+            width="100%"
+            height="600px"
+          ></iframe>
+        )}
       </div>
     </>
   );

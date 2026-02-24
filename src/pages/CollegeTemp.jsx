@@ -11,6 +11,7 @@ import Faculty from "../components/colegeTemplate/Faculty";
 import Admission from "../components/colegeTemplate/Admission";
 import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import Recruiters from "../components/colegeTemplate/Recruiters";
+import SuccessStories from "../components/colegeTemplate/SuccessStories";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
@@ -76,6 +77,7 @@ export default function IbmrPage() {
       <Faculty collegeSlug={collegeSlug} />
       <Admission />
       <ApplyForm collegeSlug={collegeSlug} />
+      {sections.success_stories && <SuccessStories data={sections.success_stories} />}
       {sections.recruiter && <Recruiters data={sections.recruiter} />}
     </div>
   );

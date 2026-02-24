@@ -6,17 +6,19 @@ import LibraryVision from "../components/facilities/LibraryVision";
 import Sports from "../components/facilities/Sports";
 import FuturePlan from "../components/facilities/FuturePlan";
 import FacilityBlocks from "../components/facilities/FacilityBlocks";
+import { useParams } from "react-router-dom";
 
 export default function FacilitiesPage() {
   const [sections, setSections] = useState(null);
+  const {collegeSlug} = useParams();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPageData("ipsa", "facilities")
+    fetchPageData(collegeSlug, "facilities")
       .then((data) => setSections(data.sections))
       .catch((err) => console.error("Failed to load facilities data:", err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [collegeSlug]);
 
   if (loading) {
     return (

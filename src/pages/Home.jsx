@@ -50,7 +50,7 @@ export default function Home() {
         excellenceData={sections?.excellence}
       />
       <ExperienceSection data={sections?.["360_video"]} />
-      <CoursesAccordion />
+      <CoursesAccordion data={sections?.courses} />
     </>
   );
 }

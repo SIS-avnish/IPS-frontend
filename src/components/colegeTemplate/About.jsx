@@ -6,36 +6,7 @@ const fadeUp = {
 };
 
 const defaultWhyChoose = [
-  {
-    icon: "🚀",
-    title: "Entrepreneurship & Innovation",
-    desc: "Strong institutional support for entrepreneurship, innovation, and startup development.",
-  },
-  {
-    icon: "🎯",
-    title: "Balanced Holistic Growth",
-    desc: "Balanced development through academics, research, sports, and cultural activities.",
-  },
-  {
-    icon: "🔬",
-    title: "Research & Emerging Trends",
-    desc: "Research projects focused on emerging trends and contemporary business challenges.",
-  },
-  {
-    icon: "💻",
-    title: "Tech-enabled Learning",
-    desc: "Industry-focused approach with tech-enabled classrooms and digital learning tools.",
-  },
-  {
-    icon: "📚",
-    title: "Professional Certifications",
-    desc: "Certifications in marketing analytics, finance, and essential business skills.",
-  },
-  {
-    icon: "🎤",
-    title: "Leadership & Soft Skills",
-    desc: "Comprehensive leadership training and soft skills development programs.",
-  },
+ 
 ];
 
 export default function About({ about, features, whyChooseData }) {
@@ -45,14 +16,13 @@ export default function About({ about, features, whyChooseData }) {
   const featuresSubtitle = features?.subtitle || "";
   const featureItems = features?.items || [];
 
-  const whyChooseTitle = whyChooseData?.title || "Why Choose College Of Commerce At IPS?";
-  const whyChoose = whyChooseData?.items?.length > 0
-    ? whyChooseData.items.map((item) => ({
-        icon: item.icon || "✅",
-        title: item.title || item.question || "",
-        desc: item.desc || item.answer || "",
-      }))
-    : defaultWhyChoose;
+  const whyChooseTitle = whyChooseData?.title 
+  const whyChooseCards = whyChooseData?.cards || whyChooseData?.items || [];
+  const whyChoose = whyChooseCards.map((item) => ({
+    icon: item.icon || "✅",
+    title: item.title || item.question || "",
+    desc: item.description || item.desc || item.answer || "",
+  }));
 
   return (
     <section id="about" className="py-12 sm:py-14 md:py-10">
@@ -91,49 +61,55 @@ export default function About({ about, features, whyChooseData }) {
       </div>
 
       {/* WHY CHOOSE SECTION */}
-<div className="bg-[#0B2C4D] mt-16 py-12 sm:py-14 md:py-16">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6">
+{whyChooseTitle && whyChooseCards && whyChoose && (
+        <div className="bg-[#0B2C4D] mt-16 py-12 sm:py-14 md:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-    <motion.h2
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
-      className="text-white text-2xl sm:text-3xl md:text-4xl font-semibold"
-    >
-      {whyChooseTitle}
-    </motion.h2>
+            <motion.h2
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              className="text-white text-2xl sm:text-3xl md:text-4xl font-semibold"
+            >
+              {whyChooseTitle}
+            </motion.h2>
 
-    <div className="w-40 h-[3px] bg-red-400 mt-3 mb-10"></div>
+            <div className="w-40 h-[3px] bg-red-400 mt-3 mb-10"></div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {whyChoose.map((card, i) => (
-        <motion.div
-          key={i}
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          custom={i}
-          viewport={{ once: true, amount: 0.1 }}
-          className="border border-white/20 rounded-xl p-6 text-white bg-white/5 backdrop-blur-sm hover:bg-white/10 transition"
-        >
-          <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-white/10 text-2xl mb-4">
-            {card.icon}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {whyChoose.map((card, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  custom={i}
+                  viewport={{ once: true, amount: 0.1 }}
+                  className="border border-white/20 rounded-xl p-6 text-white bg-white/5 backdrop-blur-sm hover:bg-white/10 transition"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-white/10 text-2xl mb-4">
+                    {card.icon && card.icon.startsWith("http") ? (
+                      <img src={card.icon} alt={card.title} className="w-8 h-8 object-contain" />
+                    ) : (
+                      card.icon
+                    )}
+                  </div>
+
+                  <h4 className="text-lg font-semibold mb-2">
+                    {card.title}
+                  </h4>
+
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    {card.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
           </div>
-
-          <h4 className="text-lg font-semibold mb-2">
-            {card.title}
-          </h4>
-
-          <p className="text-white/80 text-sm leading-relaxed">
-            {card.desc}
-          </p>
-        </motion.div>
-      ))}
-    </div>
-
-  </div>
-</div>
+        </div>
+      )}
 
       {featureItems.length > 0 && (
         <div className="bg-[#F0EEEF] mt-20 py-12 sm:py-14 md:py-16">
