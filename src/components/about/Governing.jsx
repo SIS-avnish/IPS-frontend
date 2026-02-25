@@ -26,13 +26,13 @@ export default function Governing({ governingBody, executive, advisory }) {
       })
     : [];
 
-  const sectionTitle = governingBody?.title || "Governing Body";
+  const sectionTitle = governingBody?.title;
   const executiveTitle = executive?.title || "Executive Members";
   const advisoryTitle = advisory?.title || "Advisory Board";
 
   return (
     <section className="bg-[#F0EEEF] py-16">
-      <div className="max-w-6xl mx-auto px-3">
+      {sectionTitle && (<div className="max-w-6xl mx-auto px-3">
 
         {/* Heading */}
         <motion.h3
@@ -113,7 +113,8 @@ export default function Governing({ governingBody, executive, advisory }) {
           </div>
         )}
 
-      </div>
+      </div>)
+      }
     </section>
   );
 }
