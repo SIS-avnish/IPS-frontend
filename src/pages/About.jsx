@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPageData } from "../services/api";
+import { fetchPageData, fetchCollegeCourses, fetchColleges } from "../services/api";
 import { useParams } from "react-router-dom";
 
 import Hero from "../components/about/Hero";
@@ -12,24 +12,42 @@ import Directors from "../components/about/Directors";
 export default function AboutPage() {
    const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
+ useEffect(() => {
+  setLoading(true);
+  setError(null);
 
-    fetchPageData(collegeSlug,"about-us")
-      .then((data) => {
-        setSections(data.sections);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch about page data:", err);
-        setError("Failed to load page data.");
-      })
-      .finally(() => setLoading(false));
-  }, [collegeSlug]);
+  const promises =
+    collegeSlug === "ipsa"
+      ? [
+          fetchPageData(collegeSlug, "about-us"),
+          fetchCollegeCourses(collegeSlug),
+          fetchColleges(),
+        ]
+      : [fetchPageData(collegeSlug, "about-us")];
+
+  Promise.all(promises)
+    .then((results) => {
+      const [pageData, coursesData, collegesData] = results;
+
+      setSections(pageData?.sections || []);
+
+      // Only set these when slug = ipsa
+      if (collegeSlug === "ipsa") {
+        setCourses(coursesData || []);
+        setColleges(collegesData || []);
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch about page data:", err);
+      setError("Failed to load page data.");
+    })
+    .finally(() => setLoading(false));
+}, [collegeSlug]);
 
   if (loading) {
     return (
@@ -57,8 +75,12 @@ export default function AboutPage() {
       />
       <VissionMission data={sections?.vision_mission} />
       <Leadership data={sections?.leaders} />
-      <Governing />
-      <Directors />
+      <Governing
+        governingBody={sections?.governing_body}
+        executive={sections?.executive}
+        advisory={sections?.advisory}
+      />
+      <Directors data={sections?.institute_directors} courses={courses} colleges={colleges} />
     </div>
   );
 }

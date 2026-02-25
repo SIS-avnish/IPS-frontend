@@ -54,15 +54,30 @@ export default function Contact() {
   const hero = sections?.hero;
   const contact = sections?.contact_us;
 
-  // Split phone string into individual numbers
-  const phoneNumbers = contact?.phone
-    ? contact.phone.split(",").map((p) => p.trim())
-    : [];
+  // Support both array and comma-separated string for phones
+  const phoneNumbers = Array.isArray(contact?.phones)
+    ? contact.phones
+    : contact?.phone
+      ? contact.phone.split(",").map((p) => p.trim())
+      : [];
+
+  // Support both array and single string for emails
+  const emails = Array.isArray(contact?.emails)
+    ? contact.emails
+    : contact?.email
+      ? [contact.email]
+      : [];
 
   // Split address by newline for line breaks
   const addressLines = contact?.address
     ? contact.address.split("\n")
     : [];
+
+  // Build Google Maps embed URL from address
+  const mapUrl = contact?.map
+    || (contact?.address
+      ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(contact.address.replace(/\n/g, ", "))}`
+      : null);
 
   return (
     <>
@@ -99,16 +114,21 @@ export default function Contact() {
             <Info icon={<Phone size={20} />} >
               {phoneNumbers.map((num, i) => (
                 <span key={i}>
-                  {num}
+                  <a href={`tel:${num.replace(/\s/g, "")}`}>{num}</a>
                   {i < phoneNumbers.length - 1 && <br />}
                 </span>
               ))}
             </Info>
 
             <Info icon={<Mail size={20} />} >
-              <a href={`mailto:${contact?.email}`} className="underline">
-                {contact?.email}
-              </a>
+              {emails.map((email, i) => (
+                <span key={i}>
+                  <a href={`mailto:${email}`} className="underline">
+                    {email}
+                  </a>
+                  {i < emails.length - 1 && <br />}
+                </span>
+              ))}
             </Info>
 
             <Info icon={<BookOpen size={20} />} >
@@ -200,9 +220,9 @@ export default function Contact() {
 
       {/* MAP */}
       <div className="w-full">
-        {contact?.map ? (
+        {mapUrl ? (
           <iframe
-            src={contact.map}
+            src={mapUrl}
             allowFullScreen=""
             loading="lazy"
             width="100%"

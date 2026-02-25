@@ -54,6 +54,7 @@ export default function FacilitiesPage() {
         transport={sections.safe_transport_at_your_service}
         canteen={sections.canteen}
         mess={sections.mess}
+        sportsFacility={sections.sports_facility}
       />
     </div>
   );

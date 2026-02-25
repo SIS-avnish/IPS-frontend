@@ -159,4 +159,17 @@ export async function fetchCollegeCourseNames(collegeSlug) {
     return data;
 }
 
+/**
+ * Fetch all colleges.
+ */
+export async function fetchColleges() {
+    const cacheKey = "colleges";
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/colleges`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
 export default api;
