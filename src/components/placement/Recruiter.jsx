@@ -6,7 +6,7 @@ import hyattLogo from "../../assets/logos/Hyatt.png";
 import tajLogo from "../../assets/logos/taj.png";
 import itcLogo from "../../assets/logos/itc.png";
 
-export default function Recruiters() {
+export default function Recruiters({ highlights, courseStats }) {
 
   const logos = [
     fairmontLogo,
@@ -101,65 +101,95 @@ export default function Recruiters() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start lg:items-center">
 
             <div className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-medium leading-tight">
-              Placement Highlights <br />
-              2024-2025
+              {highlights?.title || "Placement Highlights 2024-2025"}
             </div>
 
-            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6 sm:gap-8">
-
-              <div className="flex items-center gap-3">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
-                  1904
-                </div>
-                <div className="text-[#002147] font-medium text-sm sm:text-base">
-                  Students Placed
-                </div>
-              </div>
-
-              <div className="hidden md:block w-[1px] h-14 bg-white" />
-
-              <div className="flex items-center gap-3">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
-                  563
-                </div>
-                <div className="text-[#002147] font-medium leading-tight text-sm sm:text-base">
-                  Companies in <br /> Closed Campus Drive
-                </div>
-              </div>
-
-            </div>
+            {highlights?.subtitle && (
+              <p className="text-[#002147] font-medium text-sm sm:text-base">
+                {highlights.subtitle}
+              </p>
+            )}
 
           </div>
 
-
-          {/* SECTORS */}
-          <div className="mt-8 sm:mt-10">
-
-            <div className="text-xl sm:text-2xl md:text-3xl font-medium text-[#002147] mb-4 sm:mb-6">
-              Sectors
+          {/* HIGHLIGHTS LIST */}
+          {highlights?.items?.length > 0 && (
+            <div className="mt-8 sm:mt-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-4">
+                {highlights.items.map((item, i) => (
+                  <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base pb-2">
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
+          )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
+          {/* COURSE-WISE STATS */}
+          {courseStats?.stats?.length > 0 && (
+            <div className="mt-8 sm:mt-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
+                {courseStats.stats.map((s, i) => (
+                  <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                    <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.value}</span> {s.label.replace(/Total No\. of Students Who are Placed\s*/i, "")}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-              {sectors1.map((s, i) => (
-                <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
-                  <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
+          {/* SECTORS (fallback when no API data) */}
+          {!highlights?.items?.length && !courseStats?.stats?.length && (
+            <>
+              <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6 sm:gap-8 mt-6">
+
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
+                    1904
+                  </div>
+                  <div className="text-[#002147] font-medium text-sm sm:text-base">
+                    Students Placed
+                  </div>
                 </div>
-              ))}
 
-            </div>
+                <div className="hidden md:block w-[1px] h-14 bg-white" />
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4 mt-3 sm:mt-4">
-
-              {sectors2.map((s, i) => (
-                <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
-                  <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
+                    563
+                  </div>
+                  <div className="text-[#002147] font-medium leading-tight text-sm sm:text-base">
+                    Companies in <br /> Closed Campus Drive
+                  </div>
                 </div>
-              ))}
 
-            </div>
+              </div>
 
-          </div>
+              <div className="mt-8 sm:mt-10">
+
+                <div className="text-xl sm:text-2xl md:text-3xl font-medium text-[#002147] mb-4 sm:mb-6">
+                  Sectors
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
+                  {sectors1.map((s, i) => (
+                    <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                      <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4 mt-3 sm:mt-4">
+                  {sectors2.map((s, i) => (
+                    <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                      <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </>
+          )}
 
         </motion.div>
 
