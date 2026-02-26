@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 import achalImg from "../../assets/Images/achal.png";
 import yogendraJainImg from "../../assets/Images/Mr. Yogendra Jain.png";
 import kumudiniImg from "../../assets/Images/Mrs. Kumudini.jpg";
@@ -58,7 +59,7 @@ export default function Governing({ governingBody, executive, advisory }) {
                 transition={{ duration: 0.35, delay: i * 0.06, ease: "easeOut" }}
                 viewport={{ once: true, amount: 0.1 }}
               >
-                <img
+                <Media
                   src={m.img}
                   alt={m.name}
                   className="w-full h-[300px] object-cover mb-3"

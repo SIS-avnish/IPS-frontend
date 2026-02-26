@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 const slideFromSide = (fromLeft) => ({
   hidden: { opacity: 0, x: fromLeft ? -30 : 30 },
@@ -75,7 +76,7 @@ export default function FacilityBlocks({ wellnessCenter, transport, canteen, mes
             >
 
               {b.img ? (
-                <img
+                <Media
                   src={b.img}
                   alt={b.badge}
                   className="w-full h-[456px] lg:h-[456px] md:h-[380px] sm:h-[300px] h-[240px] object-cover"

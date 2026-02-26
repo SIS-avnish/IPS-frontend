@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import placementImg from "../../assets/Images/placement.jpg";
+import Media from "../common/Media";
 
 export default function Hero({ data }) {
   const heroImage = data?.images?.[0]
@@ -16,7 +17,7 @@ export default function Hero({ data }) {
   return (
     <section className="relative mb-10 w-full h-[320px] sm:h-[420px] md:h-[700px] lg:h-[750px] mx-3">
 
-      <img
+      <Media
         src={heroImage}
         alt="hero"
         loading="eager"

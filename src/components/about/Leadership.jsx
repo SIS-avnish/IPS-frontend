@@ -3,6 +3,7 @@ import nishitJainFallback from "../../assets/Images/Nishit Jain.png";
 import achalFallback from "../../assets/Images/achal.png";
 import yogendraJainFallback from "../../assets/Images/Mr. Yogendra Jain.png";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 // Fallback images mapped by index
 const fallbackImages = [nishitJainFallback, achalFallback, yogendraJainFallback];
@@ -80,7 +81,7 @@ export default function Leadership({ data }) {
 
             <div className={`grid md:grid-cols-2 gap-8 items-center ${i === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
 
-              <img src={l.img} alt={l.name} className="w-full max-w-[400px] " />
+              <Media src={l.img} alt={l.name} className="w-full max-w-[400px] " />
 
               <div>
                 <p className="text-gray-700">{l.text}</p>

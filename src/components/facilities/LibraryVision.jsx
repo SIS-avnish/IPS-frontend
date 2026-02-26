@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 export default function LibraryVision({ library, yourService, facilitiesForYou }) {
   if (!library) return null;
@@ -42,7 +43,7 @@ export default function LibraryVision({ library, yourService, facilitiesForYou }
 
       <div className="grid lg:grid-cols-2 gap-8 sm:gap-6 items-center">
 
-        <img
+        <Media
           src={libraryImage}
           alt="Library"
           className="w-full aspect-square object-cover min-h-[260px]"

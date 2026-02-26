@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 
 /**
  * Extract YouTube video ID from various URL formats
@@ -75,7 +76,7 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                 className="bg-white rounded-2xl shadow-md p-6 border"
               >
                 {t.image && (
-                  <img
+                  <Media
                     src={t.image}
                     alt={t.name}
                     className="w-16 h-16 rounded-full object-cover mx-auto mb-4"

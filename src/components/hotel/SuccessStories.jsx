@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -48,7 +49,7 @@ const SuccessStories = ({ data }) => {
                          transition duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               {story.image && (
-                <img
+                <Media
                   src={story.image}
                   alt={story.name}
                   className="w-full h-[220px] sm:h-[260px] object-cover"

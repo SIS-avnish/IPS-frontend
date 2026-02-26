@@ -5,6 +5,7 @@ import globalIcon from "../../assets/Images/global 1.svg";
 import opportunitiesIcon from "../../assets/Images/opportunities 1.svg";
 import studentFallback from "../../assets/Images/student.png";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 // Map icons by index (matches the order returned by the API)
 const iconMap = [onlineTeachingIcon, computerIcon, globalIcon, opportunitiesIcon];
@@ -93,15 +94,18 @@ export default function AboutIntro({ aboutData, ecosystemData, growthImage }) {
         {/* feature section */}
         <div className="grid md:grid-cols-2 gap-14 mt-10 items-start">
 
-          <motion.img
+          <motion.div
             variants={slideLeft}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            src={growthImg}
-            alt={title}
-            className="w-full object-cover"
-          />
+          >
+            <Media
+              src={growthImg}
+              alt={title}
+              className="w-full object-cover"
+            />
+          </motion.div>
 
           <div>
             {features.map((f, i) => (

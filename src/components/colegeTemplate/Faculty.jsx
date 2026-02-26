@@ -3,6 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
 import { fetchCollegeFaculties } from "../../services/api";
+import { isVideoUrl } from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -91,7 +92,15 @@ export default function Faculty({ collegeSlug }) {
                 className="w-[290px] bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
 
               >
+                {isVideoUrl(f.image) ? (
+                  <video
+                    src={f.image}
+                    className="w-full h-56 sm:h-60 md:h-64 object-cover"
+                    muted autoPlay loop playsInline controls
+                  />
+                ) : (
                 <LazyLoadImage src={f.image} alt={f.name} effect="blur" className="w-full h-56 sm:h-60 md:h-64 object-cover" wrapperClassName="w-full" />
+                )}
 
                 <div className="p-4 sm:p-5 text-center sm:text-left">
                   <h5 className="font-medium text-base sm:text-lg">{f.name}</h5>

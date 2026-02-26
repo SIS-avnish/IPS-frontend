@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 import heroFallback from "../../assets/Images/hero.jpg";
+import Media from "../common/Media";
 
 export default function Hero({ data }) {
   const [showVideo, setShowVideo] = useState(false);
@@ -24,7 +25,7 @@ export default function Hero({ data }) {
                           pb-28 overflow-visible">
 
         {/* Background */}
-        <img
+        <Media
           src={heroImage}
           alt="Hero Background"
           loading="eager"
