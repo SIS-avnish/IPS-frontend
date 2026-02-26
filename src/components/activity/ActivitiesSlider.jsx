@@ -3,6 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { isVideoUrl } from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -87,13 +88,32 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 pt-4">
 
-          {slides[index].map((event, i) => (
+          {slides[index].map((event, i) => {
+            // Activity cards link to activity detail, event cards link to event detail
+            const linkTo = event._isActivity
+              ? `/${collegeSlug}/activity/${event.id}`
+              : `/${collegeSlug}/activities/events/${event.id}`;
+
+            return (
             <Link
-              to={`/${collegeSlug}/activities/events/${event.id}`}
+              to={linkTo}
               key={event.id || i}
               className="cursor-pointer block"
             >
               {event.thumbnail_image ? (
+                isVideoUrl(event.thumbnail_image) ? (
+                  <video
+                    src={event.thumbnail_image}
+                    className="
+                      w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
+                      border-2 border-[#ff7373]
+                      shadow-md
+                      transition duration-300
+                      hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                    "
+                    muted autoPlay loop playsInline
+                  />
+                ) : (
                 <LazyLoadImage
                   src={event.thumbnail_image}
                   alt={event.title || `event-${i}`}
@@ -107,6 +127,7 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                   "
                   wrapperClassName="w-full"
                 />
+                )
               ) : (
                 <div className="
                   w-full h-[320px] sm:h-[260px] xs:h-[220px]
@@ -132,7 +153,8 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                 </div>
               )}
             </Link>
-          ))}
+            );
+          })}
 
         </div>
 

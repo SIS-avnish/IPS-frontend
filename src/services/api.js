@@ -186,4 +186,44 @@ export async function fetchColleges() {
     return data;
 }
 
+/**
+ * Fetch activities filtered by type (cultural, workshop, events, etc.)
+ * e.g. fetchActivities("ipsa", "cultural")
+ */
+export async function fetchActivities(collegeSlug, activityType) {
+    const cacheKey = `${collegeSlug}/activities/${activityType}`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/activities`, {
+        params: { activity_type: activityType },
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
+/**
+ * Fetch a single activity detail by slug or id.
+ * Tries slug first, falls back to id.
+ * e.g. fetchActivityDetail("ipsa", "ipsa-cultural-events")
+ */
+export async function fetchActivityDetail(collegeSlug, idOrSlug) {
+    const cacheKey = `${collegeSlug}/activity-detail/${idOrSlug}`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    // Try slug endpoint first
+    try {
+        const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/activities/slug/${idOrSlug}`, {
+            headers: { accept: "application/json" },
+        });
+        pageCache.set(cacheKey, data);
+        return data;
+    } catch {
+        // Fallback to id endpoint
+        const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/activities/${idOrSlug}`, {
+            headers: { accept: "application/json" },
+        });
+        pageCache.set(cacheKey, data);
+        return data;
+    }
+}
+
 export default api;
