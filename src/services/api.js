@@ -160,6 +160,20 @@ export async function fetchCollegeCourseNames(collegeSlug) {
 }
 
 /**
+ * Fetch info (name, logo, etc.) for a specific college by slug.
+ * e.g. fetchCollegeInfo("coc")
+ */
+export async function fetchCollegeInfo(collegeSlug) {
+    const cacheKey = `${collegeSlug}/info`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/info`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
+/**
  * Fetch all colleges.
  */
 export async function fetchColleges() {

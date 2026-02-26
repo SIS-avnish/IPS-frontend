@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useLocation,Navigate,Link } from "react-router-dom";
 import logo from "../../assets/logos/logo.png";
+import { fetchCollegeInfo } from "../../services/api";
 
 export default function Navbar(){
 
   const [menuOpen,setMenuOpen]=useState(false);
   const [collegesOpen,setCollegesOpen]=useState(false);
   const [studentOpen,setStudentOpen]=useState(false);
+  const [collegeLogo,setCollegeLogo]=useState(null);
 
   const location = useLocation();
   const pathParts = location.pathname.split("/");
@@ -23,6 +25,16 @@ const activeCollege =
     pathParts.length === 2 ||      // /ibmr
     pathParts[2] === "home"        // /ibmr/home
   );
+
+  useEffect(() => {
+    if (activeCollege && activeCollege !== "ipsa") {
+      fetchCollegeInfo(activeCollege)
+        .then((info) => setCollegeLogo(info?.logo || null))
+        .catch(() => setCollegeLogo(null));
+    } else {
+      setCollegeLogo(null);
+    }
+  }, [activeCollege]);
 
 
 
@@ -92,7 +104,7 @@ const activeCollege =
     {/* LOGO */}
     <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-66px]">
 
-      <img src={logo} className="h-[60px] lg:h-[72px] object-contain" alt="logo"/>
+      <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain" alt="logo"/>
     </div>
 
     {/* HAMBURGER */}

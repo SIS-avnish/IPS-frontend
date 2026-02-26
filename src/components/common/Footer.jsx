@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import logo from "../../assets/logos/logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
+import { fetchCollegeInfo } from "../../services/api";
 
 export default function Footer() {
 
@@ -14,6 +16,18 @@ export default function Footer() {
     pathParts[1] && !["about","contact","placements","facilities"].includes(pathParts[1])
       ? pathParts[1]
       : "ipsa";
+
+  const [collegeLogo, setCollegeLogo] = useState(null);
+
+  useEffect(() => {
+    if (activeCollege && activeCollege !== "ipsa") {
+      fetchCollegeInfo(activeCollege)
+        .then((info) => setCollegeLogo(info?.logo || null))
+        .catch(() => setCollegeLogo(null));
+    } else {
+      setCollegeLogo(null);
+    }
+  }, [activeCollege]);
 
   const sections = [
     { title:"IBMR", links:["BBA","MBA","Ph.D"] },
@@ -88,7 +102,7 @@ export default function Footer() {
   {/* LOGO */}
   <div className="w-[40%]">
   <img
-    src={logo}
+    src={collegeLogo || logo}
     className="h-[80px] lg:h-[96px] object-contain mx-auto lg:mx-0"
     alt="IPS Logo"
   />
