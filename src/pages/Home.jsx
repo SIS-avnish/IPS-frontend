@@ -6,6 +6,7 @@ import WhyIPSA from "../components/home/WhyIPSA";
 import StatsSection from "../components/home/StatsSection";
 import ExperienceSection from "../components/home/ExperienceSection";
 import CoursesAccordion from "../components/home/CoursesAccordion";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Home() {
   const collegeSlug = "ipsa"; // Default college slug for home page
@@ -56,6 +57,7 @@ export default function Home() {
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
+      <ScratchSections sections={sections} />
     </>
   );
 }

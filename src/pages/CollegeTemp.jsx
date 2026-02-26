@@ -12,6 +12,7 @@ import Admission from "../components/colegeTemplate/Admission";
 import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import Recruiters from "../components/colegeTemplate/Recruiters";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
@@ -93,6 +94,7 @@ export default function IbmrPage() {
         />
       )}
       {sections.recruiter && <Recruiters data={sections.recruiter} />}
+      <ScratchSections sections={sections} />
     </div>
   );
 }

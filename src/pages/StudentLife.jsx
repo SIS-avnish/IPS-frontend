@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import ActivitiesHero from "../components/activity/ActivitiesHero";
 import ActivitiesSlider from "../components/activity/ActivitiesSlider";
 import { fetchPageData, fetchCollegeEvents } from "../services/api";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 const StudentLife = () => {
   const { collegeSlug, subSlug } = useParams();
@@ -57,6 +58,7 @@ const StudentLife = () => {
         events={events}
         collegeSlug={collegeSlug}
       />
+      <ScratchSections sections={sections} />
     </div>
   );
 };

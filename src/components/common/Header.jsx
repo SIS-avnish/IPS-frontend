@@ -115,7 +115,7 @@ const activeCollege =
         ${menuOpen?"flex":"hidden lg:flex"}`}>
 
       {/* HOME */}
-      <NavLink to={`/`} className={linkClass} onClick={closeAll}>
+      <NavLink to={`/${activeCollege}`}  className={linkClass} onClick={closeAll}>
         Home
       </NavLink>
 

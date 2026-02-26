@@ -8,6 +8,7 @@ import Skills from "../components/hotel/Skills";
 import Faculties from "../components/hotel/Faculties";
 import Placement from "../components/hotel/Placement";
 import SuccessStories from "../components/hotel/SuccessStories";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 const Hotel = () => {
   const [sections, setSections] = useState(null);
@@ -38,6 +39,7 @@ const Hotel = () => {
       <Faculties data={sections?.train_with_tech_tools} />
       <Placement data={sections?.placement} />
       {sections?.success_stories && <SuccessStories data={sections.success_stories} />}
+      <ScratchSections sections={sections} />
     </div>
   );
 };

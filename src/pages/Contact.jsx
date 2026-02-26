@@ -3,6 +3,7 @@ import { fetchPageData } from "../services/api";
 import { MapPin, Phone, Mail, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -239,6 +240,7 @@ export default function Contact() {
           ></iframe>
         )}
       </div>
+      <ScratchSections sections={sections} />
     </>
   );
 }

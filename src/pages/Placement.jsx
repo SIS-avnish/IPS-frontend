@@ -6,6 +6,7 @@ import Incubation from "../components/placement/Incubation";
 import Team from "../components/placement/Team";
 import Recruiters from "../components/placement/Recruiter";
 import { useParams } from "react-router-dom";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Placements() {
   const [data, setData] = useState(null);
@@ -65,6 +66,7 @@ export default function Placements() {
           </div>
         </section>
       )}
+      <ScratchSections sections={sections} />
     </div>
   );
 }

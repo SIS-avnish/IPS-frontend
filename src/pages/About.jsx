@@ -8,6 +8,7 @@ import VissionMission from "../components/about/VissionMission";
 import Leadership from "../components/about/Leadership";
 import Governing from "../components/about/Governing";
 import Directors from "../components/about/Directors";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function AboutPage() {
    const { collegeSlug } = useParams();
@@ -81,6 +82,7 @@ export default function AboutPage() {
         advisory={sections?.advisory}
       />
       <Directors data={sections?.institute_directors} courses={courses} colleges={colleges} />
+      <ScratchSections sections={sections} />
     </div>
   );
 }
