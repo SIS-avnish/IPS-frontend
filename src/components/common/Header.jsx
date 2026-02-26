@@ -70,15 +70,15 @@ const activeCollege =
   ];
 
   const colleges = [
-    ["IBMR","ibmr"],
-    ["ISR","isr"],
-    ["COC","coc"],
-    ["COL","col"],
-    ["SOC","soc"],
-    ["IFT","ift"],
-    ["IOHM","iohm"],
-    ["COE","coe"],
-    ["DOSS","doss"],
+    ["MANAGEMENT","ibmr"],
+    ["SCIENCE","isr"],
+    ["COMMERCE","coc"],
+    ["LAW","col"],
+    ["COMPUTERS","soc"],
+    ["FASHION","ift"],
+    ["EDUCATION","coe"],
+    ["HOTEL MANAGEMENT","iohm"],
+    ["SOCIAL SCIENCE","doss"],
   ];
 
 
