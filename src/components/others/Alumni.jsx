@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials }) => {
+const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials, testimonialsTitle }) => {
 
   /* ================== ANIMATIONS ================== */
 
@@ -61,7 +61,7 @@ const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials }) => {
               variants={fadeUp}
               className="text-lg md:text-xl font-semibold mb-6 text-center"
             >
-              Alumni Testimonials – B.Com, Commerce Department
+              {testimonialsTitle}
             </motion.h2>
 
             <motion.div
