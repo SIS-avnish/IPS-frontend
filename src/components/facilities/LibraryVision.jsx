@@ -84,11 +84,7 @@ export default function LibraryVision({ library, yourService, facilitiesForYou }
 </div>
 
 
-<<<<<<< HEAD
-      <div className="max-w-6xl mx-auto md:ml-60 px-4 sm:px-5">        
-=======
       <div className="max-w-6xl mx-auto md:ml-60 px-4 sm:px-5">         
->>>>>>> ab93de2c9f5d13604da556a60868b81111fb7a53
 
         {/* SERVICES */}
         {serviceItems.length > 0 && (
