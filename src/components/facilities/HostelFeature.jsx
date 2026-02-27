@@ -66,7 +66,7 @@ export default function HostelFeatures({ intro, services }) {
               whileInView="visible"
               custom={i}
               viewport={{ once: true, amount: 0.1 }}
-              className="border-r border-[#D7D7D7] p-6 sm:p-5 text-center md:text-left"
+              className="border-b border-[#D7D7D7] sm:border-b-0 md:border-b-0 md:border-r md:border-[#D7D7D7] p-6 sm:p-5 text-center md:text-left"
             >
               <img
                 src={f.icon}

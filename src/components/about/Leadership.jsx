@@ -62,7 +62,7 @@ export default function Leadership({ data }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-4xl md:text-[60px] font-medium text-[#002147]"
+          className="text-[35px] md:text-[60px]  font-medium text-[#002147]"
         >
           {title}
         </motion.h3>

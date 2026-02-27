@@ -21,6 +21,7 @@ const cardVariant = {
 export default function Faculty({ collegeSlug }) {
   const [faculty, setFaculty] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedFaculty, setSelectedFaculty] = useState(null);
 
   useEffect(() => {
     if (!collegeSlug) return;
@@ -82,16 +83,16 @@ export default function Faculty({ collegeSlug }) {
 
 
             {faculty.map((f, i) => (
-              <motion.div
-                key={f.id}
-                variants={cardVariant}
-                initial="hidden"
-                whileInView="visible"
-                custom={i}
-                viewport={{ once: true, amount: 0.1 }}
-                className="w-[290px] bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
-
-              >
+             <motion.div
+  key={f.id}
+  variants={cardVariant}
+  initial="hidden"
+  whileInView="visible"
+  custom={i}
+  viewport={{ once: true, amount: 0.1 }}
+  onClick={() => setSelectedFaculty(f)}
+  className="w-[290px] cursor-pointer bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
+>
                 {isVideoUrl(f.image) ? (
                   <video
                     src={f.image}
@@ -115,6 +116,73 @@ export default function Faculty({ collegeSlug }) {
         )}
 
       </div>
+      {/* MODAL */}
+{selectedFaculty && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4"
+    onClick={() => setSelectedFaculty(null)}
+  >
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.25 }}
+      onClick={(e) => e.stopPropagation()}
+      className="
+        bg-white text-black rounded-lg
+        w-full
+        max-w-xl          /* smaller for laptop */
+        max-h-[85vh]
+        overflow-y-auto
+        shadow-2xl
+      "
+    >
+      {/* Image */}
+      <div className="bg-gray-100 flex items-center justify-center p-4">
+        {isVideoUrl(selectedFaculty.image) ? (
+          <video
+            src={selectedFaculty.image}
+            className="max-h-64 w-auto object-contain rounded"
+            controls
+          />
+        ) : (
+          <img
+            src={selectedFaculty.image}
+            alt={selectedFaculty.name}
+            className="max-h-64 w-auto object-contain rounded"
+          />
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="px-6 pb-6 pt-4">
+        <h3 className="text-lg sm:text-xl font-semibold">
+          {selectedFaculty.name}
+        </h3>
+
+        <p className="text-red-500 font-medium mt-1">
+          {selectedFaculty.designation}
+        </p>
+
+        <p className="text-gray-600 mt-2 text-sm">
+          {selectedFaculty.department}
+        </p>
+
+        <p className="mt-4 text-sm leading-relaxed text-gray-700">
+          {selectedFaculty.description}
+        </p>
+
+        <button
+          onClick={() => setSelectedFaculty(null)}
+          className="mt-6 px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        >
+          Close
+        </button>
+      </div>
+    </motion.div>
+  </motion.div>
+)}
     </section>
   );
 }

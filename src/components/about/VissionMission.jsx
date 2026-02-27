@@ -51,7 +51,7 @@ export default function VisionMission({ data }) {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4">
+            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
               {visionTitle}
             </h2>
 
@@ -74,7 +74,7 @@ export default function VisionMission({ data }) {
             viewport={{ once: true, amount: 0.1 }}
             className="order-2 md:order-1"
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4">
+            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
               {missionTitle}
             </h2>
 

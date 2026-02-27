@@ -84,7 +84,7 @@ export default function LibraryVision({ library, yourService, facilitiesForYou }
 </div>
 
 
-      <div className="max-w-6xl mx-auto ml-60 px-4 sm:px-5">        
+      <div className="max-w-6xl mx-auto md:ml-60 px-4 sm:px-5">         
 
         {/* SERVICES */}
         {serviceItems.length > 0 && (
