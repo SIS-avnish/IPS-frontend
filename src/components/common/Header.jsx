@@ -23,8 +23,11 @@ const activeCollege =
   activeCollege !== "ipsa" &&
   (
     pathParts.length === 2 ||      // /ibmr
-    pathParts[2] === "home"        // /ibmr/home
+    pathParts[2] === "home" ||
+    pathParts[2] === "about"||      pathParts[2] === "placements"||      pathParts[2] === "facilities"||
+      pathParts[2] === "contact"
   );
+
 
   useEffect(() => {
     if (activeCollege && activeCollege !== "ipsa") {
@@ -173,7 +176,7 @@ const activeCollege =
   ? collegeSections.map(([name,id])=>(
       <a
         key={id}
-        href={`#${id}`}
+        href={`/${activeCollege}#${id}`}
         onClick={closeAll}
         className="px-4 py-2 transition-colors text-gray-800 hover:bg-red-500 hover:text-white"
       >
