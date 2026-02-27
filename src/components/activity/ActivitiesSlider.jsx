@@ -110,7 +110,7 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                       border-2 border-[#ff7373]
                       shadow-md
                       transition duration-300
-                      hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                      hover:-translate-y-2 hover:scale-105 hover:shadow-xl transition-all duration-[2000ms] ease-in-out
                     "
                     muted autoPlay loop playsInline
                   />
@@ -124,7 +124,7 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                     border-2 border-[#ff7373]
                     shadow-md
                     transition duration-300
-                    hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                    hover:-translate-y-2 hover:scale-105 hover:shadow-xl  transition-all duration-[2000ms] ease-in-out
                   "
                   wrapperClassName="w-full"
                 />
@@ -136,7 +136,7 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                   shadow-md bg-white
                   flex flex-col items-center justify-center p-6
                   transition duration-300
-                  hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                  hover:-translate-y-2 hover:scale-105 hover:shadow-xl transition-all duration-[2000ms] ease-in-out
                 ">
                   <h3 className="text-[#002147] font-semibold text-lg text-center mb-2">
                     {event.title}

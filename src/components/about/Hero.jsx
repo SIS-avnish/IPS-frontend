@@ -47,11 +47,12 @@ export default function Hero({ data }) {
                         max-[576px]:w-[90%] max-[576px]:px-5 max-[576px]:py-5 max-[576px]:-bottom-8">
 
         <h1 className="text-[#0B2C4D]
-                         text-[4rem]
-                         leading-tight md:leading-[60px] 
-                         font-medium
-                         max-[991px]:text-[2.2rem]
-                         max-[576px]:text-[1.3rem]">
+                        text-[1.3rem]
+                        sm:text-[2.2rem]
+                        lg:text-[3rem]
+                        leading-tight 
+                        lg:leading-[60px]
+                        font-medium">
           {description}
         </h1>
 

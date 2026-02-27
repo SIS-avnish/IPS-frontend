@@ -44,7 +44,7 @@ export default function Hero({ data }) {
           >
     
             <div className="text-[#0B2C4D] whitespace-pre-line">
-  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-6xl  font-medium">
+  <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl  font-medium">
     {title}
   </h1>
 

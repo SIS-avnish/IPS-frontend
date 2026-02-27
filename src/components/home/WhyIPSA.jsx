@@ -23,7 +23,7 @@ export default function WhyIPSA({ data }) {
   const text = data?.content || "";
 
   return (
-    <section className="max-w-[1140px] mx-auto px-4 py-30 mb-10">
+    <section className="max-w-[1140px] mx-auto px-4 py-20 sm:py-30 mb-10">
       <div className="grid grid-cols-12 gap-x-6">
         {/* Left column - col-12 col-md-6 col-lg-4 */}
         <motion.div
