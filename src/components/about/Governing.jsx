@@ -82,10 +82,12 @@ export default function Governing({ governingBody, executive, advisory }) {
               {executiveTitle}
             </h5>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-[#3A3A3A]">
+            <div className="grid md:grid-cols-3 gap-6">
               {executiveMembers.map((name, i) => (
-                <div key={i} className="border-b border-[#D7D7D7] pb-3 text-xl font-medium">
-                  {name}
+                <div key={i} className="border-b border-[#D7D7D7] pb-3">
+                  <div className="text-xl font-medium text-[#3A3A3A]">
+                    {name}
+                  </div>
                 </div>
               ))}
             </div>

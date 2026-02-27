@@ -70,9 +70,9 @@ export default function HostelFeatures({ intro, services }) {
             >
               <img
                 src={f.icon}
-                className="w-[50px] h-[50px] sm:w-[44px] sm:h-[44px] mb-6 sm:mb-4 mx-auto md:mx-0"
+                className="w-[50px] h-[50px] sm:w-[84px] sm:h-[84px] mb-6 sm:mb-4 mx-auto md:mx-auto"
               />
-              <div className="text-[24px] sm:text-[20px] text-[18px] font-medium text-[#002147] leading-6">
+              <div className="sm:mx-auto text-[24px] sm:text-[20px] text-[18px] md:mx-auto font-medium text-[#002147] leading-6">
                 {f.title}
               </div>
             </motion.div>
