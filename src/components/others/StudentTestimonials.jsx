@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Media from "../common/Media";
+import Media, { isVideoUrl } from "../common/Media";
 
 /**
  * Extract YouTube video ID from various URL formats
@@ -11,7 +11,17 @@ const extractYouTubeId = (url) => {
   const match = url.match(
     /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/
   );
-  return match ? match[1] : url;
+  return match ? match[1] : null;
+};
+
+/**
+ * Determine media type: "youtube" | "video" | "image"
+ */
+const getMediaType = (url) => {
+  if (!url) return "image";
+  if (extractYouTubeId(url)) return "youtube";
+  if (isVideoUrl(url)) return "video";
+  return "image";
 };
 
 const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
@@ -24,9 +34,11 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
     designation: item.designation,
   }));
 
-  // Map API gallery URLs to YouTube video IDs
+  // Map API gallery URLs — detect youtube / video / image automatically
   const videoTestimonials = (videos || []).map((url) => ({
-    id: extractYouTubeId(url),
+    url,
+    type: getMediaType(url),
+    youtubeId: extractYouTubeId(url),
   }));
 
   // animations
@@ -113,7 +125,7 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
             viewport={{ once: true }}
             className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {videoTestimonials.map((video, i) => (
+            {videoTestimonials.map((media, i) => (
               <motion.div
                 key={i}
                 variants={card}
@@ -121,15 +133,40 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                 className="bg-white rounded-2xl shadow-md border overflow-hidden"
               >
 
-                {/* Responsive YouTube iframe */}
-                <div className="relative w-full pt-[56.25%]">
-                  <iframe
-                    className="absolute inset-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${video.id}`}
-                    title="Alumni testimonial"
-                    allowFullScreen
+                {/* YouTube embed */}
+                {media.type === "youtube" && (
+                  <div className="relative w-full pt-[56.25%]">
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={`https://www.youtube.com/embed/${media.youtubeId}`}
+                      title="Alumni testimonial"
+                      allowFullScreen
+                    />
+                  </div>
+                )}
+
+                {/* Native video (.mp4, .webm, etc.) */}
+                {media.type === "video" && (
+                  <div className="relative w-full pt-[56.25%]">
+                    <video
+                      className="absolute inset-0 w-full h-full object-cover"
+                      src={media.url}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      aria-label="Alumni testimonial"
+                    />
+                  </div>
+                )}
+
+                {/* Image fallback */}
+                {media.type === "image" && (
+                  <Media
+                    src={media.url}
+                    alt="Alumni testimonial"
+                    className="w-full h-auto object-cover"
                   />
-                </div>
+                )}
 
               </motion.div>
             ))}
