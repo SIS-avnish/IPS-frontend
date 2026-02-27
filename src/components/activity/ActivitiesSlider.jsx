@@ -103,16 +103,17 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
               key={event.id || i}
               className="cursor-pointer block"
             >
+              <div className="relative group overflow-hidden">
               {event.thumbnail_image ? (
                 isVideoUrl(event.thumbnail_image) ? (
                   <video
                     src={event.thumbnail_image}
                     className="
-                      w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
-                      border-2 border-[#ff7373]
-                      shadow-md
-                      transition duration-300
-                      hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                     w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
+                          border-2 border-[#ff7373]
+                          shadow-md
+                          transition duration-300
+                          group-hover:scale-105 group-hover:-translate-y-2 group-hover:shadow-xl
                     "
                     muted autoPlay loop playsInline
                   />
@@ -122,15 +123,16 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                   alt={event.title || `event-${i}`}
                   effect="blur"
                   className="
-                    w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
-                    border-2 border-[#ff7373]
-                    shadow-md
-                    transition duration-300
-                    hover:-translate-y-2 hover:scale-105 hover:shadow-xl
+                     w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
+                          border-2 border-[#ff7373]
+                          shadow-md
+                          transition duration-300
+                          group-hover:scale-105 group-hover:-translate-y-2 group-hover:shadow-xl
                   "
                   wrapperClassName="w-full"
                 />
                 )
+                
               ) : (
                 <div className="
                   w-full h-[320px] sm:h-[260px] xs:h-[220px]
@@ -155,7 +157,23 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
                   )}
                 </div>
               )}
-            </Link>
+              {event.thumbnail_image && (
+      <div
+        className="
+          absolute bottom-0 left-0 w-full
+      bg-black/60
+      text-center py-3 px-4
+        "
+      >
+        <h3 className="text-white text-lg font-semibold">
+          {event.title}
+        </h3>
+      </div>
+    )}
+
+  </div>
+</Link>
+         
             );
           })}
 
