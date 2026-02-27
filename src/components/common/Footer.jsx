@@ -30,25 +30,25 @@ export default function Footer() {
   }, [activeCollege]);
 
   const sections = [
-    { title:"IBMR", links:["BBA","MBA","Ph.D"] },
-    { title:"SOC", links:[
+    { title:"IBMR", slug:"ibmr", links:["BBA","MBA","Ph.D"] },
+    { title:"SOC", slug:"soc", links:[
       "B.Sc (Computer science with statistics)",
       "BCA",
       "MCA Integrated",
       "MCA (5 Years)",
       "MCA (Working Professionals)"
     ]},
-    { title:"ISR", links:["B.Sc","M.Sc","Ph.D"]},
-    { title:"SoSS", links:["BA","B.lib","MSW"]},
-    { title:"COC", links:["B.Com","B.Com (Honours)","M.Com"]},
-    { title:"IOHM", links:[
+    { title:"ISR", slug:"isr", links:["B.Sc","M.Sc","Ph.D"]},
+    { title:"SoSS", slug:"doss", links:["BA","B.lib","MSW"]},
+    { title:"COC", slug:"coc", links:["B.Com","B.Com (Honours)","M.Com"]},
+    { title:"IOHM", slug:"iohm", links:[
       "Bachelor of Hotel Management",
       "BBA (Hotel Management)",
       "Short Term Courses"
     ]},
-    { title:"COE", links:["Bed"]},
-    { title:"College of Law", links:["BA. LLB","BA. LLB","LLB","LLB"]},
-    { title:"IFT", links:[
+    { title:"COE", slug:"coe", links:["Bed"]},
+    { title:"College of Law", slug:"col", links:["BA. LLB","BA. LLB","LLB","LLB"]},
+    { title:"IFT", slug:"ift", links:[
       "B. Design",
       "Certificate Course (Fashion Design)",
       "Short Term Courses"
@@ -56,11 +56,10 @@ export default function Footer() {
   ];
 
   const navLinks=[
-    {label:"Home", path:`/${activeCollege}/home`},
+    {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
     {label:"About Us", path:`/${activeCollege}/about`},
-    {label:"Colleges", path:`/${activeCollege}/home`}, 
     {label:"Placements", path:`/${activeCollege}/placements`},
-    {label:"Activities", path:`/${activeCollege}/actvities/cultural`},
+    {label:"Activities", path:`/${activeCollege}/activities/cultural`},
     {label:"Facilities", path:`/${activeCollege}/facilities`},
     {label:"Contact Us", path:`/${activeCollege}/contact`}
   ];
@@ -77,16 +76,17 @@ export default function Footer() {
       {sections.map((sec,i)=>(
         <div key={i}>
           <h6 className="text-[#00BFFF] font-medium mb-3">
-            {sec.title}
+            <Link to={`/${sec.slug}`} className="hover:underline">
+              {sec.title}
+            </Link>
           </h6>
 
           <ul className="space-y-1 leading-relaxed">
             {sec.links.map((l,idx)=>(
               <li key={idx}>
-                {/* kept non-routing course links unchanged */}
-                <a href="#" className="hover:text-[#00BFFF] transition">
+                <Link to={`/${sec.slug}`} className="hover:text-[#00BFFF] transition">
                   {l}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
