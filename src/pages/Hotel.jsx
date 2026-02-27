@@ -39,7 +39,7 @@ const Hotel = () => {
       <Faculties data={sections?.train_with_tech_tools} />
       <Placement data={sections?.placement} />
       {sections?.success_stories && <SuccessStories data={sections.success_stories} />}
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'placement', 'success_stories']} />
     </div>
   );
 };

@@ -1,43 +1,54 @@
 import { useMemo } from "react";
 
 /**
- * Renders a single scratch‑type HTML block received from the API.
  * Strips CMS editing artefacts (edit buttons, contenteditable attrs, wrapper
- * chrome) so the raw content renders cleanly on the public site.
+ * chrome, "Edit HTML" text) from raw HTML so it renders cleanly on the public site.
+ *
+ * Can be used standalone:  cleanCmsHtml(rawHtml)
+ */
+export function cleanCmsHtml(html) {
+  if (!html) return "";
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // Remove "Edit HTML" buttons/links/elements injected by the CMS
+    doc.querySelectorAll("button, a, span, div, p").forEach((el) => {
+      if (/^\s*edit\s*html\s*$/i.test(el.textContent) && el.children.length === 0) {
+        const wrapper = el.closest("div:not(body)");
+        if (wrapper && wrapper !== el && wrapper.textContent.trim().replace(/edit\s*html/i, "").trim() === "") {
+          wrapper.remove();
+        } else {
+          el.remove();
+        }
+      }
+    });
+
+    // Strip contenteditable attributes
+    doc.querySelectorAll("[contenteditable]").forEach((el) => {
+      el.removeAttribute("contenteditable");
+    });
+
+    // Remove data-raw markers
+    doc.querySelectorAll("[data-raw]").forEach((el) => {
+      el.removeAttribute("data-raw");
+    });
+
+    // Final pass: remove any remaining "Edit HTML" text via string replacement
+    let result = doc.body.innerHTML;
+    result = result.replace(/<[^>]*>\s*Edit\s+HTML\s*<\/[^>]*>/gi, "");
+
+    return result;
+  } catch {
+    return html;
+  }
+}
+
+/**
+ * Renders a single scratch‑type HTML block received from the API.
  */
 export default function ScratchHtml({ html, className = "" }) {
-  const cleanHtml = useMemo(() => {
-    if (!html) return "";
-
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-
-      // Remove "Edit HTML" buttons injected by the CMS
-      doc.querySelectorAll("button").forEach((btn) => {
-        if (/edit\s*html/i.test(btn.textContent)) {
-          const wrapper = btn.closest("div");
-          if (wrapper) wrapper.remove();
-          else btn.remove();
-        }
-      });
-
-      // Strip contenteditable attributes
-      doc.querySelectorAll("[contenteditable]").forEach((el) => {
-        el.removeAttribute("contenteditable");
-      });
-
-      // Remove data-raw markers
-      doc.querySelectorAll("[data-raw]").forEach((el) => {
-        el.removeAttribute("data-raw");
-      });
-
-      return doc.body.innerHTML;
-    } catch {
-      // Fallback: return the original HTML if parsing fails
-      return html;
-    }
-  }, [html]);
+  const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   if (!cleanHtml) return null;
 
@@ -77,7 +88,8 @@ export function getScratchSections(sections) {
  * Usage:
  *   <ScratchSections sections={sections} />
  */
-export function ScratchSections({ sections, className = "", exclude = [] }) {
+const EMPTY_EXCLUDE = [];
+export function ScratchSections({ sections, className = "", exclude = EMPTY_EXCLUDE }) {
   const items = useMemo(() => {
     const all = getScratchSections(sections);
     if (exclude.length === 0) return all;

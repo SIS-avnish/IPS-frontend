@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials }) => {
 
@@ -31,7 +32,7 @@ const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials }) => {
             whileInView="show"
             viewport={{ once: true }}
             className="mb-14"
-            dangerouslySetInnerHTML={{ __html: alumniHtml }}
+            dangerouslySetInnerHTML={{ __html: cleanCmsHtml(alumniHtml) }}
           />
         )}
 
@@ -42,7 +43,7 @@ const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials }) => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            dangerouslySetInnerHTML={{ __html: socialActivitiesHtml }}
+            dangerouslySetInnerHTML={{ __html: cleanCmsHtml(socialActivitiesHtml) }}
           />
         )}
 

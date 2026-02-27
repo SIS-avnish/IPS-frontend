@@ -72,7 +72,7 @@ const StudentLife = () => {
         events={events}
         collegeSlug={collegeSlug}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of']} />
     </div>
   );
 };

@@ -57,7 +57,7 @@ export default function FacilitiesPage() {
         mess={sections.mess}
         sportsFacility={sections.sports_facility}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'discover_a_home_away_from_home', 'services', 'library', 'your_service', 'facilities_for_you', 'hostel_your_playground_for_success', 'join_a_community', 'the_sportstars_of_ips', 'facilities_feature', 'empower_your_future', 'wellness_center', 'safe_transport_at_your_service', 'canteen', 'mess', 'sports_facility']} />
     </div>
   );
 }

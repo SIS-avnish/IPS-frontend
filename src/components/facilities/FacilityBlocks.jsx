@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 const slideFromSide = (fromLeft) => ({
   hidden: { opacity: 0, x: fromLeft ? -30 : 30 },
@@ -101,7 +102,7 @@ export default function FacilityBlocks({ wellnessCenter, transport, canteen, mes
           >
             <div
               className="sports-facility-table w-full overflow-x-auto [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[#e0e0e0] [&_td]:px-4 [&_td]:py-3 [&_td]:text-[#3A3A3A] [&_td]:text-sm [&_td]:font-[Verdana,sans-serif] [&_a]:text-[#1155cc] [&_a]:underline"
-              dangerouslySetInnerHTML={{ __html: sportsFacility.html }}
+              dangerouslySetInnerHTML={{ __html: cleanCmsHtml(sportsFacility.html) }}
             />
           </motion.div>
         )}

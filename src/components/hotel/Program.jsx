@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 import bhmImg from "../../assets/Images/bhm.jpg";  
 import bbaImg from "../../assets/Images/bba.jpg";  
@@ -25,7 +26,7 @@ const Program = ({ data }) => {
 
         <div
           className="max-w-7xl mx-auto programmes-scratch"
-          dangerouslySetInnerHTML={{ __html: data.html }}
+          dangerouslySetInnerHTML={{ __html: cleanCmsHtml(data.html) }}
         />
       </section>
     );

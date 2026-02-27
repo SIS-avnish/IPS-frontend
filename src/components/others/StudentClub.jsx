@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 const StudentClub = ({ html }) => {
+  const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   // If API provides raw HTML, render it directly
-  if (html) {
+  if (cleanHtml) {
     return (
       <section className=" font-medium py-10 px-3 sm:px-6 bg-white">
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
       </section>
     );
   }

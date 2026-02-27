@@ -94,7 +94,7 @@ export default function IbmrPage() {
         />
       )}
       {sections.recruiter && <Recruiters data={sections.recruiter} />}
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'about', 'campus_to_business_boardroom', 'why_choose', 'experience_learn', 'programmed_offered', 'facilities', 'career_pathways', 'news_and_events', 'placement', 'testimonials', 'success_stories', 'recruiter']} />
     </div>
   );
 }

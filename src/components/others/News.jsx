@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Media from "../common/Media";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 /* -------------------- ANIMATION -------------------- */
 const fadeUp = {
@@ -28,7 +29,7 @@ const News = ({ newsEventsHtml, newsCards = [], collegeSlug }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="mb-14"
-            dangerouslySetInnerHTML={{ __html: newsEventsHtml }}
+            dangerouslySetInnerHTML={{ __html: cleanCmsHtml(newsEventsHtml) }}
           />
         )}
 

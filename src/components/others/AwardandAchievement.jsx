@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 const AwardandAchievement = ({ achievementsHtml, coCurricularHtml }) => {
+  const cleanAchievements = useMemo(() => cleanCmsHtml(achievementsHtml), [achievementsHtml]);
+  const cleanCoCurricular = useMemo(() => cleanCmsHtml(coCurricularHtml), [coCurricularHtml]);
 
-  if (!achievementsHtml && !coCurricularHtml) return null;
+  if (!cleanAchievements && !cleanCoCurricular) return null;
 
   return (
     <section className="bg-gray-50 py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
-        {achievementsHtml && (
-          <div dangerouslySetInnerHTML={{ __html: achievementsHtml }} />
+        {cleanAchievements && (
+          <div dangerouslySetInnerHTML={{ __html: cleanAchievements }} />
         )}
-        {coCurricularHtml && (
-          <div dangerouslySetInnerHTML={{ __html: coCurricularHtml }} />
+        {cleanCoCurricular && (
+          <div dangerouslySetInnerHTML={{ __html: cleanCoCurricular }} />
         )}
       </div>
     </section>

@@ -240,7 +240,7 @@ export default function Contact() {
           ></iframe>
         )}
       </div>
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'contact_us']} />
     </>
   );
 }

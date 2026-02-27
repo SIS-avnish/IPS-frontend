@@ -57,7 +57,7 @@ export default function Home() {
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', '360_video', 'courses']} />
     </>
   );
 }
