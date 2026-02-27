@@ -51,7 +51,7 @@ const AlumniPage = () => {
         socialActivitiesHtml={socialActivities.html}
         testimonials={alumniTestimonials.items}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'alumni', 'social_activities', 'alumni_testimonials']} />
     </div>
   )
 }

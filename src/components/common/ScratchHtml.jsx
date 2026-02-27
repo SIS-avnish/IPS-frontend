@@ -77,8 +77,13 @@ export function getScratchSections(sections) {
  * Usage:
  *   <ScratchSections sections={sections} />
  */
-export function ScratchSections({ sections, className = "" }) {
-  const items = useMemo(() => getScratchSections(sections), [sections]);
+export function ScratchSections({ sections, className = "", exclude = [] }) {
+  const items = useMemo(() => {
+    const all = getScratchSections(sections);
+    if (exclude.length === 0) return all;
+    const excludeSet = new Set(exclude);
+    return all.filter((item) => !excludeSet.has(item.key));
+  }, [sections, exclude]);
 
   if (items.length === 0) return null;
 

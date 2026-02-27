@@ -54,7 +54,7 @@ const SocialAct = () => {
         achievementsHtml={sections?.achievements?.html}
         coCurricularHtml={sections?.co_curricular?.html}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'annual_events_list', 'mou', 'summary_of_faculty_contributions', 'achievements', 'co_curricular']} />
     </div>
   )
 }

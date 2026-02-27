@@ -55,7 +55,7 @@ const Student = () => {
         videoTitle={videoSection?.title}
         videos={videoSection?.images}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'students_activity_club', 'placement_student_testimonial', 'alumni_video_testimonials']} />
     </div>
   )
 }

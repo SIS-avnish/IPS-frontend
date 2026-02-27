@@ -54,7 +54,7 @@ const NewsPage = () => {
         newsCards={newsCards}
         collegeSlug={collegeSlug}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'news_events']} />
     </div>
   )
 }
