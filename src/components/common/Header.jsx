@@ -104,7 +104,7 @@ const activeCollege =
     {/* LOGO */}
     <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-66px]">
 
-      <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain" alt="logo"/>
+      <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain xl:ml-[50px]" alt="logo"/>
     </div>
 
     {/* HAMBURGER */}

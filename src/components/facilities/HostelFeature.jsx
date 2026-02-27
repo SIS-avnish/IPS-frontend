@@ -70,7 +70,7 @@ export default function HostelFeatures({ intro, services }) {
             >
               <img
                 src={f.icon}
-                className="w-[50px] h-[50px] sm:w-[44px] sm:h-[44px] mb-6 sm:mb-4 mx-auto md:mx-0"
+                className="w-[45px] h-[45px] sm:w-[40px] sm:h-[40px] mb-3 sm:mb-3 mx-auto md:mx-0 bg-none"
               />
               <div className="text-[24px] sm:text-[20px] text-[18px] font-medium text-[#002147] leading-6">
                 {f.title}

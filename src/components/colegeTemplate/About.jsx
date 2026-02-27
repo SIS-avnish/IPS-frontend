@@ -26,7 +26,7 @@ export default function About({ about, features, whyChooseData }) {
 
   return (
     <section id="about" className="py-12 sm:py-14 md:py-10">
-      <div className="max-w-7xl mx-20 px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center">
+      <div className="max-w-7xl mx-10 px-2 sm:px-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center">
 
         <motion.div
           variants={fadeUp}
