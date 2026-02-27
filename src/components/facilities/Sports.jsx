@@ -146,7 +146,6 @@ function Athlete({ name, desc }) {
       <div className="text-[16px] sm:text-[15px] text-[#3A3A3A] pt-4 leading-relaxed">
         {desc}
       </div>
-
     </div>
   );
 }

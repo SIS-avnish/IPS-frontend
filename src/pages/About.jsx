@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
 import { useParams } from "react-router-dom";
-
 import Hero from "../components/about/Hero";
 import AboutIntro from "../components/about/AboutIntro";
 import VissionMission from "../components/about/VissionMission";

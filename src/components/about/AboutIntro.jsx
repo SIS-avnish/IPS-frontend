@@ -68,7 +68,7 @@ export default function AboutIntro({ aboutData, ecosystemData, growthImage }) {
     : studentFallback;
 
   return (
-    <section className="py-[120px]">
+    <section className="py-[50px] sm:py-[120px]">
 
       <div className="max-w-6xl mx-auto px-3">
 
@@ -81,11 +81,11 @@ export default function AboutIntro({ aboutData, ecosystemData, growthImage }) {
           className="grid md:grid-cols-2 gap-8 pb-5"
         >
           <div>
-          <h2 className="text-[60px] font-medium text-[#002147]">{title}</h2>
-          <div class="h-[2px] w-60 bg-[#FF7373] "></div>
+            <h2 className="text-[60px] font-medium text-[#002147] text-center sm:text-left" >{title}</h2>
+          <div class="h-[2px] w-60 bg-[#FF7373] mx-auto sm:mx-0"></div>
           </div>
 
-          <p className="text-gray-700">
+          <p className="text-gray-700 text-center sm:text-left">
             {content}
           </p>
         </motion.div>

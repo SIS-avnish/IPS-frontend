@@ -9,7 +9,7 @@ const Hero = ({ heroImage, description, ctaText, ctaLink }) => {
   const descParts = description ? description.split("\n") : ["Events", "365 days of celebration"];
 
   return (
-    <section className="w-full relative overflow-visible pb-40 sm:pb-48 lg:pb-26">
+    <section className="w-full relative overflow-visible pb-20 sm:pb-48 lg:pb-26">
 
       {/* HERO IMAGE AREA */}
       <div className="relative h-[60vh] sm:h-[55vh] md:h-[90vh] min-h-[420px]">

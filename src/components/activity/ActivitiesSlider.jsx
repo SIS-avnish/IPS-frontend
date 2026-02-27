@@ -4,6 +4,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+ 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
@@ -29,19 +30,26 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
   const next = () =>
     setIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
 
-  useEffect(() => {
-    if (slides.length <= 1) return;
-    const timer = setInterval(() => {
-      setIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 3000);
+ useEffect(() => {
+  if (slides.length <= 1) return;
 
-    return () => clearInterval(timer);
-  }, [slides.length]);
+  const timer = setInterval(() => {
+    setIndex((prevIndex) => {
+      if (prevIndex >= slides.length - 1) {
+        return 0;
+      }
+      return prevIndex + 1;
+    });
+  }, 10000);
+
+  return () => clearInterval(timer);
+}, [slides]);
 
   return (
     <div className="py-12 md:py-20 px-4 sm:px-5">
 
       {/* Heading */}
+   
       <motion.div
         variants={fadeUp}
         initial="hidden"
@@ -87,52 +95,50 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 pt-4">
 
-          {slides[index].map((event, i) => (
-            <Link
-              to={`/${collegeSlug}/activities/events/${event.id}`}
-              key={event.id || i}
-              className="cursor-pointer block"
-            >
-              {event.thumbnail_image ? (
-                <LazyLoadImage
-                  src={event.thumbnail_image}
-                  alt={event.title || `event-${i}`}
-                  effect="blur"
-                  className="
-                    w-full h-[320px] sm:h-[260px] xs:h-[220px] object-cover
-                    border-2 border-[#ff7373]
-                    shadow-md
-                    transition duration-300
-                    hover:-translate-y-2 hover:scale-105 hover:shadow-xl
-                  "
-                  wrapperClassName="w-full"
-                />
-              ) : (
-                <div className="
-                  w-full h-[320px] sm:h-[260px] xs:h-[220px]
-                  border-2 border-[#ff7373]
-                  shadow-md bg-white
-                  flex flex-col items-center justify-center p-6
-                  transition duration-300
-                  hover:-translate-y-2 hover:scale-105 hover:shadow-xl
-                ">
-                  <h3 className="text-[#002147] font-semibold text-lg text-center mb-2">
-                    {event.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm text-center line-clamp-3">
-                    {event.subtitle}
-                  </p>
-                  {event.start_date && (
-                    <p className="text-gray-400 text-xs mt-3">
-                      {new Date(event.start_date).toLocaleDateString('en-IN', {
-                        year: 'numeric', month: 'short', day: 'numeric',
-                      })}
-                    </p>
-                  )}
-                </div>
-              )}
-            </Link>
-          ))}
+        {slides[index].map((item, i) => (
+  <Link
+    to={`/${collegeSlug}/activities/events/${item.id}`}
+    key={item.id || i}
+    className="cursor-pointer block"
+  >
+    <div className="relative group overflow-hidden border-2 border-[#ff7373] shadow-md">
+
+      {/* Image */}
+      <LazyLoadImage
+        src={item.thumbnail_image}
+        alt={item.title || `event-${i}`}
+        effect="blur"
+        className="
+          w-full h-[320px] sm:h-[260px] object-cover
+          transition duration-500
+          group-hover:scale-110
+        "
+        wrapperClassName="w-full"
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300"></div>
+
+      {/* Title */}
+      <div className="absolute bottom-4 left-4 right-4">
+        <h3 className="text-white text-lg md:text-xl font-semibold leading-tight">
+          {item.title}
+        </h3>
+
+        {item.start_date && (
+          <p className="text-gray-200 text-sm mt-1">
+            {new Date(item.start_date).toLocaleDateString('en-IN', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
+          </p>
+        )}
+      </div>
+
+    </div>
+  </Link>
+))}
 
         </div>
 

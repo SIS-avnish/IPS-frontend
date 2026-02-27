@@ -23,6 +23,8 @@ export default function ExperienceSection({ data }) {
   return (
     <section className="max-w-[1140px] mx-auto px-4">
       <div className="py-[70px] max-[991px]:py-[50px] max-[576px]:py-[30px]">
+
+
         <motion.h2
           variants={fadeUp}
           initial="hidden"

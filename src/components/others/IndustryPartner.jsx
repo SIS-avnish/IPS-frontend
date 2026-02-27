@@ -4,7 +4,7 @@ const IndustryPartner = ({ html }) => {
 
   if (html) {
     return (
-      <section className="py-10 px-3 sm:px-6 bg-white">
+      <section className="font-medium py-10 px-3 sm:px-6 bg-white">
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </section>
     );

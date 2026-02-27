@@ -82,17 +82,17 @@ export default function Team({ data }) {
           transition={{ duration: 0.45, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.1 }}
         >
-          <p className="text-base sm:text-lg font-medium text-[#002147]">
+          <p className="ml-5 sm:ml-0 text-lg sm:text-lg font-medium text-[#002147]">
             {sectionTitle}
           </p>
 
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-medium text-[#002147] mt-2 leading-tight">
+          <h2 className="ml-5 sm:ml-0 text-5xl sm:text-3xl md:text-5xl font-medium text-[#002147] mt-2 leading-tight">
             With You at 
             <br />
             Every Step
           </h2>
 
-          <div className="h-[2px] w-32 sm:w-40 bg-[#FF7373] mt-3 sm:mt-4"/>
+          <div className="ml-5 sm:ml-0 h-[2px] w-32 sm:w-40 bg-[#FF7373] mt-3 sm:mt-4"/>
         </motion.div>
 
 
@@ -102,10 +102,10 @@ export default function Team({ data }) {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}
           viewport={{ once: true, amount: 0.1 }}
-          className="lg:col-span-2 relative translate-y-0 lg:translate-y-2/5 mt-[-150px]"
+          className="lg:col-span-2 relative translate-y-0 lg:translate-y-2/5  mt-5 sm:mt-[-150px]"
         >
 
-          <div className="bg-white shadow-[8px_8px_30px_2px_#00000026] p-2 sm:p-6">
+          <div className="bg-white shadow-[8px_8px_30px_2px_#00000026] p-4 sm:p-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center">
 

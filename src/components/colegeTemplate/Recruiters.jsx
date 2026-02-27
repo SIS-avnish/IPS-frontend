@@ -46,14 +46,14 @@ export default function Recruiters({ data }) {
           whileInView="visible"
           custom={i}
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-white rounded-xl p-4 sm:p-5 md:p-6 flex flex-col items-center justify-center shadow hover:-translate-y-1 transition"
+          className="bg-white rounded-xl p-2 sm:p-2 md:p-2 flex flex-col items-center justify-center shadow hover:-translate-y-1 transition"
         >
           {/* LOGO */}
           <LazyLoadImage
             src={resolveImageUrl(item.logo)}
             alt={item.name || `Recruiter ${i + 1}`}
             effect="blur"
-            className="max-h-8 sm:max-h-9 md:max-h-10 w-auto transition"
+            className="max-h-18 sm:max-h-90 md:max-h-20 w-auto transition"
           />
 
           {/* NAME UNDER LOGO */}

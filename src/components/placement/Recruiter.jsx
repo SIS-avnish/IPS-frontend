@@ -75,12 +75,12 @@ export default function Recruiters() {
               whileInView="visible"
               custom={i}
               viewport={{ once: true, amount: 0.1 }}
-              className="bg-white p-2 sm:p-3 border border-[#F0EEEF] flex items-center justify-center"
+              className="bg-white p-1 sm:p-1 border border-[#F0EEEF] flex items-center justify-center"
             >
               <img
                 src={logo}
                 alt="Recruiter"
-                className="h-[48px] sm:h-[60px] md:h-[72px] w-full object-contain"
+                className="h-[90px] sm:h-[60px] md:h-[72px] w-full object-contain"
               />
             </motion.div>
           ))}
