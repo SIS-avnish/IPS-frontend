@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Media, { isVideoUrl } from "../common/Media";
 
 /**
- * Extract YouTube video ID from various URL formats
- * Supports: youtu.be/ID, youtube.com/watch?v=ID, youtube.com/embed/ID
+ * Extract YouTube video ID
  */
 const extractYouTubeId = (url) => {
   if (!url) return null;
@@ -15,7 +14,7 @@ const extractYouTubeId = (url) => {
 };
 
 /**
- * Determine media type: "youtube" | "video" | "image"
+ * Determine media type
  */
 const getMediaType = (url) => {
   if (!url) return "image";
@@ -24,9 +23,14 @@ const getMediaType = (url) => {
   return "image";
 };
 
-const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
+const StudentTestimonials = ({
+  title,
+  testimonials,
+  videoTitle,
+  videos,
+}) => {
+  const [selectedMedia, setSelectedMedia] = useState(null);
 
-  // Map API items to text testimonials
   const textTestimonials = (testimonials || []).map((item) => ({
     name: item.name,
     text: item.story,
@@ -34,22 +38,20 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
     designation: item.designation,
   }));
 
-  // Map API gallery URLs — detect youtube / video / image automatically
   const videoTestimonials = (videos || []).map((url) => ({
     url,
     type: getMediaType(url),
     youtubeId: extractYouTubeId(url),
   }));
 
-  // animations
   const container = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.12 } }
+    show: { transition: { staggerChildren: 0.12 } },
   };
 
   const card = {
     hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   if (!textTestimonials.length && !videoTestimonials.length) return null;
@@ -57,12 +59,10 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
   return (
     <section className="py-12 px-4 md:px-8 bg-gray-50">
 
-      {/* ---------------- HEADING ---------------- */}
+      {/* HEADING */}
       {title && (
         <div className="max-w-6xl mx-auto text-center mb-10">
-          <h2 className="text-xl md:text-2xl font-bold">
-            {title}
-          </h2>
+          <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
         </div>
       )}
 
@@ -70,7 +70,9 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
       {textTestimonials.length > 0 && (
         <>
           <div className="max-w-6xl mx-auto text-center mb-6">
-            <p className="text-lg font-semibold">Placement Student Testimonial</p>
+            <p className="text-lg font-semibold">
+              Placement Student Testimonial
+            </p>
           </div>
 
           <motion.div
@@ -88,12 +90,24 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                 className="bg-white rounded-2xl shadow-md p-6 border"
               >
                 {t.image && (
-                  <Media
-                    src={t.image}
-                    alt={t.name}
-                    className="w-16 h-16 rounded-full object-cover mx-auto mb-4"
-                  />
+                  <div
+                    onClick={() =>
+                      setSelectedMedia({
+                        url: t.image,
+                        type: getMediaType(t.image),
+                        youtubeId: extractYouTubeId(t.image),
+                      })
+                    }
+                    className="cursor-pointer"
+                  >
+                    <Media
+                      src={t.image}
+                      alt={t.name}
+                      className="w-full h-60 md:h-64 rounded-lg object-cover mx-auto mb-4"
+                    />
+                  </div>
                 )}
+
                 <p className="text-gray-700 leading-relaxed text-sm md:text-base">
                   {t.text}
                 </p>
@@ -101,7 +115,9 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                 <div className="mt-4 font-semibold text-[#002147]">
                   — {t.name}
                   {t.designation && (
-                    <span className="block text-sm font-normal text-gray-500">{t.designation}</span>
+                    <span className="block text-sm font-normal text-gray-500">
+                      {t.designation}
+                    </span>
                   )}
                 </div>
               </motion.div>
@@ -110,12 +126,13 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
         </>
       )}
 
-
       {/* ================= VIDEO SECTION ================= */}
       {videoTestimonials.length > 0 && (
         <>
           <div className="max-w-6xl mx-auto text-center mt-16 mb-6">
-            <p className="text-lg font-semibold">{videoTitle || "Alumni Video Testimonials"}</p>
+            <p className="text-lg font-semibold">
+              {videoTitle || "Alumni Video Testimonials"}
+            </p>
           </div>
 
           <motion.div
@@ -130,22 +147,21 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                 key={i}
                 variants={card}
                 whileHover={{ scale: 1.03 }}
-                className="bg-white rounded-2xl shadow-md border overflow-hidden"
+                onClick={() => setSelectedMedia(media)}
+                className="bg-white rounded-2xl shadow-md border overflow-hidden cursor-pointer"
               >
-
-                {/* YouTube embed */}
                 {media.type === "youtube" && (
                   <div className="relative w-full pt-[56.25%]">
                     <iframe
                       className="absolute inset-0 w-full h-full"
                       src={`https://www.youtube.com/embed/${media.youtubeId}`}
                       title="Alumni testimonial"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
                   </div>
                 )}
 
-                {/* Native video (.mp4, .webm, etc.) */}
                 {media.type === "video" && (
                   <div className="relative w-full pt-[56.25%]">
                     <video
@@ -154,12 +170,10 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                       controls
                       playsInline
                       preload="metadata"
-                      aria-label="Alumni testimonial"
                     />
                   </div>
                 )}
 
-                {/* Image fallback */}
                 {media.type === "image" && (
                   <Media
                     src={media.url}
@@ -167,13 +181,70 @@ const StudentTestimonials = ({ title, testimonials, videoTitle, videos }) => {
                     className="w-full h-auto object-cover"
                   />
                 )}
-
               </motion.div>
             ))}
           </motion.div>
         </>
       )}
 
+      {/* ================= RESPONSIVE MODAL ================= */}
+      {selectedMedia && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setSelectedMedia(null)}
+        >
+          <div
+            className="
+              bg-white 
+              rounded-xl 
+              w-full 
+              max-w-md 
+              sm:max-w-lg 
+              md:max-w-2xl 
+              lg:max-w-3xl
+              relative
+              overflow-hidden
+            "
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedMedia(null)}
+              className="absolute top-3 right-3 bg-black text-white rounded-full w-8 h-8 z-10 flex items-center justify-center"
+            >
+              ✕
+            </button>
+
+            {selectedMedia.type === "youtube" && (
+              <div className="relative w-full pt-[56.25%]">
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${selectedMedia.youtubeId}?autoplay=1`}
+                  title="Alumni testimonial"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            )}
+
+            {selectedMedia.type === "video" && (
+              <video
+                className="w-full max-h-[75vh]"
+                src={selectedMedia.url}
+                controls
+                autoPlay
+              />
+            )}
+
+            {selectedMedia.type === "image" && (
+              <img
+                src={selectedMedia.url}
+                alt="Preview"
+                className="w-full max-h-[75vh] object-contain"
+              />
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
