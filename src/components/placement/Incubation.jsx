@@ -5,9 +5,9 @@ import icon3 from "../../assets/Images/icon3.svg";
 import icon4 from "../../assets/Images/icon4.svg";
 import icon5 from "../../assets/Images/icon5.svg";
 
-export default function Incubation() {
+export default function Incubation({ infrastructure, vibrant, collaboration, stats }) {
 
-  const features = [
+  const defaultFeatures = [
     {
       icon: icon1,
       title: "Orientation and awareness",
@@ -40,6 +40,23 @@ export default function Incubation() {
     }
   ];
 
+  const defaultIcons = [icon1, icon2, icon3, icon4, icon5, icon5];
+
+  const features = stats?.stats?.length
+    ? stats.stats.map((s, i) => ({
+        icon: defaultIcons[i % defaultIcons.length],
+        title: s.label,
+        desc: s.value,
+      }))
+    : defaultFeatures;
+
+  const infraTitle = infrastructure?.title || "An infrastructure designed to make your ideas happen";
+  const infraContent = infrastructure?.content || "Bring your ideas and make them successful growth stories at the IPS Academy Incubation Centre. Our multidisciplinary hub brings together students, faculty, and alumni from all departments to build solutions that matter.";
+  const vibrantTitle = vibrant?.title || "Vibrant Entrepreneurial Ecosystem";
+  const vibrantContent = vibrant?.content || "The Incubation Centre reflects IPS Academy's commitment to holistic, future-oriented education - shaping graduates who think boldly, act responsibly and create meaningful impact.";
+  const collabTitle = collaboration?.title || "A Collaboration Across Disciplines";
+  const collabContent = collaboration?.content || "Diverse minds from multiple disciplines and skillsets come together to build bold, relevant and real-world-ready ventures at the IPSA Incubation Centre.";
+
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
@@ -69,19 +86,12 @@ export default function Incubation() {
 
           <div>
             <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl md:text-6xl font-medium text-[#002147] leading-tight">
-              An infrastructure designed to make
-              <br />
-              <span className="inline-block border-b-2 border-[#FF7373] pb-1">
-                your ideas
-              </span>{" "}
-              happen
+              {infraTitle}
             </h2>
           </div>
 
           <p className="text-[#3A3A3A] text-sm sm:text-base md:text-lg leading-relaxed">
-            Bring your ideas and make them successful growth stories at the IPS Academy Incubation Centre.
-            Our multidisciplinary hub brings together students, faculty, and alumni from all departments
-            to build solutions that matter.
+            {infraContent}
           </p>
 
         </motion.div>
@@ -99,11 +109,10 @@ export default function Incubation() {
             className="bg-[#0CC2FE] text-[#002147] p-6 sm:p-8 md:p-10"
           >
             <h3 className="text-xl sm:text-2xl md:text-[32px] font-medium mb-3 leading-tight">
-              Vibrant Entrepreneurial Ecosystem
+              {vibrantTitle}
             </h3>
             <p className="leading-[22px] text-sm sm:text-base">
-              The Incubation Centre reflects IPS Academy’s commitment to holistic, future-oriented
-              education - shaping graduates who think boldly, act responsibly and create meaningful impact.
+              {vibrantContent}
             </p>
           </motion.div>
 
@@ -116,11 +125,10 @@ export default function Incubation() {
             className="bg-[#FF7373] text-[#002147] p-6 sm:p-8 md:p-10"
           >
             <h3 className="text-xl sm:text-2xl md:text-[32px] font-medium mb-3 leading-tight">
-              A Collaboration Across Disciplines
+              {collabTitle}
             </h3>
             <p className="leading-[22px] text-sm sm:text-base">
-              Diverse minds from multiple disciplines and skillsets come together to build bold,
-              relevant and real-world-ready ventures at the IPSA Incubation Centre.
+              {collabContent}
             </p>
           </motion.div>
 

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 export default function Hero({ data }) {
   if (!data) return null;
@@ -16,7 +17,7 @@ export default function Hero({ data }) {
     ">
 
       {/* Background image */}
-      <img
+      <Media
         src={heroImage}
         alt="Hero"
         loading="eager"

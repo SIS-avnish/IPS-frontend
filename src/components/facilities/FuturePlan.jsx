@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 export default function FuturePlan({ data }) {
   if (!data) return null;
@@ -63,7 +64,7 @@ export default function FuturePlan({ data }) {
             <div className="w-24 h-[2px] bg-[#002147] mt-2"></div>
 
             {/* image */}
-            <img
+            <Media
               src={nccImage}
               className="pt-12 sm:pt-8 w-full"
             />

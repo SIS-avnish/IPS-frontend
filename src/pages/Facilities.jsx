@@ -7,6 +7,7 @@ import Sports from "../components/facilities/Sports";
 import FuturePlan from "../components/facilities/FuturePlan";
 import FacilityBlocks from "../components/facilities/FacilityBlocks";
 import { useParams } from "react-router-dom";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function FacilitiesPage() {
   const [sections, setSections] = useState(null);
@@ -54,7 +55,9 @@ export default function FacilitiesPage() {
         transport={sections.safe_transport_at_your_service}
         canteen={sections.canteen}
         mess={sections.mess}
+        sportsFacility={sections.sports_facility}
       />
+      <ScratchSections sections={sections} />
     </div>
   );
 }

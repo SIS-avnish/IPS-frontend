@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import Alumni from '../components/others/Alumni'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
+import { ScratchSections } from '../components/common/ScratchHtml'
 
 const AlumniPage = () => {
   const { collegeSlug } = useParams()
@@ -50,6 +51,7 @@ const AlumniPage = () => {
         socialActivitiesHtml={socialActivities.html}
         testimonials={alumniTestimonials.items}
       />
+      <ScratchSections sections={sections} />
     </div>
   )
 }

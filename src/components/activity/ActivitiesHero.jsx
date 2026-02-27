@@ -1,6 +1,7 @@
 // src/components/Activities/Hero.jsx
 import { motion } from "framer-motion";
 import activitiesImg from "../../assets/Images/activities.jpg";
+import Media from "../common/Media";
 
 const Hero = ({ heroImage, description, ctaText, ctaLink }) => {
   const bgImage = heroImage || activitiesImg;
@@ -14,7 +15,7 @@ const Hero = ({ heroImage, description, ctaText, ctaLink }) => {
       {/* HERO IMAGE AREA */}
       <div className="relative h-[60vh] sm:h-[55vh] md:h-[90vh] min-h-[420px]">
 
-        <img
+        <Media
           src={bgImage}
           alt="Activities Hero"
           loading="eager"

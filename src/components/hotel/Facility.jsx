@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 
 import kitchen from "../../assets/Images/Kitchen.png";
 import team from "../../assets/Images/team.png";
@@ -142,7 +143,7 @@ const Facilities = ({ facilitiesData, skillsData }) => {
               viewport={{ once: true }}
               className="w-full"
             >
-              <img
+              <Media
                 src={currentImage}
                 alt="Training Kitchen"
                 className="w-full h-[320px] sm:h-[380px] md:h-[450px] object-cover rounded-md"

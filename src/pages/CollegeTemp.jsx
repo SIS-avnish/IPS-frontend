@@ -12,6 +12,7 @@ import Admission from "../components/colegeTemplate/Admission";
 import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import Recruiters from "../components/colegeTemplate/Recruiters";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
@@ -68,17 +69,32 @@ export default function IbmrPage() {
         />
       )}
       {sections.experience_learn && <Advantage data={sections.experience_learn} />}
-      <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />
+      {sections.programmed_offered && <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />}
       {sections.facilities && <Facilities data={sections.facilities} />}
-      <Placement
-        placement={sections.placement}
-        testimonials={sections.testimonials}
-      />
+      {(sections.career_pathways || sections.news_and_events) && (
+        <Placement
+          placement={sections.career_pathways}
+          testimonials={null}
+        />
+      )}
+      {(sections.placement || sections.testimonials) && (
+        <Placement
+          placement={sections.placement}
+          testimonials={sections.testimonials}
+        />
+      )}
       <Faculty collegeSlug={collegeSlug} />
       <Admission />
       <ApplyForm collegeSlug={collegeSlug} />
       {sections.success_stories && <SuccessStories data={sections.success_stories} />}
+      {sections.news_and_events && (
+        <Placement
+          placement={sections.news_and_events}
+          testimonials={null}
+        />
+      )}
       {sections.recruiter && <Recruiters data={sections.recruiter} />}
+      <ScratchSections sections={sections} />
     </div>
   );
 }

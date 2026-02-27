@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 
 import fairmont from "../../assets/logos/Fairmont_Logo.svg.png";
 import oberoi from "../../assets/logos/oberoi.png";
@@ -85,7 +86,7 @@ const Placement = ({ data }) => {
             viewport={{ once: true }}
             custom={1}
           >
-            <img
+            <Media
               src={placementImage}
               alt="Placement"
               className="w-full h-[300px] sm:h-[380px] md:h-[450px] object-cover rounded-md"

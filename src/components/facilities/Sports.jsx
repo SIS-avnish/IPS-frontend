@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import trophy from "../../assets/Images/trophy 2.svg";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -67,7 +68,7 @@ export default function Sports({ playground, joinCommunity, sportstars, faciliti
 
         {/* HERO IMAGE */}
         <div className="pt-8 sm:pt-4">
-          <img
+          <Media
             src={playgroundImage}
             className="w-full min-h-[500px] max-h-[500px] md:min-h-[420px] md:max-h-[420px] sm:min-h-[320px] sm:max-h-[320px] min-h-[260px] max-h-[260px] object-cover"
           />

@@ -7,12 +7,24 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-export default function CoursesAccordion({ data }) {
+function stripHtml(html) {
+  if (!html) return "";
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+}
 
-  const courses = (data?.items || []).map((item) => ({
-    title: item.title || item.question || "",
-    desc: item.description || item.answer || "",
-  }));
+export default function CoursesAccordion({ data, courses: apiCourses = [] }) {
+
+  // Prefer dedicated courses API data; fall back to page section items
+  const courses = apiCourses.length
+    ? apiCourses.map((c) => ({
+        title: c.name || "",
+        desc: stripHtml(c.description),
+      }))
+    : (data?.items || []).map((item) => ({
+        title: item.title || item.question || "",
+        desc: item.description || item.answer || "",
+      }));
 
   const sectionTitle = data?.title || "Innovative Courses";
   const sectionSubtitle = data?.subtitle || "Tailored for the Industry";

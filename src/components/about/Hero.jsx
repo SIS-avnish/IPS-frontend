@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import aboutFallback from "../../assets/Images/about.png";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 export default function Hero({ data }) {
 
@@ -17,7 +18,7 @@ export default function Hero({ data }) {
                           max-[576px]:h-[65vh] 
                           pb-28 overflow-visible px-2">
 
-      <img
+      <Media
         src={heroImage}
         alt="About Hero"
         loading="eager"

@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
-import { fetchPageData } from "../services/api";
+import { fetchPageData, fetchCollegeCourses } from "../services/api";
 
 import Hero from "../components/home/Hero";
 import WhyIPSA from "../components/home/WhyIPSA";
 import StatsSection from "../components/home/StatsSection";
 import ExperienceSection from "../components/home/ExperienceSection";
 import CoursesAccordion from "../components/home/CoursesAccordion";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Home() {
   const collegeSlug = "ipsa"; // Default college slug for home page
   const [sections, setSections] = useState(null);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchPageData(collegeSlug, "home")
-      .then((data) => {
-        setSections(data.sections);
+    Promise.all([
+      fetchPageData(collegeSlug, "home"),
+      fetchCollegeCourses(collegeSlug),
+    ])
+      .then(([pageData, coursesData]) => {
+        setSections(pageData.sections);
+        setCourses(coursesData);
       })
       .catch((err) => {
         console.error("Failed to fetch home page data:", err);
@@ -50,7 +56,8 @@ export default function Home() {
         excellenceData={sections?.excellence}
       />
       <ExperienceSection data={sections?.["360_video"]} />
-      <CoursesAccordion data={sections?.courses} />
+      <CoursesAccordion data={sections?.courses} courses={courses} />
+      <ScratchSections sections={sections} />
     </>
   );
 }

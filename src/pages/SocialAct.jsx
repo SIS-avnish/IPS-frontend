@@ -6,6 +6,7 @@ import FacultyPublication from '../components/others/FacultyPublication'
 import AwardandAchievement from '../components/others/AwardandAchievement'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
+import { ScratchSections } from '../components/common/ScratchHtml'
 
 const SocialAct = () => {
   const { collegeSlug } = useParams()
@@ -53,6 +54,7 @@ const SocialAct = () => {
         achievementsHtml={sections?.achievements?.html}
         coCurricularHtml={sections?.co_curricular?.html}
       />
+      <ScratchSections sections={sections} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 const slideFromSide = (fromLeft) => ({
   hidden: { opacity: 0, x: fromLeft ? -30 : 30 },
@@ -13,7 +14,7 @@ const scaleUp = {
 
 const badgeColors = ["#FFC73E", "#FF7373", "#0CC2FE", "#FFC73E"];
 
-export default function FacilityBlocks({ wellnessCenter, transport, canteen, mess }) {
+export default function FacilityBlocks({ wellnessCenter, transport, canteen, mess, sportsFacility }) {
   const sections = [wellnessCenter, transport, canteen, mess].filter(Boolean);
 
   const blocks = sections.map((section, i) => ({
@@ -75,7 +76,7 @@ export default function FacilityBlocks({ wellnessCenter, transport, canteen, mes
             >
 
               {b.img ? (
-                <img
+                <Media
                   src={b.img}
                   alt={b.badge}
                   className="w-full h-[456px] lg:h-[456px] md:h-[380px] sm:h-[300px] h-[240px] object-cover"
@@ -88,6 +89,22 @@ export default function FacilityBlocks({ wellnessCenter, transport, canteen, mes
 
           </div>
         ))}
+
+        {/* SPORTS FACILITY (HTML from API) */}
+        {sportsFacility?.html && (
+          <motion.div
+            variants={scaleUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="mt-[30px] sm:mt-[40px]"
+          >
+            <div
+              className="sports-facility-table w-full overflow-x-auto [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[#e0e0e0] [&_td]:px-4 [&_td]:py-3 [&_td]:text-[#3A3A3A] [&_td]:text-sm [&_td]:font-[Verdana,sans-serif] [&_a]:text-[#1155cc] [&_a]:underline"
+              dangerouslySetInnerHTML={{ __html: sportsFacility.html }}
+            />
+          </motion.div>
+        )}
 
       </div>
     </section>

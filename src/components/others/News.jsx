@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Media from "../common/Media";
 
 /* -------------------- ANIMATION -------------------- */
 const fadeUp = {
@@ -54,7 +55,7 @@ const News = ({ newsEventsHtml, newsCards = [], collegeSlug }) => {
                   className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
                 >
                   <Link to={`/${collegeSlug}/activities/news/${item.id}`}>
-                    <img
+                    <Media
                       src={item.thumbnail_image}
                       alt={item.title}
                       className="h-52 w-full object-cover"

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 
 import front from "../../assets/Images/Front.png";
 import language from "../../assets/Images/language.png";
@@ -136,7 +137,7 @@ const Skills = ({ data }) => {
               >
 
                 <div className="overflow-hidden rounded-md">
-                  <img
+                  <Media
                     src={lab.img}
                     alt={lab.title}
                     className="w-full h-[180px] sm:h-[220px] md:h-[260px] object-cover"

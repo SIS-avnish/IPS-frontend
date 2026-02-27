@@ -4,6 +4,7 @@ import StudentClub from '../components/others/StudentClub'
 import StudentTestimonials from '../components/others/StudentTestimonials'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
+import { ScratchSections } from '../components/common/ScratchHtml'
 
 const Student = () => {
   const { collegeSlug } = useParams()
@@ -54,6 +55,7 @@ const Student = () => {
         videoTitle={videoSection?.title}
         videos={videoSection?.images}
       />
+      <ScratchSections sections={sections} />
     </div>
   )
 }

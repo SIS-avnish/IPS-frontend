@@ -6,6 +6,7 @@ import Incubation from "../components/placement/Incubation";
 import Team from "../components/placement/Team";
 import Recruiters from "../components/placement/Recruiter";
 import { useParams } from "react-router-dom";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Placements() {
   const [data, setData] = useState(null);
@@ -52,7 +53,20 @@ export default function Placements() {
         stats={sections.orientation_and_awareness}
       />
       <Team data={sections.the_placement_team} />
-      <Recruiters />
+      <Recruiters
+        highlights={sections.proven_placement_record}
+        courseStats={sections.placement_count_course_wise}
+      />
+
+      {/* PLACED STUDENTS */}
+      {sections.placed_student?.html && (
+        <section className="bg-white py-12 sm:py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div dangerouslySetInnerHTML={{ __html: sections.placed_student.html }} />
+          </div>
+        </section>
+      )}
+      <ScratchSections sections={sections} />
     </div>
   );
 }

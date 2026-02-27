@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ActivitiesHero from "../components/activity/ActivitiesHero";
 import ActivitiesSlider from "../components/activity/ActivitiesSlider";
-import { fetchPageData, fetchCollegeEvents } from "../services/api";
+import { fetchPageData, fetchCollegeEvents, fetchActivities } from "../services/api";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 const StudentLife = () => {
   const { collegeSlug, subSlug } = useParams();
@@ -17,12 +18,26 @@ const StudentLife = () => {
       try {
         setLoading(true);
         const pageName = `activities/${subSlug || "events"}`;
-        const [pageData, eventsList] = await Promise.all([
-          fetchPageData(collegeSlug, pageName),
-          fetchCollegeEvents(collegeSlug),
+        const activityType = subSlug || "events";
+
+        const [pageData, activitiesList] = await Promise.all([
+          fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} })),
+          fetchActivities(collegeSlug, activityType).catch(() => []),
         ]);
+
         setSections(pageData.sections || {});
-        setEvents(eventsList || []);
+
+        // Map activities to the card shape the slider expects
+        const cards = (activitiesList || []).map((a) => ({
+          id: a.slug || a.id,
+          title: a.title,
+          subtitle: a.short_description,
+          thumbnail_image: a.main_image,
+          start_date: a.start_date,
+          _isActivity: true,
+        }));
+
+        setEvents(cards);
       } catch (err) {
         console.error("Failed to fetch activities page data:", err);
       } finally {
@@ -57,6 +72,7 @@ const StudentLife = () => {
         events={events}
         collegeSlug={collegeSlug}
       />
+      <ScratchSections sections={sections} />
     </div>
   );
 };

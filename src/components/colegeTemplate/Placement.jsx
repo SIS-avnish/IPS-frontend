@@ -3,6 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import { isVideoUrl } from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -104,6 +105,13 @@ export default function Placement({ placement, testimonials }) {
                 viewport={{ once: true, amount: 0.1 }}
                 className={`text-center ${placementData.image_position === "left" ? "order-1" : ""}`}
               >
+                {isVideoUrl(resolveImageUrl(placementData.image)) ? (
+                  <video
+                    src={resolveImageUrl(placementData.image)}
+                    className="rounded shadow-lg mx-auto w-full max-w-md lg:max-w-full"
+                    muted autoPlay loop playsInline controls
+                  />
+                ) : (
                 <LazyLoadImage
                   src={resolveImageUrl(placementData.image)}
                   alt={placementData.title}
@@ -111,6 +119,7 @@ export default function Placement({ placement, testimonials }) {
                   className="rounded shadow-lg mx-auto w-full max-w-md lg:max-w-full"
                   wrapperClassName="w-full"
                 />
+                )}
               </motion.div>
             )}
 
@@ -146,6 +155,13 @@ export default function Placement({ placement, testimonials }) {
 
                     <div className="flex items-center gap-3 sm:gap-4 mb-4">
                       {t.image && (
+                        isVideoUrl(resolveImageUrl(t.image)) ? (
+                          <video
+                            src={resolveImageUrl(t.image)}
+                            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#002147] object-cover"
+                            muted autoPlay loop playsInline
+                          />
+                        ) : (
                         <LazyLoadImage
                           src={resolveImageUrl(t.image)}
                           alt={t.name}
@@ -153,6 +169,7 @@ export default function Placement({ placement, testimonials }) {
                           className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-[#002147] object-cover"
                           wrapperClassName="w-12 h-12 sm:w-14 sm:h-14 rounded-full"
                         />
+                        )
                       )}
                       <div>
                         <h6 className="font-bold text-[#002147] text-sm sm:text-base">{t.name}</h6>
@@ -213,11 +230,19 @@ export default function Placement({ placement, testimonials }) {
 
         <div className="flex items-center gap-4 mb-4">
           {selectedTestimonial.image && (
+            isVideoUrl(resolveImageUrl(selectedTestimonial.image)) ? (
+              <video
+                src={resolveImageUrl(selectedTestimonial.image)}
+                className="w-14 h-14 rounded-full border-2 border-[#002147] object-cover"
+                muted autoPlay loop playsInline
+              />
+            ) : (
             <LazyLoadImage
               src={resolveImageUrl(selectedTestimonial.image)}
               alt={selectedTestimonial.name}
               className="w-14 h-14 rounded-full border-2 border-[#002147] object-cover"
             />
+            )
           )}
           <div>
             <h6 className="font-bold text-[#002147]">

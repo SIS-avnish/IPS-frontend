@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 
 import rajeev from "../../assets/Images/Rajeev-Shukla.webp";
 import nihit from "../../assets/Images/Nihit Agrawal.png";
@@ -109,7 +110,7 @@ export default function Team({ data }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center">
 
-              <img
+              <Media
                 src={expert.img}
                 alt={expert.name}
                 className="w-full aspect-square object-cover"
