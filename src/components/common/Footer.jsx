@@ -5,7 +5,7 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
-import { fetchCollegeInfo } from "../../services/api";
+import { fetchCollegeInfo, fetchCollegesWithCourses } from "../../services/api";
 
 export default memo(function Footer() {
 
@@ -18,6 +18,7 @@ export default memo(function Footer() {
       : "ipsa";
 
   const [collegeLogo, setCollegeLogo] = useState(null);
+  const [colleges, setColleges] = useState([]);
 
   useEffect(() => {
     if (activeCollege && activeCollege !== "ipsa") {
@@ -29,31 +30,23 @@ export default memo(function Footer() {
     }
   }, [activeCollege]);
 
-  const sections = [
-    { title:"IBMR", slug:"ibmr", links:["BBA","MBA","Ph.D"] },
-    { title:"SOC", slug:"soc", links:[
-      "B.Sc (Computer science with statistics)",
-      "BCA",
-      "MCA Integrated",
-      "MCA (5 Years)",
-      "MCA (Working Professionals)"
-    ]},
-    { title:"ISR", slug:"isr", links:["B.Sc","M.Sc","Ph.D"]},
-    { title:"SoSS", slug:"doss", links:["BA","B.lib","MSW"]},
-    { title:"COC", slug:"coc", links:["B.Com","B.Com (Honours)","M.Com"]},
-    { title:"IOHM", slug:"iohm", links:[
-      "Bachelor of Hotel Management",
-      "BBA (Hotel Management)",
-      "Short Term Courses"
-    ]},
-    { title:"COE", slug:"coe", links:["Bed"]},
-    { title:"College of Law", slug:"col", links:["BA. LLB","BA. LLB","LLB","LLB"]},
-    { title:"IFT", slug:"ift", links:[
-      "B. Design",
-      "Certificate Course (Fashion Design)",
-      "Short Term Courses"
-    ]}
-  ];
+  useEffect(() => {
+    fetchCollegesWithCourses()
+      .then((data) => setColleges(data?.colleges || []))
+      .catch(() => setColleges([]));
+  }, []);
+
+  // Build footer sections from API data — exclude the main "ipsa" entry
+  const sections = useMemo(() =>
+    colleges
+      .filter((c) => c.slug.toLowerCase() !== "ipsa")
+      .map((c) => ({
+        title: c.name,
+        slug: c.slug.toLowerCase(),
+        links: (c.courses || []).map((course) => course.trim()).filter(Boolean),
+      })),
+    [colleges]
+  );
 
   const navLinks = useMemo(() => [
     {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
@@ -83,7 +76,7 @@ export default memo(function Footer() {
 
           <ul className="space-y-1 leading-relaxed">
             {sec.links.map((l,idx)=>(
-              <li key={idx}>
+              <li className="border-t-1 leading-6" key={idx}>
                 <Link to={`/${sec.slug}`} className="hover:text-[#00BFFF] transition">
                   {l}
                 </Link>

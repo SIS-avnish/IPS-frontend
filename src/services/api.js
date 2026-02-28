@@ -254,4 +254,18 @@ export async function fetchCollegeAlumniDetail(collegeSlug, alumniId) {
     return data;
 }
 
+/**
+ * Fetch all colleges with their courses (public endpoint).
+ * Used by the Footer for dynamic college/course listing.
+ */
+export async function fetchCollegesWithCourses() {
+    const cacheKey = "public/colleges-with-courses";
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/public/colleges-with-courses`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
 export default api;
