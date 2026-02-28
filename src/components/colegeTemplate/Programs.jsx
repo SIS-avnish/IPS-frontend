@@ -18,7 +18,7 @@ export default memo(function Programs({ data, collegeSlug }) {
 
     fetchCollegeCourses(collegeSlug)
       .then((data) => {
-        if (!cancelled) setCourses(data || []);
+        if (!cancelled) setCourses(data?.value || data || []);
       })
       .catch((err) => {
         console.error("Failed to fetch courses:", err);

@@ -65,7 +65,7 @@ export default function IbmrPage() {
         />
       )}
       {sections.experience_learn && <Advantage data={sections.experience_learn} />}
-      {sections.programmed_offered && <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />}
+      <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />
       {sections.facilities && <Facilities data={sections.facilities} />}
       {(sections.career_pathways || sections.news_and_events) && (
         <Placement
