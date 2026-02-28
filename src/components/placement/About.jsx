@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import mentoringIcon from "../../assets/Images/mentoring.svg";
 import skyscrapersIcon from "../../assets/Images/skyscrapers.svg";
@@ -29,8 +30,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function About({ data }) {
+export default memo(function About({ data }) {
   const title = data?.title || "Where Opportunities Find You";
   const content =
     data?.content ||
@@ -90,4 +90,4 @@ export default function About({ data }) {
       </div>
     </section>
   );
-}
+})

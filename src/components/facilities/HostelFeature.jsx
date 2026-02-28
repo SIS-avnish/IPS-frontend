@@ -14,8 +14,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function HostelFeatures({ intro, services }) {
+export default memo(function HostelFeatures({ intro, services }) {
   if (!intro && !services) return null;
 
   const features = (services?.items || []).map((item) => ({
@@ -83,4 +82,4 @@ export default function HostelFeatures({ intro, services }) {
       </div>
     </section>
   );
-}
+})

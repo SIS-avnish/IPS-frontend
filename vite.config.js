@@ -16,6 +16,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-motion": ["framer-motion"],
           "vendor-icons": ["@fortawesome/react-fontawesome", "@fortawesome/free-solid-svg-icons", "@fortawesome/fontawesome-svg-core"],
           "vendor-ui": ["lucide-react", "class-variance-authority", "clsx", "tailwind-merge"],
         },

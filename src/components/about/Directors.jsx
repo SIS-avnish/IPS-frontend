@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -13,8 +14,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function Directors({ data, courses: apiCourses = [], colleges: apiColleges = [] }) {
+export default memo(function Directors({ data, courses: apiCourses = [], colleges: apiColleges = [] }) {
 
   const sectionTitle = data?.title || "Institute Directors";
   const subtitle = data?.subtitle || "Principal / Director";
@@ -102,4 +102,4 @@ export default function Directors({ data, courses: apiCourses = [], colleges: ap
 
     </section>
   );
-}
+})

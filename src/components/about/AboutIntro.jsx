@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import onlineTeachingIcon from "../../assets/Images/online-teaching 1.svg";
 import computerIcon from "../../assets/Images/computer 1.svg";
@@ -48,7 +49,7 @@ const defaultFeatures = [
   }
 ];
 
-export default function AboutIntro({ aboutData, ecosystemData, growthImage }) {
+export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage }) {
 
   const title = aboutData?.title || "About IPS";
   const content = aboutData?.content ||
@@ -138,4 +139,4 @@ export default function AboutIntro({ aboutData, ecosystemData, growthImage }) {
 
     </section>
   );
-}
+})

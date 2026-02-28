@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/facilities/Hero";
 import HostelFeatures from "../components/facilities/HostelFeature";
 import LibraryVision from "../components/facilities/LibraryVision";
@@ -22,11 +23,7 @@ export default function FacilitiesPage() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <span className="text-lg text-[#002147]">Loading...</span>
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (!sections) return null;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/hotel/Hero";
 import About from "../components/hotel/About";
 import Program from "../components/hotel/Program";
@@ -22,11 +23,7 @@ const Hotel = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   return (

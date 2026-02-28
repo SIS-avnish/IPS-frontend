@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 /**
  * Drop-in replacement for <img> that auto-detects video URLs from the API
  * and renders a <video> player instead.
@@ -19,7 +21,7 @@ export function isVideoUrl(url) {
   }
 }
 
-export default function Media({ src, alt, className, style, ...rest }) {
+export default memo(function Media({ src, alt, className, style, ...rest }) {
   if (isVideoUrl(src)) {
     return (
       <video
@@ -37,6 +39,6 @@ export default function Media({ src, alt, className, style, ...rest }) {
   }
 
   return (
-    <img src={src} alt={alt} className={className} style={style} {...rest} />
+    <img src={src} alt={alt} className={className} style={style} loading="lazy" {...rest} />
   );
-}
+});

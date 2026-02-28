@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -9,7 +10,7 @@ const defaultWhyChoose = [
  
 ];
 
-export default function About({ about, features, whyChooseData }) {
+export default memo(function About({ about, features, whyChooseData }) {
   const title = about?.title || "About";
   const content = about?.content || "";
   const featuresTitle = features?.title || "";
@@ -158,4 +159,4 @@ export default function About({ about, features, whyChooseData }) {
 
     </section>
   );
-}
+})

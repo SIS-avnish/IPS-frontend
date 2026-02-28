@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const FacultyPublication = ({ html }) => {
+const FacultyPublication = memo(({ html }) => {
   const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   if (cleanHtml) {
@@ -15,6 +15,5 @@ const FacultyPublication = ({ html }) => {
   }
 
   return null;
-};
-
+});
 export default FacultyPublication;

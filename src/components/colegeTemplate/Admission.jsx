@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -36,7 +37,7 @@ const steps = [
   },
 ];
 
-export default function Admission() {
+export default memo(function Admission() {
   return (
     <section id="admission" className="bg-[#f8f9fc] py-12 sm:py-14 md:py-16">
 
@@ -84,4 +85,4 @@ export default function Admission() {
       </div>
     </section>
   );
-}
+})

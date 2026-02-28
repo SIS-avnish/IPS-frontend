@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import AnnualEvent from '../components/others/AnnualEvent'
 import IndustryPartner from '../components/others/IndustryPartner'
 import FacultyPublication from '../components/others/FacultyPublication'
@@ -30,11 +31,7 @@ const SocialAct = () => {
   }, [collegeSlug])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   const hero = sections?.hero

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import logo from "../../assets/logos/logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +7,7 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { fetchCollegeInfo } from "../../services/api";
 
-export default function Footer() {
+export default memo(function Footer() {
 
   const location = useLocation();
   const pathParts = location.pathname.split("/");
@@ -55,14 +55,14 @@ export default function Footer() {
     ]}
   ];
 
-  const navLinks=[
+  const navLinks = useMemo(() => [
     {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
     {label:"About Us", path:`/${activeCollege}/about`},
     {label:"Placements", path:`/${activeCollege}/placements`},
     {label:"Activities", path:`/${activeCollege}/activities/cultural`},
     {label:"Facilities", path:`/${activeCollege}/facilities`},
     {label:"Contact Us", path:`/${activeCollege}/contact`}
-  ];
+  ], [activeCollege]);
 
   return (
 
@@ -162,4 +162,4 @@ export default function Footer() {
 </footer>
 
   );
-}
+})

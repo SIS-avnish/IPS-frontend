@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import placementImg from "../../assets/Images/placement.jpg";
 import Media from "../common/Media";
 
-export default function Hero({ data }) {
+export default memo(function Hero({ data }) {
   const heroImage = data?.images?.[0]
     ? resolveImageUrl(data.images[0])
     : placementImg;
@@ -69,4 +70,4 @@ export default function Hero({ data }) {
       </motion.div>
     </section>
   );
-}
+})

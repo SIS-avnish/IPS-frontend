@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
@@ -6,7 +6,7 @@ import kitchen from "../../assets/Images/Kitchen.png";
 import team from "../../assets/Images/team.png";
 import chief from "../../assets/Images/chief.png";
 
-const Facilities = ({ facilitiesData, skillsData }) => {
+const Facilities = memo(({ facilitiesData, skillsData }) => {
 
   const [open, setOpen] = useState(0);
 
@@ -250,6 +250,5 @@ const Facilities = ({ facilitiesData, skillsData }) => {
 
     </section>
   );
-};
-
+});
 export default Facilities;

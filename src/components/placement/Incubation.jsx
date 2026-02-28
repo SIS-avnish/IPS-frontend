@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import icon1 from "../../assets/Images/icon1.svg";
 import icon2 from "../../assets/Images/icon2.svg";
@@ -5,7 +6,7 @@ import icon3 from "../../assets/Images/icon3.svg";
 import icon4 from "../../assets/Images/icon4.svg";
 import icon5 from "../../assets/Images/icon5.svg";
 
-export default function Incubation({ infrastructure, vibrant, collaboration, stats }) {
+export default memo(function Incubation({ infrastructure, vibrant, collaboration, stats }) {
 
   const defaultFeatures = [
     {
@@ -172,4 +173,4 @@ export default function Incubation({ infrastructure, vibrant, collaboration, sta
       </div>
     </section>
   );
-}
+})

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const AwardandAchievement = ({ achievementsHtml, coCurricularHtml }) => {
+const AwardandAchievement = memo(({ achievementsHtml, coCurricularHtml }) => {
   const cleanAchievements = useMemo(() => cleanCmsHtml(achievementsHtml), [achievementsHtml]);
   const cleanCoCurricular = useMemo(() => cleanCmsHtml(coCurricularHtml), [coCurricularHtml]);
 
@@ -19,6 +19,5 @@ const AwardandAchievement = ({ achievementsHtml, coCurricularHtml }) => {
       </div>
     </section>
   );
-};
-
+});
 export default AwardandAchievement;

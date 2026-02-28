@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
 
-export default function FuturePlan({ data }) {
+export default memo(function FuturePlan({ data }) {
   if (!data) return null;
 
   const nccImage = resolveImageUrl(data.image);
@@ -127,4 +128,4 @@ export default function FuturePlan({ data }) {
       </div>
     </section>
   );
-}
+})

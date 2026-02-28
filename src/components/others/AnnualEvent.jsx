@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const AnnualEvent = ({ html }) => {
+const AnnualEvent = memo(({ html }) => {
   const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   if (cleanHtml) {
@@ -13,6 +13,5 @@ const AnnualEvent = ({ html }) => {
   }
 
   return null;
-};
-
+});
 export default AnnualEvent;

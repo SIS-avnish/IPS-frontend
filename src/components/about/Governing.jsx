@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
@@ -6,7 +7,7 @@ import yogendraJainImg from "../../assets/Images/Mr. Yogendra Jain.png";
 import kumudiniImg from "../../assets/Images/Mrs. Kumudini.jpg";
 import urmilaJainImg from "../../assets/Images/Mrs. Urmila Jain.png";
 
-export default function Governing({ governingBody, executive, advisory }) {
+export default memo(function Governing({ governingBody, executive, advisory }) {
 
   const leaders = governingBody?.members?.length
     ? governingBody.members.map((m) => ({
@@ -120,4 +121,4 @@ export default function Governing({ governingBody, executive, advisory }) {
       }
     </section>
   );
-}
+})

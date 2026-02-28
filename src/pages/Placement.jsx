@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/placement/Hero";
 import About from "../components/placement/About";
 import Incubation from "../components/placement/Incubation";
@@ -25,11 +26,7 @@ export default function Placements() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#002147]" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {

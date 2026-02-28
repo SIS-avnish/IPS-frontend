@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 import heroFallback from "../../assets/Images/hero.jpg";
 import Media from "../common/Media";
 
-export default function Hero({ data }) {
+export default memo(function Hero({ data }) {
   const [showVideo, setShowVideo] = useState(false);
 
   // Fallback values if API data is not available
@@ -107,4 +107,4 @@ export default function Hero({ data }) {
 
     </div>
   );
-}
+})

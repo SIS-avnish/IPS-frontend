@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const StudentClub = ({ html }) => {
+const StudentClub = memo(({ html }) => {
   const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   // If API provides raw HTML, render it directly
@@ -14,6 +14,6 @@ const StudentClub = ({ html }) => {
   }
 
   return null;
-};
+});
 
 export default StudentClub;

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import nishitJainFallback from "../../assets/Images/Nishit Jain.png";
 import achalFallback from "../../assets/Images/achal.png";
@@ -39,7 +40,7 @@ const defaultLeaders = [
   }
 ];
 
-export default function Leadership({ data }) {
+export default memo(function Leadership({ data }) {
 
   const title = data?.title || "Our Leadership Team";
 
@@ -98,4 +99,4 @@ export default function Leadership({ data }) {
 
     </section>
   );
-}
+})

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
@@ -15,7 +16,7 @@ const scaleUp = {
 
 const badgeColors = ["#FFC73E", "#FF7373", "#0CC2FE", "#FFC73E"];
 
-export default function FacilityBlocks({ wellnessCenter, transport, canteen, mess, sportsFacility }) {
+export default memo(function FacilityBlocks({ wellnessCenter, transport, canteen, mess, sportsFacility }) {
   const sections = [wellnessCenter, transport, canteen, mess].filter(Boolean);
 
   const blocks = sections.map((section, i) => ({
@@ -110,4 +111,4 @@ export default function FacilityBlocks({ wellnessCenter, transport, canteen, mes
       </div>
     </section>
   );
-}
+})

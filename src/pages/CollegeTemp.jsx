@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchCollegePageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/colegeTemplate/Hero";
 import About from "../components/colegeTemplate/About";
 import Advantage from "../components/colegeTemplate/Advantage";
@@ -19,7 +20,6 @@ export default function IbmrPage() {
   const [sections, setSections] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("Fetching data for college slug:", collegeSlug);
 
   useEffect(() => {
     let cancelled = false;
@@ -43,11 +43,7 @@ export default function IbmrPage() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#002147]"></div>
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {

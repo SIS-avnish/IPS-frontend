@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import Alumni from '../components/others/Alumni'
+import AlumniCards from '../components/others/AlumniCards'
 import Hero from '../components/others/Hero'
-import { fetchPageData } from '../services/api'
+import { fetchPageData, fetchCollegeAlumni } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
 
 const AlumniPage = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [alumniList, setAlumniList] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true)
-        const data = await fetchPageData(collegeSlug, 'activities/alumni')
+        const [data, alumniData] = await Promise.all([
+          fetchPageData(collegeSlug, 'activities/alumni'),
+          fetchCollegeAlumni(collegeSlug).catch(() => []),
+        ])
         setSections(data.sections || {})
+        setAlumniList(alumniData || [])
       } catch (err) {
         console.error('Failed to fetch alumni page data:', err)
       } finally {
@@ -26,11 +33,7 @@ const AlumniPage = () => {
   }, [collegeSlug])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   const hero = sections?.hero || {}
@@ -52,6 +55,7 @@ const AlumniPage = () => {
         testimonials={alumniTestimonials.items}
         testimonialsTitle={alumniTestimonials.title}
       />
+      <AlumniCards alumni={alumniList} collegeSlug={collegeSlug} />
       <ScratchSections sections={sections} exclude={['hero', 'alumni', 'social_activities', 'alumni_testimonials']} />
     </div>
   )

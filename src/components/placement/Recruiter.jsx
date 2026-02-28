@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import fairmontLogo from "../../assets/logos/Fairmont_Logo.svg.png";
 import oberoiLogo from "../../assets/logos/oberoi.png";
@@ -6,7 +7,7 @@ import hyattLogo from "../../assets/logos/Hyatt.png";
 import tajLogo from "../../assets/logos/taj.png";
 import itcLogo from "../../assets/logos/itc.png";
 
-export default function Recruiters({ highlights, courseStats }) {
+export default memo(function Recruiters({ highlights, courseStats }) {
 
   const logos = [
     fairmontLogo,
@@ -197,4 +198,4 @@ export default function Recruiters({ highlights, courseStats }) {
 
     </section>
   );
-}
+})

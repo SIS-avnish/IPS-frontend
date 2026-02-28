@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { motion } from "framer-motion";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials, testimonialsTitle }) => {
+const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimonialsTitle }) => {
 
   /* ================== ANIMATIONS ================== */
 
@@ -97,6 +97,5 @@ const Alumini = ({ alumniHtml, socialActivitiesHtml, testimonials, testimonialsT
 
     </section>
   );
-};
-
+});
 export default Alumini;

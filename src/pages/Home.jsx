@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchPageData, fetchCollegeCourses } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 
 import Hero from "../components/home/Hero";
 import WhyIPSA from "../components/home/WhyIPSA";
@@ -32,11 +33,7 @@ export default function Home() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {

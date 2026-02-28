@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
 
-export default function LibraryVision({ library, yourService, facilitiesForYou }) {
+export default memo(function LibraryVision({ library, yourService, facilitiesForYou }) {
   if (!library) return null;
 
   const libraryImage = resolveImageUrl(library.image);
@@ -139,4 +140,4 @@ export default function LibraryVision({ library, yourService, facilitiesForYou }
       </div>
     </section>
   );
-}
+})

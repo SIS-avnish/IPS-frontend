@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
@@ -10,7 +10,7 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
-const Program = ({ data }) => {
+const Program = memo(({ data }) => {
 
   // If API provides scratch HTML, render it dynamically
   if (data?.html) {
@@ -162,6 +162,5 @@ const Program = ({ data }) => {
       </div>
     </section>
   );
-};
-
+});
 export default Program;

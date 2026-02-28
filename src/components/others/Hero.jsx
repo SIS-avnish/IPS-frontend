@@ -1,9 +1,10 @@
 // src/components/Activities/Hero.jsx
+import { memo } from "react";
 import { motion } from "framer-motion";
 import activitiesImg from "../../assets/Images/activities.jpg";
 import Media from "../common/Media";
 
-const Hero = ({ heroImage, description, ctaText, ctaLink }) => {
+const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
   const bgImage = heroImage || activitiesImg;
 
   // Parse description like "Events\n365 days of celebration"
@@ -78,6 +79,5 @@ const Hero = ({ heroImage, description, ctaText, ctaLink }) => {
       </div>
     </section>
   );
-};
-
+});
 export default Hero;

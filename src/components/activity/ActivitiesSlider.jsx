@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
@@ -10,17 +10,18 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-const EventSlider = ({ title, content, events = [], collegeSlug }) => {
+const EventSlider = memo(({ title, content, events = [], collegeSlug }) => {
 
   // Chunk events into groups of 6 for carousel slides
   const chunkSize = 6;
-  const slides = [];
-  for (let i = 0; i < events.length; i += chunkSize) {
-    slides.push(events.slice(i, i + chunkSize));
-  }
-
-  // Fallback if no events
-  if (slides.length === 0) slides.push([]);
+  const slides = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < events.length; i += chunkSize) {
+      result.push(events.slice(i, i + chunkSize));
+    }
+    if (result.length === 0) result.push([]);
+    return result;
+  }, [events]);
 
   const [index, setIndex] = useState(0);
 
@@ -163,6 +164,5 @@ const EventSlider = ({ title, content, events = [], collegeSlug }) => {
 
     </div>
   );
-};
-
+});
 export default EventSlider;

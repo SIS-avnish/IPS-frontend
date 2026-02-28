@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
@@ -25,8 +26,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function Advantage({ data }) {
+export default memo(function Advantage({ data }) {
   const title = data?.title || "Experience, Learn, Lead";
   const cards = data?.cards || [];
 
@@ -90,4 +90,4 @@ export default function Advantage({ data }) {
       </div>
     </section>
   );
-}
+})

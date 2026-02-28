@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { motion } from "framer-motion";
 import { fetchCollegeCourses } from "../../services/api";
 
@@ -6,8 +6,7 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
-
-export default function Programs({ data, collegeSlug }) {
+export default memo(function Programs({ data, collegeSlug }) {
   const title = data?.title || "Programmes Offered";
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,4 +107,4 @@ export default function Programs({ data, collegeSlug }) {
       </div>
     </section>
   );
-}
+})

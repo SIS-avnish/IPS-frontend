@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import aboutFallback from "../../assets/Images/about.png";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
 
-export default function Hero({ data }) {
+export default memo(function Hero({ data }) {
 
   const [open, setOpen] = useState(false);
 
@@ -98,4 +99,4 @@ export default function Hero({ data }) {
 
     </section>
   );
-}
+})

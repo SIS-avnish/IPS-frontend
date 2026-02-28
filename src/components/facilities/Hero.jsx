@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
 
-export default function Hero({ data }) {
+export default memo(function Hero({ data }) {
   if (!data) return null;
 
   const heroImage = data.images?.[0] ? resolveImageUrl(data.images[0]) : "";
@@ -74,4 +75,4 @@ export default function Hero({ data }) {
 
     </section>
   );
-}
+})

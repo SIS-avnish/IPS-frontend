@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
+import LazyIframe from "../components/common/LazyIframe";
 import { MapPin, Phone, Mail, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -17,7 +19,6 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
 export default function Contact() {
   const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
@@ -37,11 +38,7 @@ export default function Contact() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {
@@ -56,29 +53,29 @@ export default function Contact() {
   const contact = sections?.contact_us;
 
   // Support both array and comma-separated string for phones
-  const phoneNumbers = Array.isArray(contact?.phones)
+  const phoneNumbers = useMemo(() => Array.isArray(contact?.phones)
     ? contact.phones
     : contact?.phone
       ? contact.phone.split(",").map((p) => p.trim())
-      : [];
+      : [], [contact]);
 
   // Support both array and single string for emails
-  const emails = Array.isArray(contact?.emails)
+  const emails = useMemo(() => Array.isArray(contact?.emails)
     ? contact.emails
     : contact?.email
       ? [contact.email]
-      : [];
+      : [], [contact]);
 
   // Split address by newline for line breaks
-  const addressLines = contact?.address
+  const addressLines = useMemo(() => contact?.address
     ? contact.address.split("\n")
-    : [];
+    : [], [contact]);
 
   // Build Google Maps embed URL from address
-  const mapUrl = contact?.map
+  const mapUrl = useMemo(() => contact?.map
     || (contact?.address
       ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(contact.address.replace(/\n/g, ", "))}`
-      : null);
+      : null), [contact]);
 
   return (
     <>
@@ -221,24 +218,13 @@ export default function Contact() {
 
       {/* MAP */}
       <div className="w-full">
-        {mapUrl ? (
-          <iframe
-            src={mapUrl}
-            allowFullScreen=""
-            loading="lazy"
-            width="100%"
-            height="600px"
-            style={{ border: 0 }}
-          ></iframe>
-        ) : (
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.123456789!2d75.857123!3d22.719567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962e4a8abcd1234%3A0x1234567890abcdef!2sRP%20Education%20%26%20Bridge!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"
-            allowFullScreen=""
-            loading="lazy"
-            width="100%"
-            height="600px"
-          ></iframe>
-        )}
+        <LazyIframe
+          src={mapUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.123456789!2d75.857123!3d22.719567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962e4a8abcd1234%3A0x1234567890abcdef!2sRP%20Education%20%26%20Bridge!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin"}
+          allowFullScreen=""
+          loading="lazy"
+          className="w-full"
+          style={{ height: "600px", border: 0 }}
+        />
       </div>
       <ScratchSections sections={sections} exclude={['hero', 'contact_us']} />
     </>

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const IndustryPartner = ({ html }) => {
+const IndustryPartner = memo(({ html }) => {
   const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
   if (cleanHtml) {
@@ -13,6 +13,5 @@ const IndustryPartner = ({ html }) => {
   }
 
   return null;
-};
-
+});
 export default IndustryPartner;

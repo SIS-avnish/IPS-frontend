@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { motion } from "framer-motion";
 import Media, { isVideoUrl } from "../common/Media";
+import { YouTubeThumbnail } from "../common/LazyIframe";
 
 /**
  * Extract YouTube video ID
@@ -23,7 +24,7 @@ const getMediaType = (url) => {
   return "image";
 };
 
-const StudentTestimonials = ({
+const StudentTestimonials = memo(({
   title,
   testimonials,
   videoTitle,
@@ -31,18 +32,18 @@ const StudentTestimonials = ({
 }) => {
   const [selectedMedia, setSelectedMedia] = useState(null);
 
-  const textTestimonials = (testimonials || []).map((item) => ({
+  const textTestimonials = useMemo(() => (testimonials || []).map((item) => ({
     name: item.name,
     text: item.story,
     image: item.image,
     designation: item.designation,
-  }));
+  })), [testimonials]);
 
-  const videoTestimonials = (videos || []).map((url) => ({
+  const videoTestimonials = useMemo(() => (videos || []).map((url) => ({
     url,
     type: getMediaType(url),
     youtubeId: extractYouTubeId(url),
-  }));
+  })), [videos]);
 
   const container = {
     hidden: {},
@@ -151,15 +152,11 @@ const StudentTestimonials = ({
                 className="bg-white rounded-2xl shadow-md border overflow-hidden cursor-pointer"
               >
                 {media.type === "youtube" && (
-                  <div className="relative w-full pt-[56.25%]">
-                    <iframe
-                      className="absolute inset-0 w-full h-full"
-                      src={`https://www.youtube.com/embed/${media.youtubeId}`}
-                      title="Alumni testimonial"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
+                  <YouTubeThumbnail
+                    videoId={media.youtubeId}
+                    title="Alumni testimonial"
+                    autoplayOnClick={false}
+                  />
                 )}
 
                 {media.type === "video" && (
@@ -247,6 +244,5 @@ const StudentTestimonials = ({
       )}
     </section>
   );
-};
-
+});
 export default StudentTestimonials;

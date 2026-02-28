@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,8 +18,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function SuccessStories({ data }) {
+export default memo(function SuccessStories({ data }) {
   if (!data || !data.items || data.items.length === 0) return null;
 
   const title = data.title || "Success Stories";
@@ -142,4 +141,4 @@ export default function SuccessStories({ data }) {
       </div>
     </section>
   );
-}
+})
