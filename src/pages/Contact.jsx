@@ -37,18 +37,6 @@ export default function Contact() {
       .finally(() => setLoading(false));
   }, [collegeSlug]);
 
-  if (loading) {
-    return <PageSkeleton />;
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen text-red-600 text-lg">
-        {error}
-      </div>
-    );
-  }
-
   const hero = sections?.hero;
   const contact = sections?.contact_us;
 
@@ -76,6 +64,18 @@ export default function Contact() {
     || (contact?.address
       ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(contact.address.replace(/\n/g, ", "))}`
       : null), [contact]);
+
+  if (loading) {
+    return <PageSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-600 text-lg">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <>
