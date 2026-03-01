@@ -1,11 +1,27 @@
 import { useState, useEffect, useMemo, memo } from "react";
 import logo from "../../assets/logos/logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faPhone, faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faInstagram,
+  faFacebookF,
+  faXTwitter,
+  faLinkedinIn,
+  faYoutube,
+  faWhatsapp,
+} from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { fetchCollegeInfo, fetchCollegesWithCourses } from "../../services/api";
+
+// Map platform name → icon
+const SOCIAL_ICONS = {
+  instagram: faInstagram,
+  facebook: faFacebookF,
+  twitter: faXTwitter,
+  linkedin: faLinkedinIn,
+  youtube: faYoutube,
+  whatsapp: faWhatsapp,
+};
 
 export default memo(function Footer() {
 
@@ -18,16 +34,19 @@ export default memo(function Footer() {
       : "ipsa";
 
   const [collegeLogo, setCollegeLogo] = useState(null);
+  const [socialLinks, setSocialLinks] = useState([]);
   const [colleges, setColleges] = useState([]);
 
   useEffect(() => {
-    if (activeCollege && activeCollege !== "ipsa") {
-      fetchCollegeInfo(activeCollege)
-        .then((info) => setCollegeLogo(info?.logo || null))
-        .catch(() => setCollegeLogo(null));
-    } else {
-      setCollegeLogo(null);
-    }
+    fetchCollegeInfo(activeCollege)
+      .then((info) => {
+        setCollegeLogo(activeCollege !== "ipsa" ? (info?.logo || null) : null);
+        setSocialLinks(info?.social_media_links || []);
+      })
+      .catch(() => {
+        setCollegeLogo(null);
+        setSocialLinks([]);
+      });
   }, [activeCollege]);
 
   useEffect(() => {
@@ -93,12 +112,35 @@ export default memo(function Footer() {
 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between mt-12 gap-10">
 
   {/* LOGO */}
-  <div className="w-[40%]">
+  <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-5">
   <img
     src={collegeLogo || logo}
     className="h-[80px] lg:h-[96px] object-contain mx-auto lg:mx-0"
     alt="IPS Logo"
   />
+
+  {/* SOCIAL MEDIA */}
+  {socialLinks.length > 0 && (
+    <div className="flex items-center gap-3 flex-wrap justify-center lg:justify-start">
+      {socialLinks.map((link) => {
+        const icon = SOCIAL_ICONS[link.platform?.toLowerCase()];
+        if (!icon || !link.url) return null;
+        return (
+          <a
+            key={link.platform}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.platform}
+            className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center
+                       text-white hover:bg-[#00BFFF] hover:text-white transition-colors"
+          >
+            <FontAwesomeIcon icon={icon} className="text-[15px]" />
+          </a>
+        );
+      })}
+    </div>
+  )}
   </div>
 
   {/* RIGHT SIDE */}
