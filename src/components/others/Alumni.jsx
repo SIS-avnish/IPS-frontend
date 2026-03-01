@@ -76,6 +76,23 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
                   whileHover={{ scale: 1.03 }}
                   className="bg-white rounded-2xl shadow-md p-6 border flex flex-col"
                 >
+                  <img
+  src={t.image}
+  alt={t.name}
+  className="
+    w-40 h-40
+    sm:w-24 sm:h-24
+    md:w-48 md:h-48
+    object-contain
+    object-center
+    bg-gray-100
+    border-4 border-white
+    shadow-lg
+    mb-2
+    mx-auto
+  "
+  loading="lazy"
+/>
 
                   <p className="text-gray-700 text-sm md:text-base leading-relaxed flex-1">
                     {t.story}
