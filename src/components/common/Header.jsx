@@ -25,7 +25,7 @@ const activeCollege =
     pathParts.length === 2 ||      // /ibmr
     pathParts[2] === "home" ||
     pathParts[2] === "about"||      pathParts[2] === "placements"||      pathParts[2] === "facilities"||
-      pathParts[2] === "contact"
+      pathParts[2] === "contact" ||pathParts[2]==="activities"
   );
 
 

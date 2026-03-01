@@ -4,12 +4,16 @@ import { PageSkeleton } from '../components/common/SkeletonLoader'
 import { motion } from 'framer-motion'
 import Hero from '../components/others/Hero'
 import { fetchCollegeNewsDetail, fetchPageData } from '../services/api'
+import useSEO from '../hooks/useSEO'
 
 const NewsDetail = () => {
   const { collegeSlug, newsId } = useParams()
   const [news, setNews] = useState(null)
   const [heroData, setHeroData] = useState({})
+  const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -20,6 +24,7 @@ const NewsDetail = () => {
           fetchPageData(collegeSlug, 'activities/news')
         ])
         setNews(detail)
+        setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
       } catch (err) {
         console.error('Failed to fetch news detail:', err)

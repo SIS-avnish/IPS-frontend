@@ -5,12 +5,16 @@ import { motion } from 'framer-motion'
 import ActivitiesHero from '../components/activity/ActivitiesHero'
 import { fetchActivityDetail, fetchPageData } from '../services/api'
 import Media from '../components/common/Media'
+import useSEO from '../hooks/useSEO'
 
 const ActivityDetail = () => {
   const { collegeSlug, activityId } = useParams()
   const [activity, setActivity] = useState(null)
   const [heroData, setHeroData] = useState({})
+  const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -21,6 +25,7 @@ const ActivityDetail = () => {
           fetchPageData(collegeSlug, `activities/${activityId}`).catch(() => ({ sections: {} })),
         ])
         setActivity(detail)
+        setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
       } catch (err) {
         console.error('Failed to fetch activity detail:', err)

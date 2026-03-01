@@ -8,17 +8,22 @@ import AwardandAchievement from '../components/others/AwardandAchievement'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const SocialAct = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [pageData, setPageData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(pageData)
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true)
         const data = await fetchPageData(collegeSlug || 'coc', 'activities/social')
+        setPageData(data)
         setSections(data.sections || {})
       } catch (err) {
         console.error('Failed to fetch activities/social data:', err)

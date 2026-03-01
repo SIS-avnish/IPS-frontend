@@ -4,12 +4,16 @@ import { PageSkeleton } from '../components/common/SkeletonLoader'
 import { motion } from 'framer-motion'
 import ActivitiesHero from '../components/activity/ActivitiesHero'
 import { fetchCollegeEventDetail, fetchPageData } from '../services/api'
+import useSEO from '../hooks/useSEO'
 
 const EventDetail = () => {
   const { collegeSlug, eventId } = useParams()
   const [event, setEvent] = useState(null)
   const [heroData, setHeroData] = useState({})
+  const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -20,6 +24,7 @@ const EventDetail = () => {
           fetchPageData(collegeSlug, 'activities/events')
         ])
         setEvent(detail)
+        setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
       } catch (err) {
         console.error('Failed to fetch event detail:', err)

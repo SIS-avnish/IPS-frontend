@@ -5,12 +5,16 @@ import News from '../components/others/News'
 import Hero from '../components/others/Hero'
 import { fetchPageData, fetchCollegeNews } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const NewsPage = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [seoData, setSeoData] = useState(null)
   const [newsCards, setNewsCards] = useState([])
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -20,6 +24,7 @@ const NewsPage = () => {
           fetchPageData(collegeSlug, 'activities/news'),
           fetchCollegeNews(collegeSlug)
         ])
+        setSeoData(pageData)
         setSections(pageData.sections || {})
         setNewsCards(newsList || [])
       } catch (err) {

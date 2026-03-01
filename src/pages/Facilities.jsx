@@ -9,15 +9,22 @@ import FuturePlan from "../components/facilities/FuturePlan";
 import FacilityBlocks from "../components/facilities/FacilityBlocks";
 import { useParams } from "react-router-dom";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 export default function FacilitiesPage() {
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const {collegeSlug} = useParams();
   const [loading, setLoading] = useState(true);
 
+  useSEO(pageData);
+
   useEffect(() => {
     fetchPageData(collegeSlug, "facilities")
-      .then((data) => setSections(data.sections))
+      .then((data) => {
+        setPageData(data);
+        setSections(data.sections);
+      })
       .catch((err) => console.error("Failed to load facilities data:", err))
       .finally(() => setLoading(false));
   }, [collegeSlug]);

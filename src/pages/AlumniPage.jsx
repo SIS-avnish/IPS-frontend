@@ -6,12 +6,16 @@ import AlumniCards from '../components/others/AlumniCards'
 import Hero from '../components/others/Hero'
 import { fetchPageData, fetchCollegeAlumni } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const AlumniPage = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [pageData, setPageData] = useState(null)
   const [alumniList, setAlumniList] = useState([])
   const [loading, setLoading] = useState(true)
+
+  useSEO(pageData)
 
   useEffect(() => {
     const load = async () => {
@@ -21,6 +25,7 @@ const AlumniPage = () => {
           fetchPageData(collegeSlug, 'activities/alumni'),
           fetchCollegeAlumni(collegeSlug).catch(() => []),
         ])
+        setPageData(data)
         setSections(data.sections || {})
         setAlumniList(alumniData || [])
       } catch (err) {

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Hero from "../components/others/Hero";
 import { YouTubeThumbnail } from "../components/common/LazyIframe";
 import { fetchCollegeAlumniDetail, fetchPageData } from "../services/api";
+import useSEO from "../hooks/useSEO";
 
 /**
  * Extract a YouTube video ID from various URL formats:
@@ -34,8 +35,11 @@ const AlumniDetail = () => {
   const navigate = useNavigate();
   const [alumni, setAlumni] = useState(null);
   const [heroData, setHeroData] = useState({});
+  const [seoData, setSeoData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lightboxImg, setLightboxImg] = useState(null);
+
+  useSEO(seoData);
 
   useEffect(() => {
     const load = async () => {
@@ -46,6 +50,7 @@ const AlumniDetail = () => {
           fetchPageData(collegeSlug, "activities/alumni"),
         ]);
         setAlumni(detail);
+        setSeoData(pageData);
         setHeroData(pageData?.sections?.hero || {});
       } catch (err) {
         console.error("Failed to fetch alumni detail:", err);

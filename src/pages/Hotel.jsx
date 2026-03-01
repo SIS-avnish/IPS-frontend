@@ -10,14 +10,21 @@ import Faculties from "../components/hotel/Faculties";
 import Placement from "../components/hotel/Placement";
 import SuccessStories from "../components/hotel/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 const Hotel = () => {
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useSEO(pageData);
 
   useEffect(() => {
     fetchPageData("iohm", "home")
-      .then((res) => setSections(res.sections))
+      .then((res) => {
+        setPageData(res);
+        setSections(res.sections);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);

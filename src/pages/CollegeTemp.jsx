@@ -14,12 +14,16 @@ import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import Recruiters from "../components/colegeTemplate/Recruiters";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useSEO(pageData);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +33,7 @@ export default function IbmrPage() {
     fetchCollegePageData(collegeSlug, "home")
       .then((data) => {
         if (!cancelled) {
+          setPageData(data);
           setSections(data.sections || {});
         }
       })

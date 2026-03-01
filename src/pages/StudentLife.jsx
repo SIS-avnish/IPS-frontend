@@ -7,12 +7,16 @@ import ActivitiesHero from "../components/activity/ActivitiesHero";
 import ActivitiesSlider from "../components/activity/ActivitiesSlider";
 import { fetchPageData, fetchCollegeEvents, fetchActivities } from "../services/api";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 const StudentLife = () => {
   const { collegeSlug, subSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useSEO(pageData);
 
   useEffect(() => {
     const load = async () => {
@@ -21,12 +25,13 @@ const StudentLife = () => {
         const pageName = `activities/${subSlug || "events"}`;
         const activityType = subSlug || "events";
 
-        const [pageData, activitiesList] = await Promise.all([
+        const [pageResult, activitiesList] = await Promise.all([
           fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} })),
           fetchActivities(collegeSlug, activityType).catch(() => []),
         ]);
 
-        setSections(pageData.sections || {});
+        setPageData(pageResult);
+        setSections(pageResult.sections || {});
 
         // Map activities to the card shape the slider expects
         const cards = (activitiesList || []).map((a) => ({

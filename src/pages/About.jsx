@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { fetchPageData, fetchCollegeCourses, fetchColleges } from "../services/api";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { useParams } from "react-router-dom";
+import useSEO from "../hooks/useSEO";
 
 import Hero from "../components/about/Hero";
 import AboutIntro from "../components/about/AboutIntro";
@@ -14,10 +15,13 @@ import { ScratchSections } from "../components/common/ScratchHtml";
 export default function AboutPage() {
    const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [courses, setCourses] = useState([]);
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useSEO(pageData);
 
  useEffect(() => {
   setLoading(true);
@@ -36,6 +40,7 @@ export default function AboutPage() {
     .then((results) => {
       const [pageData, coursesData, collegesData] = results;
 
+      setPageData(pageData);
       setSections(pageData?.sections || []);
 
       // Only set these when slug = ipsa

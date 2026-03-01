@@ -268,4 +268,17 @@ export async function fetchCollegesWithCourses() {
     return data;
 }
 
+/**
+ * Submit the contact form for a specific college.
+ * POST /api/{collegeSlug}/contact
+ */
+export async function submitContactForm(collegeSlug, formData) {
+    const { data } = await axios.post(
+        `${SERVER_BASE}/${collegeSlug}/contact`,
+        formData,
+        { headers: { accept: "application/json", "Content-Type": "application/json" } }
+    );
+    return data;
+}
+
 export default api;
