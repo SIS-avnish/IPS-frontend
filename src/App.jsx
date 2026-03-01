@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect } from "react"
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"
+import EnquiryModal from "./components/common/EnquiryModal"
 
 const Home = lazy(() => import("./pages/Home"))
 const Contact = lazy(() => import("./pages/Contact"))
@@ -64,6 +65,7 @@ function App() {
       </Suspense>
 
       <Footer />
+      <EnquiryModal />
     </Router>
   )
 }
