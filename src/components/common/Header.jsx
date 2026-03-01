@@ -19,7 +19,7 @@ const activeCollege =
     ? pathParts[1]
     : "ipsa";
 
-    const isCollegeHome =
+const isCollegeHome =
   activeCollege !== "ipsa" &&
   (
     pathParts.length === 2 ||      // /ibmr
@@ -83,6 +83,10 @@ const activeCollege =
     ["HOTEL MANAGEMENT","iohm"],
     ["SOCIAL SCIENCE","doss"],
   ];
+
+  const collegeNameMap = Object.fromEntries(
+  colleges.map(([name, slug]) => [slug, name])
+);
 
 
   const collegeSections = [
@@ -164,7 +168,7 @@ const activeCollege =
           onClick={()=>setCollegesOpen(!collegesOpen)}
           className="py-2 font-medium text-gray-900 hover:text-red-500"
         >
-          {isCollegeHome ? "College Sections" : "Colleges"} ▾
+          {isCollegeHome ? collegeNameMap[activeCollege]: "Colleges"} ▾
         </button>
 
         <div className={`lg:absolute lg:top-full lg:left-0
