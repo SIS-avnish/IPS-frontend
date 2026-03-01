@@ -69,8 +69,8 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
 
         <div
   className={`grid gap-[30px] py-[18px]
+  grid-cols-1 sm:grid-cols-2 md:grid-cols-${Math.min(excellenceItems.length, 4)}
   max-[576px]:grid-cols-1 max-[576px]:text-center max-[576px]:gap-[10px] max-[576px]:py-[15px]`}
-  style={{ gridTemplateColumns: `repeat(${excellenceItems.length}, minmax(0, 1fr))` }}
 >
 
           {excellenceItems.map((item, i) => {

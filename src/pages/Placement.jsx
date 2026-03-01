@@ -62,7 +62,7 @@ export default function Placements() {
       {sections.placed_student?.html && (
         <section className="bg-white py-12 sm:py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div dangerouslySetInnerHTML={{ __html: cleanCmsHtml(sections.placed_student.html) }} />
+            <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanCmsHtml(sections.placed_student.html) }} />
           </div>
         </section>
       )}

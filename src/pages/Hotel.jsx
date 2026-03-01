@@ -34,7 +34,7 @@ const Hotel = () => {
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-full overflow-x-hidden'>
       <Hero data={sections?.hero} />
       <About aboutData={sections?.about_college} whyData={sections?.why_college_of_education} />
       <Program data={sections?.programmes} />

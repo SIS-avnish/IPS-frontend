@@ -85,8 +85,8 @@ export default function Contact() {
   }
 
   return (
-    <>
-      {/* CONTACT SECTION */}
+    <div className="w-full overflow-x-hidden">
+      {/* CONTACT SECTION */
       <section className="pt-[50px] pb-[40px] px-3 sm:px-0">
         <div className="max-w-6xl mx-auto">
 
@@ -174,7 +174,7 @@ export default function Contact() {
         />
       </div>
       <ScratchSections sections={sections} exclude={['hero', 'contact_us']} />
-    </>
+    </div>
   );
 }
 

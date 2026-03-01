@@ -48,7 +48,7 @@ const EventDetail = () => {
   }
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* HERO */}
       <ActivitiesHero
         heroImage={heroData.images?.[0]}
@@ -119,7 +119,7 @@ const EventDetail = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="prose prose-lg max-w-none flex flex-col md:flex-row  gap-2"
+              className="prose prose-lg max-w-none overflow-x-auto flex flex-col md:flex-row  gap-2"
               dangerouslySetInnerHTML={{ __html: event.content_html }}
             />
           )}

@@ -77,7 +77,7 @@ export default memo(function Leadership({ data }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#F0EEEF] p-12 mb-8 mt-10"
+            className="bg-[#F0EEEF] p-5 sm:p-8 md:p-12 mb-8 mt-10"
           >
 
             <div className={`grid md:grid-cols-2 gap-8 items-center ${i === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>

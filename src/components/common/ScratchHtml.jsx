@@ -55,7 +55,7 @@ export default function ScratchHtml({ html, className = "" }) {
   return (
     <section className={`w-full py-8 sm:py-12 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+        <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanHtml }} />
       </div>
     </section>
   );

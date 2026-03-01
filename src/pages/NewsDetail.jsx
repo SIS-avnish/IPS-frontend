@@ -48,7 +48,7 @@ const NewsDetail = () => {
   }
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* HERO */}
       <Hero
         heroImage={heroData.images?.[0]}
@@ -101,7 +101,7 @@ const NewsDetail = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none overflow-x-auto"
               dangerouslySetInnerHTML={{ __html: news.content_html }}
             />
           )}

@@ -61,7 +61,7 @@ const StudentLife = () => {
   const calendarSection = sections?.a_calendar_full_of || {};
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <ActivitiesHero
         heroImage={hero.images?.[0]}
         description={hero.description}

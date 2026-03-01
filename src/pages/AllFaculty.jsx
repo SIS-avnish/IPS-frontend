@@ -56,7 +56,7 @@ export default function AllFaculty() {
   }, [collegeSlug]);
 
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
     {heroData && <Hero data={heroData} />}
     <section className="bg-gradient-to-br from-[#0b1c39] to-[#112a52] text-white min-h-screen py-12 sm:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -204,6 +204,6 @@ export default function AllFaculty() {
         </motion.div>
       )}
     </section>
-    </>
+    </div>
   );
 }

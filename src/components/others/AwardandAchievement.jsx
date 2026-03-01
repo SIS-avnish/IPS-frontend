@@ -11,10 +11,10 @@ const AwardandAchievement = memo(({ achievementsHtml, coCurricularHtml }) => {
     <section className="bg-gray-50 py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-4 space-y-12">
         {cleanAchievements && (
-          <div dangerouslySetInnerHTML={{ __html: cleanAchievements }} />
+          <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanAchievements }} />
         )}
         {cleanCoCurricular && (
-          <div dangerouslySetInnerHTML={{ __html: cleanCoCurricular }} />
+          <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanCoCurricular }} />
         )}
       </div>
     </section>

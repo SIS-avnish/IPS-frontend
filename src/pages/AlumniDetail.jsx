@@ -90,7 +90,7 @@ const AlumniDetail = () => {
   }
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* HERO */}
       <Hero
         heroImage={heroData.images?.[0]}

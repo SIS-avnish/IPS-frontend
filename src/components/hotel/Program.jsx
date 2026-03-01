@@ -25,7 +25,7 @@ const Program = memo(({ data }) => {
         </div>
 
         <div
-          className="max-w-7xl mx-auto programmes-scratch"
+          className="max-w-7xl mx-auto programmes-scratch overflow-x-auto"
           dangerouslySetInnerHTML={{ __html: cleanCmsHtml(data.html) }}
         />
       </section>

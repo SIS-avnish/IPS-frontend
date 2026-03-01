@@ -158,7 +158,7 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
 
       {/* SECOND SECTION */}
       <section className="bg-[#ffffff] py-14 md:mt-[-100px] md:py-0 px-4 sm:px-6 md:px-10 lg:px-12">
-        <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           <motion.img
             src={chief}

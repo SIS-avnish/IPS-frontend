@@ -60,7 +60,7 @@ export default function IbmrPage() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
       {sections.hero && <Hero data={sections.hero} />}
       {sections.about && (
         <About

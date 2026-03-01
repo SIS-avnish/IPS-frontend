@@ -47,7 +47,7 @@ const AlumniPage = () => {
   const alumniTestimonials = sections?.alumni_testimonials || {}
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Hero
         heroImage={hero.images?.[0]}
         description={hero.description}

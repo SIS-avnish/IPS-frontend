@@ -28,7 +28,7 @@ const News = memo(({ newsEventsHtml, newsCards = [], collegeSlug }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-14"
+            className="mb-14 overflow-x-auto"
             dangerouslySetInnerHTML={{ __html: cleanCmsHtml(newsEventsHtml) }}
           />
         )}

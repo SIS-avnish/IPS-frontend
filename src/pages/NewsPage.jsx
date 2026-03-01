@@ -44,7 +44,7 @@ const NewsPage = () => {
   const newsEvents = sections?.news_events || {}
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Hero
         heroImage={hero.images?.[0]}
         description={hero.description}

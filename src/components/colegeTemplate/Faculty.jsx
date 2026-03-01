@@ -91,7 +91,7 @@ export default function Faculty({ collegeSlug }) {
                   custom={i}
                   viewport={{ once: true, amount: 0.1 }}
                   onClick={() => setSelectedFaculty(f)}
-                  className="w-[290px] cursor-pointer bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
+                  className="w-full max-w-[290px] cursor-pointer bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
                 >
                   {isVideoUrl(f.image) ? (
                     <video
