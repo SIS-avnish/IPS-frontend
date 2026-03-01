@@ -109,7 +109,7 @@ const isCollegeHome =
   <div className="max-w-[1440px] mx-auto h-[96px] px-6 lg:px-14 flex items-center justify-between">
 
     {/* LOGO */}
-    <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-66px]">
+    <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-36px]">
 
       <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain xl:ml-[50px]" alt="logo"/>
     </div>

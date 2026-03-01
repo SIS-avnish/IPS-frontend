@@ -80,10 +80,10 @@ export default memo(function Footer() {
 
 <footer className="bg-[#002147] text-white pt-14 pb-10 ">
 
-  <div className="max-w-6xl mx-auto px-3 ">
+  <div className="max-w-7xl mx-auto px-2 ">
 
     {/* ================= TOP COLLEGE GRID ================= */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-8 gap-y-10">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-4 gap-y-10">
 
       {sections.map((sec,i)=>(
         <div key={i}>
