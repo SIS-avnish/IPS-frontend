@@ -72,7 +72,7 @@ export default memo(function Team({ data }) {
   const expert = experts[index];
 
   return (
-    <section className="py-12 sm:py-16 md:pt-10 bg-white">
+    <section className="py-12 sm:py-16 md:pt-10 bg-white relative">
 
       <div className="max-w-7xl mx-auto pt-4 sm:px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
 
@@ -82,6 +82,7 @@ export default memo(function Team({ data }) {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.1 }}
+          
         >
           <p className="ml-5 sm:ml-0 text-lg sm:text-lg font-medium text-[#002147]">
             {sectionTitle}
@@ -92,18 +93,38 @@ export default memo(function Team({ data }) {
             <br />
             Every Step
           </h2>
+ <button
+            onClick={prev}
+            className="absolute right-[18%] top-[25%] sm:left-[10%] sm:top-[74%] -translate-y-1/2 
+                       w-8 h-8 rounded-full border border-[#FF7373] 
+                       text-[#FF7373] flex items-center justify-center
+                       bg-white sm:bg-transparent
+                       hover:bg-[#FF7373] hover:text-white transition"
+          >
+            ‹
+          </button>
 
+          <button
+            onClick={next}
+            className="absolute right-[9%] top-[25%] sm:left-[13%] sm:top-[74%] -translate-y-1/2
+                       w-8 h-8 rounded-full border border-[#FF7373] 
+                       text-[#FF7373] flex items-center justify-center
+                       bg-white sm:bg-transparent
+                       hover:bg-[#FF7373] hover:text-white transition"
+          >
+            ›
+          </button>
           <div className="ml-5 sm:ml-0 h-[2px] w-32 sm:w-40 bg-[#FF7373] mt-3 sm:mt-4"/>
         </motion.div>
 
-
+ 
         {/* RIGHT CAROUSEL */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}
           viewport={{ once: true, amount: 0.1 }}
-          className="lg:col-span-2 relative translate-y-0 lg:translate-y-2/5  mt-5 sm:mt-[-150px]"
+          className="lg:col-span-2  translate-y-0 lg:translate-y-2/5  mt-5 sm:mt-[-150px]"
         >
 
           <div className="bg-white shadow-[8px_8px_30px_2px_#00000026] p-4 sm:p-6">
@@ -136,27 +157,7 @@ export default memo(function Team({ data }) {
 
 
           {/* CONTROLS */}
-          <button
-            onClick={prev}
-            className="absolute left-2 sm:-left-6 top-1/2 -translate-y-1/2 
-                       w-8 h-8 rounded-full border border-[#FF7373] 
-                       text-[#FF7373] flex items-center justify-center
-                       bg-white sm:bg-transparent
-                       hover:bg-[#FF7373] hover:text-white transition"
-          >
-            ‹
-          </button>
-
-          <button
-            onClick={next}
-            className="absolute right-2 sm:-right-6 top-1/2 -translate-y-1/2 
-                       w-8 h-8 rounded-full border border-[#FF7373] 
-                       text-[#FF7373] flex items-center justify-center
-                       bg-white sm:bg-transparent
-                       hover:bg-[#FF7373] hover:text-white transition"
-          >
-            ›
-          </button>
+        
 
         </motion.div>
 

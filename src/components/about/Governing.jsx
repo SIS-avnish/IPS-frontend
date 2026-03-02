@@ -44,8 +44,8 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
           viewport={{ once: true, amount: 0.1 }}
           className="text-4xl md:text-[60px] font-medium text-[#002147]"
         >
-          {sectionTitle}
-        </motion.h3>
+          {sectionTitle} 
+        </motion.h3> 
 
         <div className="h-[2px] w-60 bg-[#FF7373] my-3 mb-8" />
 
