@@ -155,7 +155,7 @@ const isCollegeHome =
 
       {/* ABOUT */}
       <NavLink to={`/${activeCollege}/about`}  className={linkClass} onClick={closeAll}>
-        About Us
+        About IPSA
       </NavLink>
 
       {/* COLLEGES */}
@@ -168,7 +168,7 @@ const isCollegeHome =
           onClick={()=>setCollegesOpen(!collegesOpen)}
           className="py-2 font-medium text-gray-900 hover:text-red-500"
         >
-          {isCollegeHome ? collegeNameMap[activeCollege]: "Colleges"} ▾
+          {isCollegeHome ? collegeNameMap[activeCollege]: "Courses"} ▾
         </button>
 
         <div className={`lg:absolute lg:top-full lg:left-0

@@ -53,7 +53,7 @@ export default memo(function Recruiters({ data }) {
             src={resolveImageUrl(item.logo)}
             alt={item.name || `Recruiter ${i + 1}`}
             effect="blur"
-             className="max-h-18 sm:max-h-90 md:max-h-20 w-auto transition"
+            className="max-h-18 sm:max-h-90 md:max-h-20 w-auto transition"
           />
 
           {/* NAME UNDER LOGO */}

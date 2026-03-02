@@ -95,18 +95,18 @@ export default memo(function Recruiters({ highlights, courseStats }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-[#FFCC4D] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-12"
+          className="bg-[#002147] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-12"
         >
 
           {/* TOP ROW */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start lg:items-center">
 
-            <div className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-medium leading-tight">
+            <div className="text-[#fff] text-2xl sm:text-3xl md:text-4xl font-medium leading-tight">
               {highlights?.title || "Placement Highlights 2024-2025"}
             </div>
 
             {highlights?.subtitle && (
-              <p className="text-[#002147] font-medium text-sm sm:text-base">
+              <p className="text-[#fff] font-medium text-sm sm:text-base">
                 {highlights.subtitle}
               </p>
             )}
@@ -118,7 +118,7 @@ export default memo(function Recruiters({ highlights, courseStats }) {
             <div className="mt-8 sm:mt-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-4">
                 {highlights.items.map((item, i) => (
-                  <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base pb-2">
+                  <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base pb-2">
                     {item}
                   </div>
                 ))}
@@ -128,10 +128,10 @@ export default memo(function Recruiters({ highlights, courseStats }) {
 
           {/* COURSE-WISE STATS */}
           {courseStats?.stats?.length > 0 && (
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-8 sm:mt-10 display-inline-block ">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
                 {courseStats.stats.map((s, i) => (
-                  <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                  <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base">
                     <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.value}</span> {s.label.replace(/Total No\. of Students Who are Placed\s*/i, "")}
                   </div>
                 ))}
@@ -145,10 +145,10 @@ export default memo(function Recruiters({ highlights, courseStats }) {
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6 sm:gap-8 mt-6">
 
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#fff]">
                     1904
                   </div>
-                  <div className="text-[#002147] font-medium text-sm sm:text-base">
+                  <div className="text-[#fff] font-medium text-sm sm:text-base">
                     Students Placed
                   </div>
                 </div>
@@ -156,10 +156,10 @@ export default memo(function Recruiters({ highlights, courseStats }) {
                 <div className="hidden md:block w-[1px] h-14 bg-white" />
 
                 <div className="flex items-center gap-3">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]">
+                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#fff]">
                     563
                   </div>
-                  <div className="text-[#002147] font-medium leading-tight text-sm sm:text-base">
+                  <div className="text-[#fff] font-medium leading-tight text-sm sm:text-base">
                     Companies in <br /> Closed Campus Drive
                   </div>
                 </div>
@@ -168,13 +168,13 @@ export default memo(function Recruiters({ highlights, courseStats }) {
 
               <div className="mt-8 sm:mt-10">
 
-                <div className="text-xl sm:text-2xl md:text-3xl font-medium text-[#002147] mb-4 sm:mb-6">
+                <div className="text-xl sm:text-2xl md:text-3xl font-medium text-[#fff] mb-4 sm:mb-6">
                   Sectors
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
                   {sectors1.map((s, i) => (
-                    <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                    <div key={i} className="border-b border-[#ffff] font-medium text-[#ffff] text-sm sm:text-base">
                       <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
                     </div>
                   ))}
@@ -182,7 +182,7 @@ export default memo(function Recruiters({ highlights, courseStats }) {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4 mt-3 sm:mt-4">
                   {sectors2.map((s, i) => (
-                    <div key={i} className="border-b border-[#0CC2FE] font-medium text-[#002147] text-sm sm:text-base">
+                    <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base">
                       <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
                     </div>
                   ))}

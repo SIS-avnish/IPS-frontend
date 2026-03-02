@@ -29,7 +29,7 @@ export default memo(function VisionMission({ data }) {
     "To create professional manpower of the highest order and nurture entrepreneurship capabilities amongst students.";
 
   return (
-    <section className="bg-[#FF7373] py-16 text-white">
+    <section className="bg-[#f0eeef] py-16 text-white">
 
       <div className="max-w-6xl mx-auto px-3">
 
@@ -55,7 +55,7 @@ export default memo(function VisionMission({ data }) {
               {visionTitle}
             </h2>
 
-            <p>
+            <p className="text-black">
               {visionText}
             </p>
           </motion.div>
@@ -78,7 +78,7 @@ export default memo(function VisionMission({ data }) {
               {missionTitle}
             </h2>
 
-            <p>
+            <p className="text-black">
               {missionText}
             </p>
           </motion.div>

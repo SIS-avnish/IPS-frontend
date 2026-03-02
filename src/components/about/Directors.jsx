@@ -24,18 +24,28 @@ export default memo(function Directors({ data, courses: apiCourses = [], college
     ? apiColleges.map((c) => c.name)
     : [];
 
-  const courseItems = apiCourses?.length
-    ? apiCourses.map((c) => c.name)
-    : [];
+  // const courseItems = apiCourses?.length
+  //   ? apiCourses.map((c) => c.name)
+  //   : [];
 
   const directorItems = data?.items?.length
     ? data.items.map((item) => item.replace(/\\n/g, "\n"))
     : [];
 
+     const designationitems = data?.items?.length
+    ? data.items.map((item) => item.replace(/\\n/g, "\n"))
+    : [];
+
+     const contactItems = data?.items?.length
+    ? data.items.map((item) => item.replace(/\\n/g, "\n"))
+    : [];
+
   const cols = [
     { title: "College / Institute", color: "bg-[#0CC2FE]", items: collegeItems },
-    { title: "Courses", color: "bg-[#FF7373]", items: courseItems },
+    // { title: "Courses", color: "bg-[#FF7373]", items: courseItems },
     { title: subtitle, color: "bg-[#FFC73E]", items: directorItems },
+     { title: subtitle, color: "bg-[#FF7373]", items: designationitems },
+        { title: subtitle, color: "bg-[#a0e0f6]", items: contactItems },
   ].filter(col => col.items.length > 0); // skip empty columns
 
   const card = (title, color, items) => (
@@ -77,13 +87,13 @@ export default memo(function Directors({ data, courses: apiCourses = [], college
           viewport={{ once: true, amount: 0.1 }}
           className="text-4xl md:text-[60px] font-medium text-[#002147]"
         >
-          {sectionTitle}
+          {sectionTitle} 
         </motion.h3>
 
         <div className="h-[2px] w-60 bg-[#FF7373] my-3 mb-8" />
 
         {/* Cards */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-4 gap-8">
           {cols.map((col, colIdx) => (
             <motion.div
               key={colIdx}
