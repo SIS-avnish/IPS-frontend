@@ -62,7 +62,7 @@ const isCollegeHome =
      ${isActive?"text-red-500":"text-gray-800"}
      hover:bg-red-500 hover:text-white`;
 
-  const studentLinks = [
+  /* const studentLinks = [
     ["Cultural Activities","cultural"],
     ["Event Celebration","events"],
     ["Workshops","workshop"],
@@ -70,7 +70,7 @@ const isCollegeHome =
     ["Social Activities","social"],
     ["Alumni Testimonials","alumni"],
     ["News & Media","news"],
-  ];
+  ]; */
 
   const colleges = [
     ["MANAGEMENT","ibmr"],
@@ -207,7 +207,7 @@ const isCollegeHome =
       </NavLink>
 
       {/* STUDENT LIFE */}
-      <div
+     {/*  <div
         className="relative"
         onMouseEnter={()=>setStudentOpen(true)}
         onMouseLeave={()=>setStudentOpen(false)}
@@ -236,7 +236,11 @@ const isCollegeHome =
           ))}
 
         </div>
-      </div>
+      </div> */}
+
+      <NavLink to={`/${activeCollege}/activities`} className={linkClass} onClick={closeAll}>
+        Activities
+      </NavLink>
 
       {/* FACILITIES */}
       <NavLink to={`/${activeCollege}/facilities`} className={linkClass} onClick={closeAll}>
