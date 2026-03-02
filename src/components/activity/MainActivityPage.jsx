@@ -187,10 +187,14 @@ const MainActivityPage = memo(() => {
                     whileInView="visible"
                     custom={idx}
                     viewport={{ once: true, amount: 0.1 }}
+                    className={[
+                      idx === cards.length - 1 && cards.length % 3 === 1 ? "lg:col-start-2" : "",
+                      idx === cards.length - 1 && cards.length % 2 === 1 ? "sm:col-start-2" : "",
+                    ].filter(Boolean).join(" ") || undefined}
                   >
                     <Link
                       to={`/${slug}/activities/${routeSlug}`}
-                      className="group relative block rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-500 h-[280px] sm:h-[300px]"
+                      className="group relative block rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 h-[280px] sm:h-[300px]"
                     >
                       {/* Card image */}
                       {iconUrl ? (
@@ -198,7 +202,7 @@ const MainActivityPage = memo(() => {
                           src={iconUrl}
                           alt={card.title}
                           effect="blur"
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-400 ease-in-out group-hover:scale-110"
                           wrapperClassName="absolute inset-0 w-full h-full"
                         />
                       ) : (
@@ -206,14 +210,14 @@ const MainActivityPage = memo(() => {
                       )}
 
                       {/* Default state: subtle bottom gradient + centered title */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-0" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ease-in-out group-hover:opacity-0" />
 
-                      <h3 className="absolute inset-0 flex items-center justify-center text-white text-xl sm:text-2xl font-semibold text-center px-4 drop-shadow-lg transition-opacity duration-500 group-hover:opacity-0 z-10">
+                      <h3 className="absolute inset-0 flex items-center justify-center text-white text-xl sm:text-2xl font-semibold text-center px-4 drop-shadow-lg transition-opacity duration-300 ease-in-out group-hover:opacity-0 z-10">
                         {card.title}
                       </h3>
 
                       {/* Hover state: dark overlay with description */}
-                      <div className="absolute inset-0 bg-[#0B2C4D]/85 flex flex-col items-center justify-center px-6 text-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-10">
+                      <div className="absolute inset-0 bg-[#0B2C4D]/85 flex flex-col items-center justify-center px-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-10">
                         <h3 className="text-white text-xl sm:text-2xl font-semibold mb-3">
                           {card.title}
                         </h3>
