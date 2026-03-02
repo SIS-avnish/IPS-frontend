@@ -31,7 +31,7 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="mb-14 overflow-x-auto"
+            className="mb-10 overflow-x-auto"
             dangerouslySetInnerHTML={{ __html: cleanCmsHtml(alumniHtml) }}
           />
         )}
