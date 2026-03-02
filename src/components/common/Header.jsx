@@ -90,10 +90,7 @@ const isCollegeHome =
 
 
   const collegeSections = [
-  ["About","about"],
   ["Courses","courses"],
-  ["Facility","facilities"],
-  ["Placement","placement"],
   ["Faculty","faculties"],
   ["Admission","admission"],
   ["ApplyNow","applyform"],
