@@ -80,9 +80,12 @@ export default memo(function Placement({ placement, testimonials }) {
                 {placementData.title}
               </h3>
 
-              <p className="mt-4 text-gray-600 text-sm sm:text-base">
-                {placementData.description}
-              </p>
+              <p
+  className="mt-4 text-gray-600 text-sm sm:text-base whitespace-pre-line"
+  dangerouslySetInnerHTML={{
+    __html: placementData.content?.replace(/\n/g, "<br />")
+  }}
+/>
 
               {placementData.items && placementData.items.length > 0 && (
                 <ul className="mt-6 space-y-2 inline-block text-left">
