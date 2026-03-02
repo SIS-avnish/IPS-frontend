@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/facilities/Hero";
 import HostelFeatures from "../components/facilities/HostelFeature";
 import LibraryVision from "../components/facilities/LibraryVision";
@@ -8,25 +9,28 @@ import FuturePlan from "../components/facilities/FuturePlan";
 import FacilityBlocks from "../components/facilities/FacilityBlocks";
 import { useParams } from "react-router-dom";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 export default function FacilitiesPage() {
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const {collegeSlug} = useParams();
   const [loading, setLoading] = useState(true);
 
+  useSEO(pageData);
+
   useEffect(() => {
     fetchPageData(collegeSlug, "facilities")
-      .then((data) => setSections(data.sections))
+      .then((data) => {
+        setPageData(data);
+        setSections(data.sections);
+      })
       .catch((err) => console.error("Failed to load facilities data:", err))
       .finally(() => setLoading(false));
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <span className="text-lg text-[#002147]">Loading...</span>
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (!sections) return null;
@@ -57,7 +61,7 @@ export default function FacilitiesPage() {
         mess={sections.mess}
         sportsFacility={sections.sports_facility}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'discover_a_home_away_from_home', 'services', 'library', 'your_service', 'facilities_for_you', 'hostel_your_playground_for_success', 'join_a_community', 'the_sportstars_of_ips', 'facilities_feature', 'empower_your_future', 'wellness_center', 'safe_transport_at_your_service', 'canteen', 'mess', 'sports_facility']} />
     </div>
   );
 }

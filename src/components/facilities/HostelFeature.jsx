@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import { memo } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -14,8 +15,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function HostelFeatures({ intro, services }) {
+export default memo(function HostelFeatures({ intro, services }) {
   if (!intro && !services) return null;
 
   const features = (services?.items || []).map((item) => ({
@@ -72,7 +72,7 @@ export default function HostelFeatures({ intro, services }) {
                 src={f.icon}
                 className="w-[45px] h-[45px] sm:w-[40px] sm:h-[40px] mb-3 sm:mb-3 mx-auto md:mx-0 bg-none"
               />
-              <div className="text-[24px] sm:text-[20px] text-[18px] font-medium text-[#002147] leading-6">
+              <div className="sm:mx-auto text-[24px] sm:text-[20px] text-[18px] md:mx-auto font-medium text-[#002147] leading-6">
                 {f.title}
               </div>
             </motion.div>
@@ -83,4 +83,4 @@ export default function HostelFeatures({ intro, services }) {
       </div>
     </section>
   );
-}
+})

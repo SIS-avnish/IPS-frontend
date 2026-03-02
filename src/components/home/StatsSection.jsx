@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import Logo from "../../assets/Images/static.jpg";
 import nirf from "../../assets/Images/nirf-logo.png";
@@ -11,11 +12,10 @@ const slideLeft = {
   hidden: { opacity: 0, x: -30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
-
-export default function StatsSection({ statsData, excellenceData }) {
-  const stats = statsData?.stats || [];
+export default memo(function StatsSection({ statsData, excellenceData }) {
+  const stats = useMemo(() => statsData?.stats || [], [statsData]);
   const excellenceTitle = excellenceData?.title || "Rankings & Quality Accreditations";
-  const excellenceItems = excellenceData?.items || [];
+  const excellenceItems = useMemo(() => excellenceData?.items || [], [excellenceData]);
 
   return (
     <section className="bg-[#062b4c] pb-[70px] max-[576px]:pb-5">
@@ -69,8 +69,8 @@ export default function StatsSection({ statsData, excellenceData }) {
 
         <div
   className={`grid gap-[30px] py-[18px]
+  grid-cols-1 sm:grid-cols-2 md:grid-cols-${Math.min(excellenceItems.length, 4)}
   max-[576px]:grid-cols-1 max-[576px]:text-center max-[576px]:gap-[10px] max-[576px]:py-[15px]`}
-  style={{ gridTemplateColumns: `repeat(${excellenceItems.length}, minmax(0, 1fr))` }}
 >
 
           {excellenceItems.map((item, i) => {
@@ -116,4 +116,4 @@ export default function StatsSection({ statsData, excellenceData }) {
       </div>
     </section>
   );
-}
+})

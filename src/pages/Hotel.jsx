@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/hotel/Hero";
 import About from "../components/hotel/About";
 import Program from "../components/hotel/Program";
@@ -9,28 +10,31 @@ import Faculties from "../components/hotel/Faculties";
 import Placement from "../components/hotel/Placement";
 import SuccessStories from "../components/hotel/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 const Hotel = () => {
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useSEO(pageData);
 
   useEffect(() => {
     fetchPageData("iohm", "home")
-      .then((res) => setSections(res.sections))
+      .then((res) => {
+        setPageData(res);
+        setSections(res.sections);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   return (
-    <div className='w-full'>
+    <div className='w-full overflow-x-hidden'>
       <Hero data={sections?.hero} />
       <About aboutData={sections?.about_college} whyData={sections?.why_college_of_education} />
       <Program data={sections?.programmes} />
@@ -39,7 +43,7 @@ const Hotel = () => {
       <Faculties data={sections?.train_with_tech_tools} />
       <Placement data={sections?.placement} />
       {sections?.success_stories && <SuccessStories data={sections.success_stories} />}
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'placement', 'success_stories']} />
     </div>
   );
 };

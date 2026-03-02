@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
@@ -6,7 +6,7 @@ import kitchen from "../../assets/Images/Kitchen.png";
 import team from "../../assets/Images/team.png";
 import chief from "../../assets/Images/chief.png";
 
-const Facilities = ({ facilitiesData, skillsData }) => {
+const Facilities = memo(({ facilitiesData, skillsData }) => {
 
   const [open, setOpen] = useState(0);
 
@@ -158,7 +158,7 @@ const Facilities = ({ facilitiesData, skillsData }) => {
 
       {/* SECOND SECTION */}
       <section className="bg-[#ffffff] py-14 md:mt-[-100px] md:py-0 px-4 sm:px-6 md:px-10 lg:px-12">
-        <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           <motion.img
             src={chief}
@@ -250,6 +250,5 @@ const Facilities = ({ facilitiesData, skillsData }) => {
 
     </section>
   );
-};
-
+});
 export default Facilities;

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import nishitJainFallback from "../../assets/Images/Nishit Jain.png";
 import achalFallback from "../../assets/Images/achal.png";
@@ -39,7 +40,7 @@ const defaultLeaders = [
   }
 ];
 
-export default function Leadership({ data }) {
+export default memo(function Leadership({ data }) {
 
   const title = data?.title || "Our Leadership Team";
 
@@ -76,7 +77,7 @@ export default function Leadership({ data }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#F0EEEF] p-12 mb-8 mt-10"
+            className="bg-[#F0EEEF] p-5 sm:p-8 md:p-12 mb-8 mt-10"
           >
 
             <div className={`grid md:grid-cols-2 gap-8 items-center ${i === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
@@ -98,4 +99,4 @@ export default function Leadership({ data }) {
 
     </section>
   );
-}
+})

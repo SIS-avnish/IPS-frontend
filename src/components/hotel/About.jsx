@@ -4,7 +4,7 @@ import Group96 from "../../assets/Images/Group 96.png";
 import Union from "../../assets/Images/Union.png";
 import Vector from "../../assets/Images/Vector.png";
 import Vector1 from "../../assets/Images/Vector (1).png";
-import { useState } from "react";
+import { useState, memo } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -14,8 +14,7 @@ const fadeUp = {
     transition: { duration: 0.45, delay: i * 0.08, ease: "easeOut" }
   }),
 };
-
-export default function About({ aboutData, whyData }) {
+export default memo(function About({ aboutData, whyData }) {
 
   const staticIcons = [Group, Group96, Union, Vector, Vector1];
 
@@ -174,4 +173,4 @@ export default function About({ aboutData, whyData }) {
       </section>
     </>
   );
-}
+})

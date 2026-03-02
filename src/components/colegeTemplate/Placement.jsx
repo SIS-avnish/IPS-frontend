@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,8 +19,7 @@ const slideRight = {
   hidden: { opacity: 0, x: 30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
-
-export default function Placement({ placement, testimonials }) {
+export default memo(function Placement({ placement, testimonials }) {
 
   const placementData = placement || {};
   const testimonialsData = testimonials || {};
@@ -272,4 +271,4 @@ export default function Placement({ placement, testimonials }) {
 </AnimatePresence>
     </section>
   );
-}
+})

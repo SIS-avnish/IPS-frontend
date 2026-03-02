@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import visionIcon from "../../assets/Images/vision.svg";
 import missionIcon from "../../assets/Images/mission.svg";
@@ -11,8 +12,7 @@ const slideRight = {
   hidden: { opacity: 0, x: 30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
-
-export default function VisionMission({ data }) {
+export default memo(function VisionMission({ data }) {
 
   const items = data?.items || [];
 
@@ -99,4 +99,4 @@ export default function VisionMission({ data }) {
 
     </section>
   );
-}
+})

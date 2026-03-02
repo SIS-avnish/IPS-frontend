@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
-const AnnualEvent = ({ html }) => {
+const AnnualEvent = memo(({ html }) => {
+  const cleanHtml = useMemo(() => cleanCmsHtml(html), [html]);
 
-  if (html) {
+  if (cleanHtml) {
     return (
       <section className="font-medium py-10 px-3 sm:px-6 bg-white">
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanHtml }} />
       </section>
     );
   }
 
   return null;
-};
-
+});
 export default AnnualEvent;

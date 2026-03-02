@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import trophy from "../../assets/Images/trophy 2.svg";
 import { resolveImageUrl } from "../../services/api";
@@ -15,8 +16,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function Sports({ playground, joinCommunity, sportstars, facilitiesFeature }) {
+export default memo(function Sports({ playground, joinCommunity, sportstars, facilitiesFeature }) {
   if (!playground) return null;
 
   const playgroundImage = resolveImageUrl(playground.image);
@@ -129,7 +129,7 @@ export default function Sports({ playground, joinCommunity, sportstars, faciliti
       </div>
     </section>
   );
-}
+})
 
 
 /* ---------- Athlete Card ---------- */

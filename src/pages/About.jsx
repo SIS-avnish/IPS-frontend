@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchPageData, fetchCollegeCourses, fetchColleges } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { useParams } from "react-router-dom";
+import useSEO from "../hooks/useSEO";
 import Hero from "../components/about/Hero";
 import AboutIntro from "../components/about/AboutIntro";
 import VissionMission from "../components/about/VissionMission";
@@ -12,10 +14,13 @@ import { ScratchSections } from "../components/common/ScratchHtml";
 export default function AboutPage() {
    const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [courses, setCourses] = useState([]);
   const [colleges, setColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useSEO(pageData);
 
  useEffect(() => {
   setLoading(true);
@@ -34,6 +39,7 @@ export default function AboutPage() {
     .then((results) => {
       const [pageData, coursesData, collegesData] = results;
 
+      setPageData(pageData);
       setSections(pageData?.sections || []);
 
       // Only set these when slug = ipsa
@@ -50,11 +56,7 @@ export default function AboutPage() {
 }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {
@@ -81,7 +83,7 @@ export default function AboutPage() {
         advisory={sections?.advisory}
       />
       <Directors data={sections?.institute_directors} courses={courses} colleges={colleges} />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'about_ips', 'ecosystem_for_your', 'growth_image', 'vision_mission', 'leaders', 'governing_body', 'executive', 'advisory', 'institute_directors']} />
     </div>
   );
 }

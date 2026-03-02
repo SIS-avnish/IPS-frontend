@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import StudentClub from '../components/others/StudentClub'
 import StudentTestimonials from '../components/others/StudentTestimonials'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const Student = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [pageData, setPageData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(pageData)
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true)
         const data = await fetchPageData(collegeSlug || 'coc', 'activities/clubs')
+        setPageData(data)
         setSections(data.sections || {})
       } catch (err) {
         console.error('Failed to fetch activities/clubs data:', err)
@@ -28,11 +34,7 @@ const Student = () => {
   }, [collegeSlug])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   const hero = sections?.hero
@@ -41,7 +43,7 @@ const Student = () => {
   const videoSection = sections?.alumni_video_testimonials
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Hero
         heroImage={hero?.images?.[0]}
         description={hero?.description}
@@ -55,7 +57,7 @@ const Student = () => {
         videoTitle={videoSection?.title}
         videos={videoSection?.images}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'students_activity_club', 'placement_student_testimonial', 'alumni_video_testimonials']} />
     </div>
   )
 }

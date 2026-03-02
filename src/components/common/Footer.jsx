@@ -1,13 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import logo from "../../assets/logos/logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faPhone, faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faInstagram,
+  faFacebookF,
+  faXTwitter,
+  faLinkedinIn,
+  faYoutube,
+  faWhatsapp,
+} from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from "react-router-dom";
-import { fetchCollegeInfo } from "../../services/api";
+import { fetchCollegeInfo, fetchCollegesWithCourses } from "../../services/api";
 
-export default function Footer() {
+// Map platform name → icon
+const SOCIAL_ICONS = {
+  instagram: faInstagram,
+  facebook: faFacebookF,
+  twitter: faXTwitter,
+  linkedin: faLinkedinIn,
+  youtube: faYoutube,
+  whatsapp: faWhatsapp,
+};
+
+export default memo(function Footer() {
 
   const location = useLocation();
   const pathParts = location.pathname.split("/");
@@ -18,75 +34,71 @@ export default function Footer() {
       : "ipsa";
 
   const [collegeLogo, setCollegeLogo] = useState(null);
+  const [socialLinks, setSocialLinks] = useState([]);
+  const [colleges, setColleges] = useState([]);
 
   useEffect(() => {
-    if (activeCollege && activeCollege !== "ipsa") {
-      fetchCollegeInfo(activeCollege)
-        .then((info) => setCollegeLogo(info?.logo || null))
-        .catch(() => setCollegeLogo(null));
-    } else {
-      setCollegeLogo(null);
-    }
+    fetchCollegeInfo(activeCollege)
+      .then((info) => {
+        setCollegeLogo(activeCollege !== "ipsa" ? (info?.logo || null) : null);
+        setSocialLinks(info?.social_media_links || []);
+      })
+      .catch(() => {
+        setCollegeLogo(null);
+        setSocialLinks([]);
+      });
   }, [activeCollege]);
 
-  const sections = [
-    { title:"IBMR", links:["BBA","MBA","Ph.D"] },
-    { title:"SOC", links:[
-      "B.Sc (Computer science with statistics)",
-      "BCA",
-      "MCA Integrated",
-      "MCA (5 Years)",
-      "MCA (Working Professionals)"
-    ]},
-    { title:"ISR", links:["B.Sc","M.Sc","Ph.D"]},
-    { title:"SoSS", links:["BA","B.lib","MSW"]},
-    { title:"COC", links:["B.Com","B.Com (Honours)","M.Com"]},
-    { title:"IOHM", links:[
-      "Bachelor of Hotel Management",
-      "BBA (Hotel Management)",
-      "Short Term Courses"
-    ]},
-    { title:"COE", links:["Bed"]},
-    { title:"College of Law", links:["BA. LLB","BA. LLB","LLB","LLB"]},
-    { title:"IFT", links:[
-      "B. Design",
-      "Certificate Course (Fashion Design)",
-      "Short Term Courses"
-    ]}
-  ];
+  useEffect(() => {
+    fetchCollegesWithCourses()
+      .then((data) => setColleges(data?.colleges || []))
+      .catch(() => setColleges([]));
+  }, []);
 
-  const navLinks=[
-    {label:"Home", path:`/${activeCollege}/home`},
+  // Build footer sections from API data — exclude the main "ipsa" entry
+  const sections = useMemo(() =>
+    colleges
+      .filter((c) => c.slug.toLowerCase() !== "ipsa")
+      .map((c) => ({
+        title: c.name,
+        slug: c.slug.toLowerCase(),
+        links: (c.courses || []).map((course) => course.trim()).filter(Boolean),
+      })),
+    [colleges]
+  );
+
+  const navLinks = useMemo(() => [
+    {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
     {label:"About Us", path:`/${activeCollege}/about`},
-    {label:"Colleges", path:`/${activeCollege}/home`}, 
     {label:"Placements", path:`/${activeCollege}/placements`},
-    {label:"Activities", path:`/${activeCollege}/actvities/cultural`},
+    {label:"Activities", path:`/${activeCollege}/activities/cultural`},
     {label:"Facilities", path:`/${activeCollege}/facilities`},
     {label:"Contact Us", path:`/${activeCollege}/contact`}
-  ];
+  ], [activeCollege]);
 
   return (
 
 <footer className="bg-[#002147] text-white pt-14 pb-10 ">
 
-  <div className="max-w-6xl mx-auto px-3 ">
+  <div className="max-w-7xl mx-auto px-2 ">
 
     {/* ================= TOP COLLEGE GRID ================= */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-8 gap-y-10">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-4 gap-y-10">
 
       {sections.map((sec,i)=>(
         <div key={i}>
           <h6 className="text-[#00BFFF] font-medium mb-3">
-            {sec.title}
+            <Link to={`/${sec.slug}`} className="text-xl text-[#00BFFF] hover:text-white transition">
+              {sec.title}
+            </Link>
           </h6>
 
           <ul className="space-y-1 leading-relaxed">
             {sec.links.map((l,idx)=>(
-              <li key={idx}>
-                {/* kept non-routing course links unchanged */}
-                <a href="#" className="hover:text-[#00BFFF] transition">
+              <li className="leading-6" key={idx}>
+                <Link to={`/${sec.slug}`} className="hover:text-[#00BFFF] transition">
                   {l}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -100,12 +112,35 @@ export default function Footer() {
 <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between mt-12 gap-10">
 
   {/* LOGO */}
-  <div className="w-[40%]">
+  <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-5">
   <img
     src={collegeLogo || logo}
     className="h-[80px] lg:h-[96px] object-contain mx-auto lg:mx-0"
     alt="IPS Logo"
   />
+
+  {/* SOCIAL MEDIA */}
+  {socialLinks.length > 0 && (
+    <div className="flex items-center gap-3 flex-wrap justify-center lg:justify-start">
+      {socialLinks.map((link) => {
+        const icon = SOCIAL_ICONS[link.platform?.toLowerCase()];
+        if (!icon || !link.url) return null;
+        return (
+          <a
+            key={link.platform}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.platform}
+            className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center
+                       text-white hover:bg-[#00BFFF] hover:text-white transition-colors"
+          >
+            <FontAwesomeIcon icon={icon} className="text-[15px]" />
+          </a>
+        );
+      })}
+    </div>
+  )}
   </div>
 
   {/* RIGHT SIDE */}
@@ -162,4 +197,4 @@ export default function Footer() {
 </footer>
 
   );
-}
+})

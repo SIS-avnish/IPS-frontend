@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo, memo } from "react";
 import collegeFallback from "../../assets/Images/college.JPG";
 import logo360 from "../../assets/logos/360.png";
+import { YouTubeThumbnail } from "../common/LazyIframe";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -30,7 +31,7 @@ function getMediaType(url) {
   return "image";
 }
 
-export default function ExperienceSection({ data }) {
+export default memo(function ExperienceSection({ data }) {
 
   const title = data?.title || "Experience IPSA with a 3600 View";
   const mediaSrc = data?.images?.[0] || collegeFallback;
@@ -157,12 +158,10 @@ export default function ExperienceSection({ data }) {
 
           {mediaType === "youtube" && (
             <>
-              <iframe
-                src={`https://www.youtube.com/embed/${youtubeId}?autoplay=${isMobile ? 1 : 0}&mute=1&loop=1&playlist=${youtubeId}&controls=0&modestbranding=1&rel=0`}
+              <YouTubeThumbnail
+                videoId={youtubeId}
                 title={title}
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-                className="w-full aspect-video max-h-[568px]"
+                className="max-h-[568px]"
               />
               <img
                 src={logo360}
@@ -175,4 +174,4 @@ export default function ExperienceSection({ data }) {
       </div>
     </section>
   );
-}
+})

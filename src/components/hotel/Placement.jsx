@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
@@ -20,7 +20,7 @@ const fadeUp = {
   })
 };
 
-const Placement = ({ data }) => {
+const Placement = memo(({ data }) => {
 
   const title = data?.title || "Are you next?";
   const description = data?.description?.replace(/\n/g, ' ').trim() ||
@@ -125,6 +125,5 @@ const Placement = ({ data }) => {
       </div>
     </section>
   );
-};
-
+});
 export default Placement;

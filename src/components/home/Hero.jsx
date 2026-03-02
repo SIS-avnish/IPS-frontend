@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 import heroFallback from "../../assets/Images/hero.jpg";
 import Media from "../common/Media";
 
-export default function Hero({ data }) {
+export default memo(function Hero({ data }) {
   const [showVideo, setShowVideo] = useState(false);
 
   // Fallback values if API data is not available
@@ -48,7 +48,7 @@ export default function Hero({ data }) {
                         max-[576px]:w-[90%] max-[576px]:px-5 max-[576px]:py-5 max-[576px]:-bottom-8">
 
           <h1 className="text-[#0B2C4D]
-                       text-[1.3rem]
+                         text-[1.3rem]
                         sm:text-[2.2rem]
                         lg:text-[3rem]
                         leading-tight 
@@ -107,4 +107,4 @@ export default function Hero({ data }) {
 
     </div>
   );
-}
+})

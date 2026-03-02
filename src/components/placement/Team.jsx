@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
@@ -39,7 +39,7 @@ const defaultExperts = [
   }
 ];
 
-export default function Team({ data }) {
+export default memo(function Team({ data }) {
 
   const sectionTitle = data?.title || "The Placement Team";
 
@@ -164,4 +164,4 @@ export default function Team({ data }) {
 
     </section>
   );
-}
+})

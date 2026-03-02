@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchCollegePageData } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/colegeTemplate/Hero";
 import About from "../components/colegeTemplate/About";
 import Advantage from "../components/colegeTemplate/Advantage";
@@ -13,13 +14,16 @@ import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import Recruiters from "../components/colegeTemplate/Recruiters";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("Fetching data for college slug:", collegeSlug);
+
+  useSEO(pageData);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +33,7 @@ export default function IbmrPage() {
     fetchCollegePageData(collegeSlug, "home")
       .then((data) => {
         if (!cancelled) {
+          setPageData(data);
           setSections(data.sections || {});
         }
       })
@@ -43,11 +48,7 @@ export default function IbmrPage() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#002147]"></div>
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {
@@ -59,7 +60,7 @@ export default function IbmrPage() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
       {sections.hero && <Hero data={sections.hero} />}
       {sections.about && (
         <About
@@ -69,7 +70,7 @@ export default function IbmrPage() {
         />
       )}
       {sections.experience_learn && <Advantage data={sections.experience_learn} />}
-      {sections.programmed_offered && <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />}
+      <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />
       {sections.facilities && <Facilities data={sections.facilities} />}
       {(sections.career_pathways || sections.news_and_events) && (
         <Placement
@@ -94,7 +95,7 @@ export default function IbmrPage() {
         />
       )}
       {sections.recruiter && <Recruiters data={sections.recruiter} />}
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'about', 'campus_to_business_boardroom', 'why_choose', 'experience_learn', 'programmed_offered', 'facilities', 'career_pathways', 'news_and_events', 'placement', 'testimonials', 'success_stories', 'recruiter']} />
     </div>
   );
 }

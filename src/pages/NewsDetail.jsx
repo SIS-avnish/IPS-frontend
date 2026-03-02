@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import { motion } from 'framer-motion'
 import Hero from '../components/others/Hero'
 import { fetchCollegeNewsDetail, fetchPageData } from '../services/api'
+import useSEO from '../hooks/useSEO'
 
 const NewsDetail = () => {
   const { collegeSlug, newsId } = useParams()
   const [news, setNews] = useState(null)
   const [heroData, setHeroData] = useState({})
+  const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -19,6 +24,7 @@ const NewsDetail = () => {
           fetchPageData(collegeSlug, 'activities/news')
         ])
         setNews(detail)
+        setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
       } catch (err) {
         console.error('Failed to fetch news detail:', err)
@@ -30,11 +36,7 @@ const NewsDetail = () => {
   }, [collegeSlug, newsId])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   if (!news) {
@@ -46,7 +48,7 @@ const NewsDetail = () => {
   }
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* HERO */}
       <Hero
         heroImage={heroData.images?.[0]}
@@ -99,7 +101,7 @@ const NewsDetail = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none overflow-x-auto"
               dangerouslySetInnerHTML={{ __html: news.content_html }}
             />
           )}

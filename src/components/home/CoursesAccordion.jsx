@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, memo } from "react";
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -13,10 +13,10 @@ function stripHtml(html) {
   return doc.body.textContent || "";
 }
 
-export default function CoursesAccordion({ data, courses: apiCourses = [] }) {
+export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }) {
 
   // Prefer dedicated courses API data; fall back to page section items
-  const courses = apiCourses.length
+  const courses = useMemo(() => apiCourses.length
     ? apiCourses.map((c) => ({
         title: c.name || "",
         desc: stripHtml(c.description),
@@ -24,7 +24,7 @@ export default function CoursesAccordion({ data, courses: apiCourses = [] }) {
     : (data?.items || []).map((item) => ({
         title: item.title || item.question || "",
         desc: item.description || item.answer || "",
-      }));
+      })), [apiCourses, data]);
 
   const sectionTitle = data?.title || "Innovative Courses";
   const sectionSubtitle = data?.subtitle || "Tailored for the Industry";
@@ -109,18 +109,20 @@ export default function CoursesAccordion({ data, courses: apiCourses = [] }) {
         >
           <div className="bg-[#fff] px-9 py-6 text-[#605654] max-[576px]:px-5">
 
-            <p className={`text-[16px] leading-[26px] ${isExpanded ? "" : "line-clamp-3"}`}>
-              {c.desc}
+            <p className="text-[16px] leading-[26px]">
+              {isExpanded ? c.desc : c.desc.slice(0, 100) + (c.desc.length > 100 ? "..." : "")}
             </p>
 
-            <button
-              onClick={() =>
-                setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
-              }
-              className="mt-3 text-[#F26D6D] underline font-medium"
-            >
-              {isExpanded ? "Read Less" : "Read More"}
-            </button>
+            {c.desc.length > 150 && (
+              <button
+                onClick={() =>
+                  setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
+                }
+                className="mt-3 text-[#F26D6D] underline font-medium"
+              >
+                {isExpanded ? "Read Less" : "Read More"}
+              </button>
+            )}
 
           </div>
         </div>
@@ -132,4 +134,4 @@ export default function CoursesAccordion({ data, courses: apiCourses = [] }) {
       </section>
     </div>
   );
-}
+})

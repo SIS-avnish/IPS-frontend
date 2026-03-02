@@ -1,7 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Media from "../common/Media";
+import { cleanCmsHtml } from "../common/ScratchHtml";
 
 /* -------------------- ANIMATION -------------------- */
 const fadeUp = {
@@ -14,7 +15,7 @@ const fadeUp = {
 };
 
 /* -------------------- COMPONENT -------------------- */
-const News = ({ newsEventsHtml, newsCards = [], collegeSlug }) => {
+const News = memo(({ newsEventsHtml, newsCards = [], collegeSlug }) => {
   return (
     <section className="bg-gray-50 py-10 md:py-14">
 
@@ -27,8 +28,8 @@ const News = ({ newsEventsHtml, newsCards = [], collegeSlug }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-14"
-            dangerouslySetInnerHTML={{ __html: newsEventsHtml }}
+            className="mb-14 overflow-x-auto"
+            dangerouslySetInnerHTML={{ __html: cleanCmsHtml(newsEventsHtml) }}
           />
         )}
 
@@ -79,6 +80,5 @@ const News = ({ newsEventsHtml, newsCards = [], collegeSlug }) => {
       </div>
     </section>
   );
-};
-
+});
 export default News;

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import News from '../components/others/News'
 import Hero from '../components/others/Hero'
 import { fetchPageData, fetchCollegeNews } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const NewsPage = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [seoData, setSeoData] = useState(null)
   const [newsCards, setNewsCards] = useState([])
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -19,6 +24,7 @@ const NewsPage = () => {
           fetchPageData(collegeSlug, 'activities/news'),
           fetchCollegeNews(collegeSlug)
         ])
+        setSeoData(pageData)
         setSections(pageData.sections || {})
         setNewsCards(newsList || [])
       } catch (err) {
@@ -31,18 +37,14 @@ const NewsPage = () => {
   }, [collegeSlug])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   const hero = sections?.hero || {}
   const newsEvents = sections?.news_events || {}
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Hero
         heroImage={hero.images?.[0]}
         description={hero.description}
@@ -54,7 +56,7 @@ const NewsPage = () => {
         newsCards={newsCards}
         collegeSlug={collegeSlug}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'news_events']} />
     </div>
   )
 }

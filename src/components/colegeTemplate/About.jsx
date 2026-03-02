@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -9,7 +10,7 @@ const defaultWhyChoose = [
  
 ];
 
-export default function About({ about, features, whyChooseData }) {
+export default memo(function About({ about, features, whyChooseData }) {
   const title = about?.title || "About";
   const content = about?.content || "";
   const featuresTitle = features?.title || "";
@@ -26,7 +27,7 @@ export default function About({ about, features, whyChooseData }) {
 
   return (
     <section id="about" className="py-12 sm:py-14 md:py-10">
-      <div className="max-w-7xl mx-10 px-2 sm:px-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center">
 
         <motion.div
           variants={fadeUp}
@@ -158,4 +159,4 @@ export default function About({ about, features, whyChooseData }) {
 
     </section>
   );
-}
+})

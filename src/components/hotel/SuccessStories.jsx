@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
@@ -11,7 +11,7 @@ const fadeUp = {
   }),
 };
 
-const SuccessStories = ({ data }) => {
+const SuccessStories = memo(({ data }) => {
   const title = data?.title || "Success Stories";
   const stories = data?.items || [];
 
@@ -80,6 +80,5 @@ const SuccessStories = ({ data }) => {
       </div>
     </section>
   );
-};
-
+});
 export default SuccessStories;

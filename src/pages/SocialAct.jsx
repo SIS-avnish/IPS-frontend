@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import AnnualEvent from '../components/others/AnnualEvent'
 import IndustryPartner from '../components/others/IndustryPartner'
 import FacultyPublication from '../components/others/FacultyPublication'
@@ -7,17 +8,22 @@ import AwardandAchievement from '../components/others/AwardandAchievement'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
 import { ScratchSections } from '../components/common/ScratchHtml'
+import useSEO from '../hooks/useSEO'
 
 const SocialAct = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
+  const [pageData, setPageData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(pageData)
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true)
         const data = await fetchPageData(collegeSlug || 'coc', 'activities/social')
+        setPageData(data)
         setSections(data.sections || {})
       } catch (err) {
         console.error('Failed to fetch activities/social data:', err)
@@ -30,17 +36,13 @@ const SocialAct = () => {
   }, [collegeSlug])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   const hero = sections?.hero
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <Hero
         heroImage={hero?.images?.[0]}
         description={hero?.description}
@@ -54,7 +56,7 @@ const SocialAct = () => {
         achievementsHtml={sections?.achievements?.html}
         coCurricularHtml={sections?.co_curricular?.html}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'annual_events_list', 'mou', 'summary_of_faculty_contributions', 'achievements', 'co_curricular']} />
     </div>
   )
 }

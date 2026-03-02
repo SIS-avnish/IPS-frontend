@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
@@ -7,7 +7,7 @@ import language from "../../assets/Images/language.png";
 import maintenance from "../../assets/Images/maintainance.png";
 import accom from "../../assets/Images/accom.png";
 
-const Skills = ({ data }) => {
+const Skills = memo(({ data }) => {
 
   const sliderRef = useRef(null);
   const innerRef = useRef(null);
@@ -164,6 +164,5 @@ const Skills = ({ data }) => {
 
     </section>
   );
-};
-
+});
 export default Skills;

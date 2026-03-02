@@ -1,17 +1,22 @@
 // src/components/Activities/Activities.jsx
 
 import { useEffect, useState } from "react";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { useParams } from "react-router-dom";
 import ActivitiesHero from "../components/activity/ActivitiesHero";
 import ActivitiesSlider from "../components/activity/ActivitiesSlider";
 import { fetchPageData, fetchCollegeEvents, fetchActivities } from "../services/api";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import useSEO from "../hooks/useSEO";
 
 const StudentLife = () => {
   const { collegeSlug, subSlug } = useParams();
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useSEO(pageData);
 
   useEffect(() => {
     const load = async () => {
@@ -20,12 +25,13 @@ const StudentLife = () => {
         const pageName = `activities/${subSlug || "events"}`;
         const activityType = subSlug || "events";
 
-        const [pageData, activitiesList] = await Promise.all([
+        const [pageResult, activitiesList] = await Promise.all([
           fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} })),
           fetchActivities(collegeSlug, activityType).catch(() => []),
         ]);
 
-        setSections(pageData.sections || {});
+        setPageData(pageResult);
+        setSections(pageResult.sections || {});
 
         // Map activities to the card shape the slider expects
         const cards = (activitiesList || []).map((a) => ({
@@ -48,18 +54,14 @@ const StudentLife = () => {
   }, [collegeSlug, subSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   const hero = sections?.hero || {};
   const calendarSection = sections?.a_calendar_full_of || {};
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <ActivitiesHero
         heroImage={hero.images?.[0]}
         description={hero.description}
@@ -72,7 +74,7 @@ const StudentLife = () => {
         events={events}
         collegeSlug={collegeSlug}
       />
-      <ScratchSections sections={sections} />
+      <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of']} />
     </div>
   );
 };

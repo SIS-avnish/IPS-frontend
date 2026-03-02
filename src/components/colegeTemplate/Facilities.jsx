@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
@@ -16,8 +17,7 @@ const cardVariant = {
     transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
   }),
 };
-
-export default function Facilities({ data }) {
+export default memo(function Facilities({ data }) {
   const title = data?.title || "Facilities";
   const subtitle = data?.subtitle || "";
   const description = data?.description || "";
@@ -97,4 +97,4 @@ export default function Facilities({ data }) {
 
     </section>
   );
-}
+})

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
@@ -6,7 +7,7 @@ import yogendraJainImg from "../../assets/Images/Mr. Yogendra Jain.png";
 import kumudiniImg from "../../assets/Images/Mrs. Kumudini.jpg";
 import urmilaJainImg from "../../assets/Images/Mrs. Urmila Jain.png";
 
-export default function Governing({ governingBody, executive, advisory }) {
+export default memo(function Governing({ governingBody, executive, advisory }) {
 
   const leaders = governingBody?.members?.length
     ? governingBody.members.map((m) => ({
@@ -82,10 +83,12 @@ export default function Governing({ governingBody, executive, advisory }) {
               {executiveTitle}
             </h5>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-[#3A3A3A]">
+            <div className="grid md:grid-cols-3 gap-6">
               {executiveMembers.map((name, i) => (
-                <div key={i} className="border-b border-[#D7D7D7] pb-3 text-xl font-medium">
-                  {name}
+                <div key={i} className="border-b border-[#D7D7D7] pb-3">
+                  <div className="text-xl font-medium text-[#3A3A3A]">
+                    {name}
+                  </div>
                 </div>
               ))}
             </div>
@@ -118,4 +121,4 @@ export default function Governing({ governingBody, executive, advisory }) {
       }
     </section>
   );
-}
+})

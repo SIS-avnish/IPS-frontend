@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { PageSkeleton } from '../components/common/SkeletonLoader'
 import { motion } from 'framer-motion'
 import ActivitiesHero from '../components/activity/ActivitiesHero'
 import { fetchActivityDetail, fetchPageData } from '../services/api'
 import Media from '../components/common/Media'
+import useSEO from '../hooks/useSEO'
 
 const ActivityDetail = () => {
   const { collegeSlug, activityId } = useParams()
   const [activity, setActivity] = useState(null)
   const [heroData, setHeroData] = useState({})
+  const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  useSEO(seoData)
 
   useEffect(() => {
     const load = async () => {
@@ -20,6 +25,7 @@ const ActivityDetail = () => {
           fetchPageData(collegeSlug, `activities/${activityId}`).catch(() => ({ sections: {} })),
         ])
         setActivity(detail)
+        setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
       } catch (err) {
         console.error('Failed to fetch activity detail:', err)
@@ -31,11 +37,7 @@ const ActivityDetail = () => {
   }, [collegeSlug, activityId])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    )
+    return <PageSkeleton />
   }
 
   if (!activity) {
@@ -47,7 +49,7 @@ const ActivityDetail = () => {
   }
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* HERO */}
       <ActivitiesHero
         heroImage={activity.main_image || heroData.images?.[0]}
@@ -107,7 +109,7 @@ const ActivityDetail = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none overflow-x-auto"
               dangerouslySetInnerHTML={{ __html: activity.content_html }}
             />
           )}

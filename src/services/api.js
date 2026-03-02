@@ -226,4 +226,59 @@ export async function fetchActivityDetail(collegeSlug, idOrSlug) {
     }
 }
 
+/**
+ * Fetch alumni list for a specific college by slug.
+ * e.g. fetchCollegeAlumni("ipsa")
+ */
+export async function fetchCollegeAlumni(collegeSlug) {
+    const cacheKey = `${collegeSlug}/alumni-list`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/alumni`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
+/**
+ * Fetch a single alumni detail for a specific college by slug and alumni id.
+ * e.g. fetchCollegeAlumniDetail("ipsa", 1)
+ */
+export async function fetchCollegeAlumniDetail(collegeSlug, alumniId) {
+    const cacheKey = `${collegeSlug}/alumni/${alumniId}`;
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/alumni/${alumniId}`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
+/**
+ * Fetch all colleges with their courses (public endpoint).
+ * Used by the Footer for dynamic college/course listing.
+ */
+export async function fetchCollegesWithCourses() {
+    const cacheKey = "public/colleges-with-courses";
+    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    const { data } = await axios.get(`${SERVER_BASE}/public/colleges-with-courses`, {
+        headers: { accept: "application/json" },
+    });
+    pageCache.set(cacheKey, data);
+    return data;
+}
+
+/**
+ * Submit the contact form for a specific college.
+ * POST /api/{collegeSlug}/contact
+ */
+export async function submitContactForm(collegeSlug, formData) {
+    const { data } = await axios.post(
+        `${SERVER_BASE}/${collegeSlug}/contact`,
+        formData,
+        { headers: { accept: "application/json", "Content-Type": "application/json" } }
+    );
+    return data;
+}
+
 export default api;

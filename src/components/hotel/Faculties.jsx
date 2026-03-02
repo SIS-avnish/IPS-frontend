@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import faculty from "../../assets/Images/faculty.png";
 
-const Faculties = ({ data }) => {
+const Faculties = memo(({ data }) => {
 
   const cardColors = ["#27B5D6", "#F36C6C", "#F2B632"];
 
@@ -147,6 +147,5 @@ const Faculties = ({ data }) => {
 
     </section>
   );
-};
-
+});
 export default Faculties;

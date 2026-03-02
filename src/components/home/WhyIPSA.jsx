@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -15,8 +15,7 @@ const slideRight = {
   hidden: { opacity: 0, x: 30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut", delay: 0.1 } },
 };
-
-export default function WhyIPSA({ data }) {
+export default memo(function WhyIPSA({ data }) {
   const [expanded, setExpanded] = useState(false);
 
   const title = data?.title || "Why IPSA";
@@ -68,4 +67,4 @@ export default function WhyIPSA({ data }) {
       </div>
     </section>
   );
-}
+})

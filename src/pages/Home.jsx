@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { fetchPageData, fetchCollegeCourses } from "../services/api";
+import { PageSkeleton } from "../components/common/SkeletonLoader";
+import useSEO from "../hooks/useSEO";
 
 import Hero from "../components/home/Hero";
 import WhyIPSA from "../components/home/WhyIPSA";
@@ -11,17 +13,21 @@ import { ScratchSections } from "../components/common/ScratchHtml";
 export default function Home() {
   const collegeSlug = "ipsa"; // Default college slug for home page
   const [sections, setSections] = useState(null);
+  const [pageData, setPageData] = useState(null);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useSEO(pageData);
 
   useEffect(() => {
     Promise.all([
       fetchPageData(collegeSlug, "home"),
       fetchCollegeCourses(collegeSlug),
     ])
-      .then(([pageData, coursesData]) => {
-        setSections(pageData.sections);
+      .then(([data, coursesData]) => {
+        setPageData(data);
+        setSections(data.sections);
         setCourses(coursesData);
       })
       .catch((err) => {
@@ -32,11 +38,7 @@ export default function Home() {
   }, [collegeSlug]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#002147] border-t-transparent" />
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {
@@ -48,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
       <Hero data={sections?.here} />
       <WhyIPSA data={sections?.why_ips} />
       <StatsSection
@@ -57,7 +59,7 @@ export default function Home() {
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
-      <ScratchSections sections={sections} />
-    </>
+      <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', '360_video', 'courses']} />
+    </div>
   );
 }

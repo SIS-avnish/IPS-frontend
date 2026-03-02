@@ -19,12 +19,15 @@ const activeCollege =
     ? pathParts[1]
     : "ipsa";
 
-    const isCollegeHome =
+const isCollegeHome =
   activeCollege !== "ipsa" &&
   (
     pathParts.length === 2 ||      // /ibmr
-    pathParts[2] === "home"        // /ibmr/home
+    pathParts[2] === "home" ||
+    pathParts[2] === "about"||      pathParts[2] === "placements"||      pathParts[2] === "facilities"||
+      pathParts[2] === "contact" ||pathParts[2]==="activities"
   );
+
 
   useEffect(() => {
     if (activeCollege && activeCollege !== "ipsa") {
@@ -81,6 +84,10 @@ const activeCollege =
     ["SOCIAL SCIENCE","doss"],
   ];
 
+  const collegeNameMap = Object.fromEntries(
+  colleges.map(([name, slug]) => [slug, name])
+);
+
 
   const collegeSections = [
   ["About","about"],
@@ -102,7 +109,7 @@ const activeCollege =
   <div className="max-w-[1440px] mx-auto h-[96px] px-6 lg:px-14 flex items-center justify-between">
 
     {/* LOGO */}
-    <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-66px]">
+    <div onClick={()=>window.location.href="/ipsa/home"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-36px]">
 
       <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain xl:ml-[50px]" alt="logo"/>
     </div>
@@ -161,7 +168,7 @@ const activeCollege =
           onClick={()=>setCollegesOpen(!collegesOpen)}
           className="py-2 font-medium text-gray-900 hover:text-red-500"
         >
-          {isCollegeHome ? "College Sections" : "Colleges"} ▾
+          {isCollegeHome ? collegeNameMap[activeCollege]: "Colleges"} ▾
         </button>
 
         <div className={`lg:absolute lg:top-full lg:left-0
@@ -173,7 +180,7 @@ const activeCollege =
   ? collegeSections.map(([name,id])=>(
       <a
         key={id}
-        href={`#${id}`}
+        href={`/${activeCollege}#${id}`}
         onClick={closeAll}
         className="px-4 py-2 transition-colors text-gray-800 hover:bg-red-500 hover:text-white"
       >
