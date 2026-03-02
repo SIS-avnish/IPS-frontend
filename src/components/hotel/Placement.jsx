@@ -9,7 +9,7 @@ import hyatt from "../../assets/logos/Hyatt.png";
 import taj from "../../assets/logos/taj.png";
 import itc from "../../assets/logos/itc.png";
 
-const logos = [fairmont, oberoi, marriott, hyatt, taj, itc];
+const fallbackLogos = [fairmont, oberoi, marriott, hyatt, taj, itc];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -20,13 +20,18 @@ const fadeUp = {
   })
 };
 
-const Placement = memo(({ data }) => {
+const Placement = memo(({ data, recruitersData }) => {
 
   const title = data?.title || "Are you next?";
   const description = data?.description?.replace(/\n/g, ' ').trim() ||
     "At IOHM, you don't just join a course—you join a legacy of excellence, where preparation meets exceptional placement success. Backed by placement support, guidance, networking opportunities and shaped by industry exposure, our students are being chosen by leading recruitment partners.";
   const bulletItems = data?.items || [];
   const placementImage = data?.image || null;
+
+  // Use API recruiters logos if available, otherwise fall back to static imports
+  const recruiterLogos = recruitersData?.items?.length
+    ? recruitersData.items.map(item => item.logo)
+    : fallbackLogos;
 
   return (
     <section className="bg-[#ffffff] pt-20 sm:pt-28 md:pt-32 lg:pt-40 pb-16 md:pb-20">
@@ -101,7 +106,7 @@ const Placement = memo(({ data }) => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {logos.map((logo, i) => (
+          {recruiterLogos.map((logo, i) => (
             <motion.div
               key={i}
               variants={fadeUp}
@@ -113,7 +118,7 @@ const Placement = memo(({ data }) => {
                          transition-transform duration-300
                          hover:scale-105"
             >
-              <img
+              <Media
                 src={logo}
                 alt="recruiter"
                 className="max-h-[32px] sm:max-h-[40px] object-contain opacity-90 hover:opacity-100 transition"

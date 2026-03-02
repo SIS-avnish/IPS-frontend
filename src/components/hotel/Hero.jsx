@@ -26,7 +26,7 @@ export default memo(function Hero({ data }) {
             loading="eager"
             fetchpriority="high"
             decoding="async"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover "
           />
     
           {/* Bottom-left overlay box */}

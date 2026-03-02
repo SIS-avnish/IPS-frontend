@@ -35,8 +35,8 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
         { name: "Bakery 2", description: "Advanced-level baking for second and third-year students, covering intricate cake designs, confectionery and buffet presentations." },
       ];
 
-  const sectionTitle = facilitiesData?.title || "An Industry-ready Infrastructure for World-Ready Professionals";
-  const sectionDesc = facilitiesData?.description || "Real success starts with real practice in the hospitality sector. At IOHM, our entire infrastructure is designed to create an ecosystem that helps you learn, apply and evolve as future professionals.";
+  const sectionTitle = facilitiesData?.title 
+  const sectionDesc = facilitiesData?.description 
 
   // Split subtitle into two parts for section 2 heading and section 1 sub-heading
   const subtitle = facilitiesData?.subtitle || "";

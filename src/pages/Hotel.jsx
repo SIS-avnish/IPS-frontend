@@ -40,10 +40,10 @@ const Hotel = () => {
       <Program data={sections?.programmes} />
       <Facility facilitiesData={sections?.facilities} skillsData={sections?.skills_iohm} />
       <Skills data={sections?.skills_iohm} />
-      <Faculties data={sections?.train_with_tech_tools} />
-      <Placement data={sections?.placement} />
+      <Faculties data={sections?.train_with_tech_tools} teamData={sections?.learn_from_experts} />
+      <Placement data={sections?.placement} recruitersData={sections?.recruiters} />
       {sections?.success_stories && <SuccessStories data={sections.success_stories} />}
-      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'placement', 'success_stories']} />
+      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'learn_from_experts', 'placement', 'success_stories', 'recruiters']} />
     </div>
   );
 };

@@ -1,10 +1,12 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { motion } from "framer-motion";
+import Media from "../common/Media";
 import faculty from "../../assets/Images/faculty.png";
 
-const Faculties = memo(({ data }) => {
+const Faculties = memo(({ data, teamData }) => {
 
   const cardColors = ["#27B5D6", "#F36C6C", "#F2B632"];
+  const [currentMember, setCurrentMember] = useState(0);
 
   // Build cards: first card is the main section (title + description), rest from facilities array
   const cards = [];
@@ -60,88 +62,111 @@ const Faculties = memo(({ data }) => {
         </div>
 
 
-        <div className="relative md:-mt-10 grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-8 md:gap-10 items-center">
+        {(() => {
+          const teamTitle = teamData?.title || "Learn from Experts in Hospitality";
+          const members = teamData?.members?.length
+            ? teamData.members
+            : [{
+                name: "Jitendra Kumar Gupta",
+                title: "Director",
+                image: faculty,
+                description: "Diploma in Hotel Management & Catering Technology (DHMCT)\n\nProf. Jitendra Gupta has served in senior culinary and management roles with leading hotel chains including Taj, ITC, Oberoi, and Jaypee Hotels. With 28 years of rich industry experience and 20 years in academic leadership, he has shaped culinary talent through his strong command of hospitality operations, food production, and chef training.\n\nUnder his guidance, IOHM continues to foster industry-ready professionals with excellence and innovation at its core."
+              }];
+          const member = members[currentMember] || members[0];
+          const descParagraphs = member.description?.split('\n').filter(p => p.trim()) || [];
 
-          {/* LEFT SIDE */}
-          <motion.div
-            initial={{ opacity: 0, x: -70 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="text-center md:text-left"
-          >
-            <h2 className="text-[#0c2946] text-3xl sm:text-4xl md:text-5xl font-medium leading-tight">
-              Learn from <br />
-              Experts in <br />
-              Hospitality
-            </h2>
+          const goLeft = () => setCurrentMember(prev => (prev - 1 + members.length) % members.length);
+          const goRight = () => setCurrentMember(prev => (prev + 1) % members.length);
 
-            <div className="w-16 h-[2px] bg-[#e45b5b] mt-5 md:mt-6 mb-8 md:mb-10 mx-auto md:mx-0"></div>
+          return (
+            <div className="relative md:-mt-10 grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] gap-8 md:gap-10 items-center">
 
-            <div className="flex gap-3 justify-center md:justify-start">
-              <button className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95">
-                ←
-              </button>
-              <button className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95">
-                →
-              </button>
+              {/* LEFT SIDE */}
+              <motion.div
+                initial={{ opacity: 0, x: -70 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+                className="text-center md:text-left"
+              >
+                <h2 className="text-[#0c2946] text-3xl sm:text-4xl md:text-5xl font-medium leading-tight">
+                  {teamTitle.split(/\s+/).reduce((acc, word, i) => {
+                    if (i > 0 && i % 2 === 0) acc.push(<br key={`br-${i}`} />);
+                    if (acc.length > 0 && typeof acc[acc.length - 1] === 'string') {
+                      acc[acc.length - 1] += ' ' + word;
+                    } else {
+                      acc.push(word);
+                    }
+                    return acc;
+                  }, [])}
+                </h2>
+
+                <div className="w-16 h-[2px] bg-[#e45b5b] mt-5 md:mt-6 mb-8 md:mb-10 mx-auto md:mx-0"></div>
+
+                {members.length > 1 && (
+                  <div className="flex gap-3 justify-center md:justify-start">
+                    <button
+                      onClick={goLeft}
+                      className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={goRight}
+                      className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95"
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* RIGHT SIDE CARD */}
+              <motion.div
+                key={currentMember}
+                initial={{ opacity: 0, x: 70, scale: 0.98 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 bg-white shadow-lg 
+                           w-full max-w-[1000px]
+                           md:translate-y-[80px] lg:translate-y-[120px]"
+              >
+                <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-5 sm:p-6">
+
+                  {/* IMAGE */}
+                  <Media
+                    src={member.image || faculty}
+                    alt={member.name}
+                    className="w-full md:w-[360px] lg:w-[420px] 
+                               h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px]
+                               object-cover rounded-md flex-shrink-0"
+                  />
+
+                  {/* CONTENT */}
+                  <div className="max-w-xl">
+
+                    <h3 className="text-[#0c2946] text-xl sm:text-2xl font-semibold">
+                      {member.name}
+                    </h3>
+
+                    {member.title && (
+                      <p className="text-gray-600 mt-1 font-bold">{member.title}</p>
+                    )}
+
+                    {descParagraphs.map((para, pi) => (
+                      <p key={pi} className={`text-gray-600 leading-relaxed text-sm sm:text-base ${pi === 0 ? 'mt-3 font-semibold' : 'mt-3 md:mt-4'}`}>
+                        {para}
+                      </p>
+                    ))}
+
+                  </div>
+
+                </div>
+              </motion.div>
+
             </div>
-          </motion.div>
-
-          {/* RIGHT SIDE CARD */}
-          <motion.div
-            initial={{ opacity: 0, x: 70, scale: 0.98 }}
-            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="relative z-10 bg-white shadow-lg 
-                       w-full max-w-[1000px]
-                       md:translate-y-[80px] lg:translate-y-[120px]"
-          >
-            <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-5 sm:p-6">
-
-              {/* IMAGE */}
-              <img
-                src={faculty}
-                alt="Faculty"
-                className="w-full md:w-[360px] lg:w-[420px] 
-                           h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px]
-                           object-cover rounded-md flex-shrink-0"
-              />
-
-              {/* CONTENT */}
-              <div className="max-w-xl">
-
-                <h3 className="text-[#0c2946] text-xl sm:text-2xl font-semibold">
-                  Jitendra Kumar Gupta
-                </h3>
-
-                <p className="text-gray-600 mt-1 font-bold">Director</p>
-
-                <p className="text-gray-600 mt-3 font-semibold">
-                  Diploma in Hotel Management & Catering Technology (DHMCT)
-                </p>
-
-                <p className="text-gray-600 mt-5 md:mt-6 leading-relaxed text-sm sm:text-base">
-                  Prof. Jitendra Gupta has served in senior culinary and
-                  management roles with leading hotel chains including Taj,
-                  ITC, Oberoi, and Jaypee Hotels. With 28 years of rich industry
-                  experience and 20 years in academic leadership, he has shaped
-                  culinary talent through his strong command of hospitality
-                  operations, food production, and chef training.
-                </p>
-
-                <p className="text-gray-600 mt-3 md:mt-4 leading-relaxed text-sm sm:text-base">
-                  Under his guidance, IOHM continues to foster industry-ready
-                  professionals with excellence and innovation at its core.
-                </p>
-
-              </div>
-
-            </div>
-          </motion.div>
-
-        </div>
+          );
+        })()}
 
       </div>
 
