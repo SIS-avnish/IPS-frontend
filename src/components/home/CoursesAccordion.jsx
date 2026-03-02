@@ -110,10 +110,10 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
           <div className="bg-[#fff] px-9 py-6 text-[#605654] max-[576px]:px-5">
 
             <p className="text-[16px] leading-[26px]">
-              {isExpanded ? c.desc : c.desc.slice(0, 100) + (c.desc.length > 100 ? "" : "")}
+              {isExpanded ? c.desc : c.desc.slice(0, 100) + (c.desc.length > 100 ? ".." : "")}
             </p>
 
-            {c.desc.length > 150 && (
+            {c.desc.length > 100 && (
               <button
                 onClick={() =>
                   setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
