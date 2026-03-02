@@ -152,7 +152,7 @@ const isCollegeHome =
 
       {/* ABOUT */}
       <NavLink to={`/${activeCollege}/about`}  className={linkClass} onClick={closeAll}>
-        About IPSA
+        {activeCollege === "ipsa" ? "About IPSA" : "About"}
       </NavLink>
 
       {/* COLLEGES */}
