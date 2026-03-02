@@ -134,6 +134,7 @@ const MainActivityPage = memo(() => {
 
             {hero.cta_text && (
               <Link
+              target="_blank"
                 to={hero.cta_link || `/${slug}/activities/events`}
                 className="
                   mt-6 inline-flex items-center gap-3
@@ -194,40 +195,28 @@ const MainActivityPage = memo(() => {
                   >
                     <Link
                       to={`/${slug}/activities/${routeSlug}`}
-                      className="group relative block rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 h-[280px] sm:h-[300px]"
+                      className="group block overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 shadow-sm hover:shadow-md"
                     >
                       {/* Card image */}
-                      {iconUrl ? (
-                        <LazyLoadImage
-                          src={iconUrl}
-                          alt={card.title}
-                          effect="blur"
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-400 ease-in-out group-hover:scale-110"
-                          wrapperClassName="absolute inset-0 w-full h-full"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#0B2C4D] to-[#1a4a7a]" />
-                      )}
+                      <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden ">
+                        {iconUrl ? (
+                          <LazyLoadImage
+                            src={iconUrl}
+                            alt={card.title}
+                            effect="blur"
+                            className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+                            wrapperClassName="w-full h-full"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-[#0B2C4D] to-[#1a4a7a]" />
+                        )}
+                      </div>
 
-                      {/* Default state: subtle bottom gradient + centered title */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ease-in-out group-hover:opacity-0" />
-
-                      <h3 className="absolute inset-0 flex items-center justify-center text-white text-xl sm:text-2xl font-semibold text-center px-4 drop-shadow-lg transition-opacity duration-300 ease-in-out group-hover:opacity-0 z-10">
-                        {card.title}
-                      </h3>
-
-                      {/* Hover state: dark overlay with description */}
-                      <div className="absolute inset-0 bg-[#0B2C4D]/85 flex flex-col items-center justify-center px-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-10">
-                        <h3 className="text-white text-xl sm:text-2xl font-semibold mb-3">
+                      {/* Solid dark title bar */}
+                      <div className="bg-[#1a1a1a] px-4 py-3 flex items-center justify-center min-h-[52px]">
+                        <h3 className="text-white text-sm sm:text-base font-bold text-center leading-snug">
                           {card.title}
                         </h3>
-                        <div className="w-10 h-[2px] bg-red-400 mb-4" />
-                        <p className="text-white/80 text-sm leading-relaxed max-w-[260px]">
-                          {card.description}
-                        </p>
-                        <span className="mt-5 inline-flex items-center gap-2 text-red-400 text-sm font-medium">
-                          Explore →
-                        </span>
                       </div>
                     </Link>
                   </motion.div>
