@@ -56,7 +56,7 @@ export default memo(function Hero({ data }) {
         </h1>
 
         {/* CTA button */}
-        <button
+       {/*  <button
           className="mt-4 sm:mt-5 md:mt-6
                flex items-center gap-3
                border border-[#0B2C4D]
@@ -69,7 +69,7 @@ export default memo(function Hero({ data }) {
                transition duration-300"
         >
           {data.cta_text || "Explore Now"}
-        </button>
+        </button> */}
 
       </motion.div>
 

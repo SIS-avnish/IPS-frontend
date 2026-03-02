@@ -58,7 +58,7 @@ export default memo(function Hero({ data }) {
         </h1>
 
         {/* CTA button */}
-        <a
+        {/* <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
@@ -67,7 +67,7 @@ export default memo(function Hero({ data }) {
           className="mt-6 inline-flex items-center gap-3 border border-[#0B2C4D] text-[#0B2C4D] px-7 py-3 hover:bg-[#0B2C4D] hover:text-white transition"
         >
           {ctaText}
-        </a>
+        </a> */}
 
       </motion.div>
 

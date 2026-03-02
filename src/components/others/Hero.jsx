@@ -59,7 +59,7 @@ const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
             ))}
           </h1>
 
-          <button
+          {/* <button
             onClick={() => ctaLink && window.open(ctaLink, "_blank")}
             className="
               mt-6 flex items-center gap-3
@@ -72,7 +72,7 @@ const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
             "
           >
             {ctaText || "Explore Now"}
-          </button>
+          </button> */}
 
         </motion.div>
 

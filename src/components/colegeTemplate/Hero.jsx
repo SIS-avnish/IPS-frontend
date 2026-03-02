@@ -58,7 +58,7 @@ export default memo(function Hero({ data }) {
 
     
             {/* CTA button */}
-            <a
+          {/*   <a
               href={ctaLink}
               target="_blank"
               rel="noopener noreferrer"
@@ -77,7 +77,7 @@ export default memo(function Hero({ data }) {
               >
                 {ctaText}
               </button>
-            </a>
+            </a> */}
     
           </motion.div>
     

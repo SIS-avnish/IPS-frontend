@@ -57,7 +57,7 @@ export default memo(function Hero({ data }) {
             {description}
           </h1>
 
-          <button
+          {/* <button
             onClick={() => setShowVideo(true)}
             className="mt-5 flex items-center gap-3
                        border border-[#0B2C4D]
@@ -69,7 +69,7 @@ export default memo(function Hero({ data }) {
 
             <Play size={18} fill="currentColor" />
             {ctaText}
-          </button>
+          </button> */}
         </motion.div>
 
         {/* VIDEO MODAL */}
