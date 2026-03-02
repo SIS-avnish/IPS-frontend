@@ -141,7 +141,7 @@ const isCollegeHome =
   </NavLink>
 ) : (
   <NavLink
-    to={`/${activeCollege}`}
+    to={`ipsa/home`}
     end
     className={linkClass}
     onClick={closeAll}

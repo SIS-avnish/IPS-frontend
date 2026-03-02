@@ -33,7 +33,7 @@ function getMediaType(url) {
 
 export default memo(function ExperienceSection({ data }) {
 
-  const title = data?.title || "Experience IPSA with a 3600 View";
+  const title = data?.title 
   const mediaSrc = data?.images?.[0] || collegeFallback;
   const mediaType = getMediaType(typeof mediaSrc === "string" ? mediaSrc : "");
 
@@ -99,7 +99,8 @@ export default memo(function ExperienceSection({ data }) {
 
   return (
     <section className="max-w-[1140px] mx-auto px-4">
-      <div className="py-[70px] max-[991px]:py-[50px] max-[576px]:py-[30px]">
+      {title && (
+        <div className="py-[70px] max-[991px]:py-[50px] max-[576px]:py-[30px]">
 
 
         <motion.h2
@@ -172,6 +173,7 @@ export default memo(function ExperienceSection({ data }) {
           )}
         </motion.div>
       </div>
+      )}
     </section>
   );
 })
