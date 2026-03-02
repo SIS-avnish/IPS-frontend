@@ -195,10 +195,10 @@ const MainActivityPage = memo(() => {
                   >
                     <Link
                       to={`/${slug}/activities/${routeSlug}`}
-                      className="group block overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="group block overflow-hidden border-2 border-red-400 hover:border-red-500 transition-all duration-300 shadow-sm hover:shadow-md "
                     >
                       {/* Card image */}
-                      <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden ">
+                      <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden  ">
                         {iconUrl ? (
                           <LazyLoadImage
                             src={iconUrl}
@@ -213,7 +213,7 @@ const MainActivityPage = memo(() => {
                       </div>
 
                       {/* Solid dark title bar */}
-                      <div className="bg-[#1a1a1a] px-4 py-3 flex items-center justify-center min-h-[52px]">
+                      <div className="bg-red-400 px-4 py-3 flex items-center justify-center min-h-[52px]">
                         <h3 className="text-white text-sm sm:text-base font-bold text-center leading-snug">
                           {card.title}
                         </h3>
