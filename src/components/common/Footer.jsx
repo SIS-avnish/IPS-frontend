@@ -40,7 +40,7 @@ export default memo(function Footer() {
   useEffect(() => {
     fetchCollegeInfo(activeCollege)
       .then((info) => {
-        setCollegeLogo(activeCollege !== "ipsa" ? (info?.logo || null) : null);
+        setCollegeLogo(info?.footer_logo || info?.logo || null);
         setSocialLinks(info?.social_media_links || []);
       })
       .catch(() => {
@@ -118,7 +118,7 @@ export default memo(function Footer() {
   <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-5">
   <img
     src={collegeLogo || logo}
-    className="h-[80px] lg:h-[96px] object-contain mx-auto lg:mx-0"
+    className="h-[80px] lg:h-[96px] bg-transparent object-contain mx-auto lg:mx-0"
     alt="IPS Logo"
   />
 
