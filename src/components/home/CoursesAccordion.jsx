@@ -36,7 +36,7 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
   if (!courses.length) return null;
 
   return (
-    <div className="bg-[#F0EEEF]  pt-[180px] pb-[60px] px-2 -mt-[13%] max-[991px]:-mt-[24%] max-[576px]:pt-[30px] max-[576px]:pb-[30px] max-[576px]:px-5 max-[576px]:mt-0!">
+    <div className="bg-[#F0EEEF]  pt-[80px] pb-[60px] px-2 -mt-[13%] max-[991px]:-mt-[24%] max-[576px]:pt-[30px] max-[576px]:pb-[30px] max-[576px]:px-5 max-[576px]:mt-0!">
       <section className="max-w-[1140px] mx-auto px-3">
 
 
@@ -109,9 +109,27 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
         >
           <div className="bg-[#fff] px-9 py-6 text-[#605654] max-[576px]:px-5">
 
-            <p className="text-[16px] leading-[26px]">
-              {isExpanded ? c.desc : c.desc.slice(0, 100) + (c.desc.length > 100 ? ".." : "")}
-            </p>
+            <p className="text-[16px] leading-[26px] whitespace-pre-line">
+  {(() => {
+    const text = isExpanded
+      ? c.desc
+      : c.desc.slice(0, 100) + (c.desc.length > 100 ? ".." : "");
+
+    const parts = text.split("\n");
+
+    if (parts.length > 1) {
+      return (
+        <>
+          <span className="font-semibold">{parts[0]}</span>
+          {"\n"}
+          {parts.slice(1).join("\n")}
+        </>
+      );
+    }
+
+    return text;
+  })()}
+</p>
 
             {c.desc.length > 100 && (
               <button

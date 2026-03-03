@@ -48,7 +48,7 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
           <div>
 
             <div className="bg-[#FF7373] text-[#002147] text-[22px] sm:text-[20px] text-[18px] font-medium px-4 py-1 w-fit mb-2">
-              Hostel
+              Sports
             </div>
 
             <h2 className="text-[44px] md:text-[52px] sm:text-[40px] text-[26px] font-medium text-[#002147] leading-snug">
@@ -60,7 +60,7 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
           </div>
 
           {/* RIGHT */}
-          <p className="text-[#3A3A3A] text-base sm:text-[15px] leading-relaxed">
+          <p className="text-[#3A3A3A] text-base mt-0 lg:mt-30 sm:text-[15px] leading-relaxed">
             {playground.content}
           </p>
 
