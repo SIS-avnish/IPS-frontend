@@ -56,6 +56,7 @@ export default function Placements() {
       <Recruiters
         highlights={sections.proven_placement_record}
         courseStats={sections.placement_count_course_wise}
+        logos={sections.companies?.items || []}
       />
 
       {/* PLACED STUDENTS */}

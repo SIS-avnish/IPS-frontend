@@ -7,9 +7,9 @@ import hyattLogo from "../../assets/logos/Hyatt.png";
 import tajLogo from "../../assets/logos/taj.png";
 import itcLogo from "../../assets/logos/itc.png";
 
-export default memo(function Recruiters({ highlights, courseStats }) {
+export default memo(function Recruiters({ highlights, courseStats, logos: customLogos }) {
 
-  const logos = [
+  const logos = customLogos || [
     fairmontLogo,
     oberoiLogo,
     marriottLogo,
@@ -68,23 +68,27 @@ export default memo(function Recruiters({ highlights, courseStats }) {
         {/* LOGO GRID */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
 
-          {logos.map((logo, i) => (
-            <motion.div
-              key={i}
-              variants={cardVariant}
-              initial="hidden"
-              whileInView="visible"
-              custom={i}
-              viewport={{ once: true, amount: 0.1 }}
-              className="bg-white p-1 sm:p-1 border border-[#F0EEEF] flex items-center justify-center"
-            >
-              <img
-                src={logo}
-                alt="Recruiter"
-                className="h-[90px] sm:h-[60px] md:h-[72px] w-full object-contain"
-              />
-            </motion.div>
-          ))}
+          {logos.map((logo, i) => {
+            const src = typeof logo === "object" && logo !== null ? logo.logo : logo;
+            const alt = typeof logo === "object" && logo !== null ? (logo.name || "Recruiter") : "Recruiter";
+            return (
+              <motion.div
+                key={i}
+                variants={cardVariant}
+                initial="hidden"
+                whileInView="visible"
+                custom={i}
+                viewport={{ once: true, amount: 0.1 }}
+                className="bg-white p-1 sm:p-1 border border-[#F0EEEF] flex items-center justify-center"
+              >
+                <img
+                  src={src}
+                  alt={alt}
+                  className="h-[90px] sm:h-[60px] md:h-[72px] w-full object-contain"
+                />
+              </motion.div>
+            );
+          })}
 
         </div>
 
