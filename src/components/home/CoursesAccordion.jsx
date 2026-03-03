@@ -9,8 +9,28 @@ const fadeUp = {
 
 function stripHtml(html) {
   if (!html) return "";
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
+
+  let text = html;
+
+  // Convert encoded <br> (&lt;br&gt;) to real <br>
+  text = text.replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+
+  // Convert <br> to newline
+  text = text.replace(/<br\s*\/?>/gi, "\n");
+
+  // Convert escaped \\n into real newline
+  text = text.replace(/\\n/g, "\n");
+
+  // Parse and strip remaining HTML
+  const doc = new DOMParser().parseFromString(text, "text/html");
+  text = doc.body.textContent || "";
+
+  // Clean extra spaces but preserve newlines
+  return text
+    .replace(/\r/g, "")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s+/g, "\n")
+    .trim();
 }
 
 export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }) {
