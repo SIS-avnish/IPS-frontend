@@ -72,7 +72,7 @@ export default memo(function Team({ data }) {
   const expert = experts[index];
 
   return (
-    <section className="py-12 sm:py-16 md:pt-10 bg-white relative">
+    <section className="py-12 sm:py-16 md:pt-10 mb-30 bg-white relative">
 
       <div className="max-w-7xl mx-auto pt-4 sm:px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
 

@@ -18,21 +18,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
     itcLogo,
   ];
 
-  const sectors1 = [
-    { num: 14, name: "PSU" },
-    { num: 81, name: "Core" },
-    { num: 74, name: "MNC" },
-    { num: 15, name: "Bank" },
-    { num: 32, name: "NBFC" },
-  ];
-
-  const sectors2 = [
-    { num: 21, name: "PHARMA" },
-    { num: 134, name: "Blue Chip" },
-    { num: 115, name: "IT/ITES" },
-    { num: 60, name: "Service Industry" },
-    { num: 17, name: "Consulting" },
-  ];
+  
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -65,32 +51,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
 
         <div className="h-[2px] w-40 sm:w-56 md:w-64 bg-[#FF7373] mt-3 sm:mt-4 mb-8 sm:mb-10" />
 
-        {/* LOGO GRID */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-
-          {logos.map((logo, i) => {
-            const src = typeof logo === "object" && logo !== null ? logo.logo : logo;
-            const alt = typeof logo === "object" && logo !== null ? (logo.name || "Recruiter") : "Recruiter";
-            return (
-              <motion.div
-                key={i}
-                variants={cardVariant}
-                initial="hidden"
-                whileInView="visible"
-                custom={i}
-                viewport={{ once: true, amount: 0.1 }}
-                className="bg-white p-1 sm:p-1 border border-[#F0EEEF] flex items-center justify-center"
-              >
-                <img
-                  src={src}
-                  alt={alt}
-                  className="h-[90px] sm:h-[60px] md:h-[72px] w-full object-contain"
-                />
-              </motion.div>
-            );
-          })}
-
-        </div>
+       
 
 
         {/* PLACEMENT HIGHLIGHTS */}
@@ -197,6 +158,42 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
          
 
         </motion.div>
+
+          <div className="overflow-hidden mt-10">
+      <motion.div
+        className="flex gap-6"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          repeat: Infinity,
+          duration: 10, // total time for full scroll
+          ease: "linear",
+        }}
+      >
+        {logos.map((logo, i) => {
+          const src =
+            typeof logo === "object" && logo !== null
+              ? logo.logo
+              : logo;
+          const alt =
+            typeof logo === "object" && logo !== null
+              ? logo.name || "Recruiter"
+              : "Recruiter";
+
+          return (
+            <div
+              key={i}
+              className="min-w-[150px] bg-white p-2 border border-[#F0EEEF] flex items-center justify-center"
+            >
+              <img
+                src={src}
+                alt={alt}
+                className="h-[80px] w-full object-contain"
+              />
+            </div>
+          );
+        })}
+      </motion.div>
+    </div>
 
       </div>
 

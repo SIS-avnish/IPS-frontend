@@ -45,6 +45,11 @@ export default function Placements() {
   return (
     <div className="w-full overflow-hidden">
       <Hero data={sections.hero} />
+      <Recruiters
+        highlights={sections.proven_placement_record}
+        courseStats={sections.placement_count_course_wise}
+        logos={sections.companies?.items || []}
+      />
       <About data={sections.about_ips} />
       <Incubation
         infrastructure={sections.an_infrastructure}
@@ -53,11 +58,7 @@ export default function Placements() {
         stats={sections.orientation_and_awareness}
       />
       <Team data={sections.the_placement_team} />
-      <Recruiters
-        highlights={sections.proven_placement_record}
-        courseStats={sections.placement_count_course_wise}
-        logos={sections.companies?.items || []}
-      />
+      
 
       {/* PLACED STUDENTS */}
       {sections.placed_student?.html && (
