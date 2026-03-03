@@ -6,73 +6,31 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-const cardVariant = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.35, delay: i * 0.06, ease: "easeOut" },
-  }),
-};
-export default memo(function Directors({ data, courses: apiCourses = [], colleges: apiColleges = [] }) {
+export default memo(function Directors({ data, department, principal, designation, contact }) {
 
   const sectionTitle = data?.title || "Institute Directors";
-  const subtitle = data?.subtitle || "Principal / Director";
 
-  // Only use API data — no fallbacks
-  const collegeItems = apiColleges?.length
-    ? apiColleges.map((c) => c.name)
-    : [];
+  const colConfigs = [
+    { section: department, color: "bg-[#0CC2FE]" },
+    { section: principal,  color: "bg-[#FFC73E]" },
+    { section: designation, color: "bg-[#FF7373]" },
+    { section: contact,    color: "bg-[#a0e0f6]" },
+  ];
 
-  // const courseItems = apiCourses?.length
-  //   ? apiCourses.map((c) => c.name)
-  //   : [];
-
-  const directorItems = data?.items?.length
-    ? data.items.map((item) => item.replace(/\\n/g, "\n"))
-    : [];
-
-     const designationitems = data?.items?.length
-    ? data.items.map((item) => item.replace(/\\n/g, "\n"))
-    : [];
-
-     const contactItems = data?.items?.length
-    ? data.items.map((item) => item.replace(/\\n/g, "\n"))
-    : [];
-
-  const cols = [
-    { title: "College / Institute", color: "bg-[#0CC2FE]", items: collegeItems },
-    // { title: "Courses", color: "bg-[#FF7373]", items: courseItems },
-    { title: subtitle, color: "bg-[#FFC73E]", items: directorItems },
-     { title: subtitle, color: "bg-[#FF7373]", items: designationitems },
-        { title: subtitle, color: "bg-[#a0e0f6]", items: contactItems },
-  ].filter(col => col.items.length > 0); // skip empty columns
-
-  const card = (title, color, items) => (
-    <div className="bg-[#f7f4f4] h-full">
-
-      {/* Header */}
-      <div className={`px-6 py-2 font-medium text-[#002147] text-[18px] ${color}`}>
-        {title}
-      </div>
-
-      {/* Items */}
-      {items.map((t, i) => (
-        <div
-          key={i}
-          className="bg-[#F0EEEF] px-6 py-5 mb-[3px]"
-        >
-          <p className="text-[#3A3A3A] text-[18px] leading-[22px] font-normal whitespace-pre-line">
-            {t}
-          </p>
-        </div>
-      ))}
-
-    </div>
-  );
+  const cols = colConfigs
+    .map(({ section, color }) => ({
+      title: section?.title || "",
+      color,
+      items: (section?.items || []).map((item) =>
+        item === "null" ? "-" : item.replace(/\\n/g, "\n")
+      ),
+    }))
+    .filter((col) => col.items.length > 0);
 
   // If no column has data, render nothing
   if (!cols.length) return null;
+
+  const maxRows = Math.max(...cols.map((c) => c.items.length));
 
   return (
     <section className="py-16">
@@ -87,26 +45,44 @@ export default memo(function Directors({ data, courses: apiCourses = [], college
           viewport={{ once: true, amount: 0.1 }}
           className="text-4xl md:text-[60px] font-medium text-[#002147]"
         >
-          {sectionTitle} 
+          {sectionTitle}
         </motion.h3>
 
-        <div className="h-[2px] w-60 bg-[#FF7373] my-3 mb-8" />
+        <div className="h-[2px] w-60 bg-[#FF7373]  my-3 mb-8" />
 
-        {/* Cards */}
-        <div className="grid lg:grid-cols-4 gap-8">
-          {cols.map((col, colIdx) => (
-            <motion.div
-              key={colIdx}
-              variants={cardVariant}
-              initial="hidden"
-              whileInView="visible"
-              custom={colIdx}
-              viewport={{ once: true, amount: 0.1 }}
+        {/* Table-like grid: row-by-row to keep heights in sync */}
+        <motion.div
+  variants={fadeUp}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.1 }}
+  className="grid gap-x-4"   // 👈 ADD THIS
+  style={{ gridTemplateColumns: `repeat(${cols.length}, minmax(0, 1fr))` }}
+>
+          {/* Header row */}
+          {cols.map((col, ci) => (
+            <div
+              key={ci}
+              className={`px-4 py-3 font-medium text-[#002147] text-[16px] text-center flex items-center justify-center ${col.color} ${ci < cols.length - 1 ? "border-r border-white/40" : ""}`}
             >
-              {card(col.title, col.color, col.items)}
-            </motion.div>
+              {col.title}
+            </div>
           ))}
-        </div>
+
+          {/* Data rows */}
+          {Array.from({ length: maxRows }).map((_, rowIdx) => (
+            cols.map((col, ci) => (
+              <div
+                key={`${rowIdx}-${ci}`}
+                className={`bg-[#F0EEEF] px-4 py-4 flex items-center justify-center border-b border-[#ddd] ${ci < cols.length - 1 ? "border-r border-[#ddd]" : ""}`}
+              >
+                <p className="text-[#3A3A3A] text-[16px] leading-[22px] font-normal whitespace-pre-line text-center">
+                  {col.items[rowIdx] ?? ""}
+                </p>
+              </div>
+            ))
+          ))}
+        </motion.div>
 
       </div>
 

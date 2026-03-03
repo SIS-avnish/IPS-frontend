@@ -82,8 +82,14 @@ export default function AboutPage() {
         executive={sections?.executive}
         advisory={sections?.advisory}
       />
-      <Directors data={sections?.institute_directors} courses={courses} colleges={colleges} />
-      <ScratchSections sections={sections} exclude={['hero', 'about_ips', 'ecosystem_for_your', 'growth_image', 'vision_mission', 'leaders', 'governing_body', 'executive', 'advisory', 'institute_directors']} />
+      <Directors
+        data={sections?.institute_directors}
+        department={sections?.institute_department}
+        principal={sections?.institute_principal}
+        designation={sections?.institute_designation}
+        contact={sections?.institute_contact}
+      />
+      <ScratchSections sections={sections} exclude={['hero', 'about_ips', 'ecosystem_for_your', 'growth_image', 'vision_mission', 'leaders', 'governing_body', 'executive', 'advisory', 'institute_directors', 'institute_department', 'institute_principal', 'institute_designation', 'institute_contact']} />
     </div>
   );
 }
