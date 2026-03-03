@@ -38,7 +38,7 @@ export default function EnquiryModal() {
         onClick={() => setOpen(true)}
         aria-label="Open enquiry form"
         className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex items-center gap-1.5
-                   bg-[#002147] text-white px-3 py-2.5 rounded-l-lg shadow-lg
+                   bg-[#0CC2FE] text-white px-3 py-2.5 rounded-l-lg shadow-lg
                    hover:bg-[#081f36] transition-colors cursor-pointer
                    writing-mode-vertical"
         style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}

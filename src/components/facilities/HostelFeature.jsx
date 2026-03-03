@@ -49,7 +49,7 @@ export default memo(function HostelFeatures({ intro, services }) {
             <div className="w-44 h-[2px] bg-[#bb3d02] mt-2"></div>
           </div>
 
-          <p className="text-[#3A3A3A] text-base sm:text-[15px] leading-relaxed">
+          <p className="text-[#3A3A3A] text-base sm:text-[15px] mt-0 lg:mt-10 leading-relaxed">
             {intro?.content || ""}
           </p>
 
