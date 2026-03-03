@@ -51,14 +51,15 @@ export default memo(function Directors({ data, department, principal, designatio
         <div className="h-[2px] w-60 bg-[#FF7373]  my-3 mb-8" />
 
         {/* Table-like grid: row-by-row to keep heights in sync */}
+        <div className="overflow-x-auto">
         <motion.div
-  variants={fadeUp}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, amount: 0.1 }}
-  className="grid gap-x-4"   // 👈 ADD THIS
-  style={{ gridTemplateColumns: `repeat(${cols.length}, minmax(0, 1fr))` }}
->
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid gap-x-4"
+          style={{ gridTemplateColumns: `repeat(${cols.length}, minmax(160px, 1fr))` }}
+        >
           {/* Header row */}
           {cols.map((col, ci) => (
             <div
@@ -83,6 +84,7 @@ export default memo(function Directors({ data, department, principal, designatio
             ))
           ))}
         </motion.div>
+        </div>
 
       </div>
 
