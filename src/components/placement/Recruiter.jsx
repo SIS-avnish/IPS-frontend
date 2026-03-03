@@ -99,102 +99,102 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-[#002147] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-12"
+          className="bg-[#002147] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-10"
         >
 
-          {/* TOP ROW */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start lg:items-center">
-
-            <div className="text-[#fff] text-2xl sm:text-3xl md:text-4xl font-medium leading-tight">
-              {highlights?.title || "Placement Highlights 2024-2025"}
-            </div>
-
-            {highlights?.subtitle && (
-              <p className="text-[#fff] font-medium text-sm sm:text-base">
-                {highlights.subtitle}
-              </p>
-            )}
-
+          {/* TITLE */}
+          <div className="text-white text-xl sm:text-2xl md:text-3xl font-semibold mb-6">
+            {highlights?.title || "Placement Highlights"}
           </div>
 
-          {/* HIGHLIGHTS LIST */}
+          {/* STAT ITEMS ROW */}
           {highlights?.items?.length > 0 && (
-            <div className="mt-8 sm:mt-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 sm:gap-y-4">
-                {highlights.items.map((item, i) => (
-                  <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base pb-2">
-                    {item}
+            <div className="flex flex-wrap items-center gap-0 mb-8">
+              {highlights.items.map((item, i) => {
+                const match = item.match(/^(\d[\d,]*)\s+(.+)$/);
+                const num = match ? match[1] : item;
+                const label = match ? match[2] : "";
+                return (
+                  <div key={i} className="flex items-center">
+                    <div className="flex items-center gap-3 pr-6 sm:pr-10">
+                      <span className="text-4xl sm:text-5xl font-bold text-white">{num}</span>
+                      {label && (
+                        <span className="text-white text-xs sm:text-sm font-medium leading-tight max-w-[100px]">
+                          {label}
+                        </span>
+                      )}
+                    </div>
+                    {i < highlights.items.length - 1 && (
+                      <div className="w-[1px] h-12 bg-white mr-6 sm:mr-10" />
+                    )}
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
           )}
 
-          {/* COURSE-WISE STATS */}
-          {courseStats?.stats?.length > 0 && (
-            <div className="mt-8 sm:mt-10 display-inline-block ">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
-                {courseStats.stats.map((s, i) => (
-                  <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base">
-                    <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.value}</span> {s.label.replace(/Total No\. of Students Who are Placed\s*/i, "")}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+         {courseStats?.stats?.length > 0 && (
+  <div className="text-white">
 
-          {/* SECTORS (fallback when no API data) */}
-          {!highlights?.items?.length && !courseStats?.stats?.length && (
-            <>
-              <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-6 sm:gap-8 mt-6">
+    {/* TOP STATS */}
+    <div className="flex items-center mb-8">
 
-                <div className="flex items-center gap-3">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#fff]">
-                    1904
-                  </div>
-                  <div className="text-[#fff] font-medium text-sm sm:text-base">
-                    Students Placed
-                  </div>
-                </div>
+      {courseStats.stats.slice(0, 2).map((s, i) => (
+        <div
+          key={i}
+          className={`flex items-center ${
+            i === 0
+              ? "pr-6 border-r border-white/40"
+              : "pl-6"
+          }`}
+        >
+          <span className="text-3xl sm:text-4xl font-bold mr-2">
+            {s.value}
+          </span>
 
-                <div className="hidden md:block w-[1px] h-14 bg-white" />
+          <span className="text-sm sm:text-base uppercase tracking-wide">
+            {s.label.replace(
+              /Total No\. of Students Who are Placed\s*/i,
+              ""
+            )}
+          </span>
+        </div>
+      ))}
 
-                <div className="flex items-center gap-3">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#fff]">
-                    563
-                  </div>
-                  <div className="text-[#fff] font-medium leading-tight text-sm sm:text-base">
-                    Companies in <br /> Closed Campus Drive
-                  </div>
-                </div>
+    </div>
 
-              </div>
+    {/* SECTORS TITLE */}
+    <h3 className="text-xl sm:text-2xl font-medium mb-3">
+      Sectors
+    </h3>
 
-              <div className="mt-8 sm:mt-10">
+   
 
-                <div className="text-xl sm:text-2xl md:text-3xl font-medium text-[#fff] mb-4 sm:mb-6">
-                  Sectors
-                </div>
+    {/* SECTOR GRID */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6">
+      {courseStats.stats.slice(2).map((s, i) => (
+        <div
+          key={i}
+          className="border-b border-white/40  font-semi-bold flex items-center gap-2"
+        >
+          <span className="text-2xl sm:text-3xl font-bold mr-2">
+            {s.value}
+          </span>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4">
-                  {sectors1.map((s, i) => (
-                    <div key={i} className="border-b border-[#ffff] font-medium text-[#ffff] text-sm sm:text-base">
-                      <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
-                    </div>
-                  ))}
-                </div>
+          <span className="text-xs sm:text-sm uppercase tracking-wide">
+            {s.label.replace(
+              /Total No\. of Students Who are Placed\s*/i,
+              ""
+            )}
+          </span>
+        </div>
+      ))}
+    </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-4 mt-3 sm:mt-4">
-                  {sectors2.map((s, i) => (
-                    <div key={i} className="border-b border-[#fff] font-medium text-[#fff] text-sm sm:text-base">
-                      <span className="text-xl sm:text-2xl md:text-3xl mr-1">{s.num}</span> {s.name}
-                    </div>
-                  ))}
-                </div>
+  </div>
+)}
 
-              </div>
-            </>
-          )}
+         
 
         </motion.div>
 
