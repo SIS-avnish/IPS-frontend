@@ -93,15 +93,18 @@ export default memo(function Footer() {
             </Link>
           </h6>
 
-          <ul className="space-y-1 leading-relaxed">
-            {sec.links.map((l,idx)=>(
-              <li className="leading-6" key={idx}>
-                <Link to={`/${sec.slug}`} className="hover:text-[#00BFFF] transition">
-                  {l}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <ul className="space-y-4">
+  {sec.links.map((l, idx) => (
+    <li key={idx} className="leading-tight">
+      <Link
+        to={`/${sec.slug}`}
+        className="hover:text-[#00BFFF] transition"
+      >
+        {l}
+      </Link>
+    </li>
+  ))}
+</ul>
         </div>
       ))}
 
