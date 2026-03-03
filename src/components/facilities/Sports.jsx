@@ -60,7 +60,7 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
           </div>
 
           {/* RIGHT */}
-          <p className="text-[#3A3A3A] text-base mt-0 lg:mt-30 sm:text-[15px] leading-relaxed">
+          <p className="text-[#3A3A3A] text-base mt-0 lg:mt-15 sm:text-[15px] leading-relaxed">
             {playground.content}
           </p>
 

@@ -108,9 +108,9 @@ export default memo(function FuturePlan({ data }) {
             </div>
 
             {/* subtitle */}
-            <h3 className="text-[32px] sm:text-[26px] text-[22px] text-[#002147] font-medium mb-6 sm:mb-4">
+            {/* <h3 className="text-[32px] sm:text-[26px] text-[22px] text-[#002147] font-medium mb-6 sm:mb-4">
               {leadChangeHeading}
-            </h3>
+            </h3> */}
 
             {/* list */}
             <ul>
