@@ -51,11 +51,11 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
               Sports
             </div>
 
-            <h2 className="text-[44px] md:text-[52px] sm:text-[40px] text-[26px] font-medium text-[#002147] leading-snug">
+            <h2 className="text-[44px] md:text-[52px] sm:text-[40px] text-[26px] font-medium text-[#002147] leading-12">
               {playground.title}
             </h2>
 
-            <div className="w-[120px] h-[3px] bg-[#e99503] mt-2"></div>
+            <div className="w-[120px] h-[2px] bg-[#fcb001] mt-1"></div>
 
           </div>
 

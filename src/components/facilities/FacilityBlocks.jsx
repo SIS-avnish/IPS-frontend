@@ -56,13 +56,13 @@ export default memo(function FacilityBlocks({ wellnessCenter, transport, canteen
                 {b.badge}
               </div>
 
-              <h2 className="text-3xl sm:text-6xl text-xl text-[#002147] font-medium whitespace-pre-line leading-snug">
+              <h2 className="text-3xl sm:text-6xl  text-[#002147] font-medium whitespace-pre-line"> 
                 {b.title}
               </h2>
 
-              <div className="w-44 h-[2px] bg-[#fcb001] mt-2"></div>
+              <div className="w-44 h-[2px] bg-[#fcb001] mt-1"></div>
 
-              <p className="text-[#3A3A3A] mt-5 mb-2 text-base sm:text-[15px] leading-relaxed">
+              <p className="text-[#3A3A3A] mt-5 mb-2 text-base sm:text-[15px] ">
                 {b.text}
               </p>
 

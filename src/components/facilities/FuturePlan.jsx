@@ -81,7 +81,7 @@ export default memo(function FuturePlan({ data }) {
             className="lg:pl-5"
           >
 
-            <p className="text-[#3A3A3A] mb-4 text-base sm:text-[15px] leading-relaxed">
+            <p className="text-[#3A3A3A] mb-4 text-base lg:mt-90 lg:ml-20 sm:text-[15px] leading-relaxed">
               {data.description}
             </p>
 

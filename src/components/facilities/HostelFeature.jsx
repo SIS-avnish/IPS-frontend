@@ -46,7 +46,7 @@ export default memo(function HostelFeatures({ intro, services }) {
               {intro?.title || "Discover a Home Away from Home"}
             </h2>
 
-            <div className="w-44 h-[2px] bg-[#bb3d02] mt-2"></div>
+            <div className="w-44 h-[2px] bg-[#fcb001] mt-1"></div>
           </div>
 
           <p className="text-[#3A3A3A] text-base sm:text-[15px] mt-0 lg:mt-10 leading-relaxed">
