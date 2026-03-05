@@ -69,7 +69,7 @@ export default memo(function Footer() {
 
   const navLinks = useMemo(() => [
     {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
-    {label:"About Us", path:`/${activeCollege}/about`},
+    {label:"About IPSA", path:`/${activeCollege}/about`},
     {label:"Placements", path:`/${activeCollege}/placements`},
     {label:"Activities", path:`/${activeCollege}/activities/cultural`},
     {label:"Facilities", path:`/${activeCollege}/facilities`},
@@ -169,7 +169,7 @@ export default memo(function Footer() {
       <div className="flex gap-3 justify-center lg:justify-start">
         <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faMapMarkerAlt} /></span>
         <p className="text-left">
-          IPS Academy, AB Road,<br/>
+          IPS Academy, knowledge village,<br/>
           Rajendra Nagar, Indore (M.P)
         </p>
       </div>
@@ -182,11 +182,19 @@ export default memo(function Footer() {
         </p>
       </div>
 
-      <div className="flex gap-3 justify-center lg:justify-start">
-        <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
-        <a href="mailto:info@ipsacademy.org" className="hover:underline">
-          info@ipsacademy.org
-        </a>
+      <div className="flex flex-col items-baseline lg:justify-start">
+        <div>
+           <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
+            <a href="mailto:info@ipsacademy.org" className="hover:underline">
+            info@ipsacademy.org
+            </a>
+        </div>
+        <div>
+              <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span> <a href="mailto:admission@ipsacademy.org" className="hover:underline">
+             admission@ipsacademy.org
+             </a>
+          </div>
+        
       </div>
 
     </div>

@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from "react";
 import { fetchPageData, fetchCollegeCourses } from "../services/api";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import useSEO from "../hooks/useSEO";
-
 import Hero from "../components/home/Hero";
 import WhyIPSA from "../components/home/WhyIPSA";
 import StatsSection from "../components/home/StatsSection";
