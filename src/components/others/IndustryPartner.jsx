@@ -6,7 +6,7 @@ const IndustryPartner = memo(({ html }) => {
 
   if (cleanHtml) {
     return (
-      <section className="font-medium py-10 px-3 sm:px-6 bg-white">
+      <section className="font-medium py-1 px-1 sm:px-1 bg-white">
         <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanHtml }} />
       </section>
     );
