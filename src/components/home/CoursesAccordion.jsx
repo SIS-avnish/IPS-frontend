@@ -133,7 +133,7 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
   {(() => {
     const text = isExpanded
       ? c.desc
-      : c.desc.slice(0, 100) + (c.desc.length > 100 ? ".." : "");
+      : c.desc.slice(0, 500) + (c.desc.length > 500 ? ".." : "");
 
     const parts = text.split("\n");
 
@@ -151,7 +151,7 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
   })()}
 </p>
 
-            {c.desc.length > 100 && (
+            {c.desc.length > 500 && (
               <button
                 onClick={() =>
                   setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
