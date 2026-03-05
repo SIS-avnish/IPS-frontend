@@ -95,6 +95,7 @@ const isCollegeHome =
   ["Admission","admission"],
   ["ApplyNow","applyform"],
   ["Recruiter","recruiters"],
+  ["Other Courses ","othercourses "]
 ];
 
 
@@ -173,24 +174,51 @@ const isCollegeHome =
           flex flex-col
           ${collegesOpen?"block":"hidden"}`}>
 
-          {isCollegeHome
-  ? collegeSections.map(([name,id])=>(
-      <a
-        key={id}
-        href={`/${activeCollege}#${id}`}
-        onClick={closeAll}
-        className="px-4 py-2 transition-colors text-gray-800 hover:bg-red-500 hover:text-white"
-      >
-        {name}
-      </a>
-    ))
-  : colleges.map(([name,slug])=>(
+         {isCollegeHome
+  ? collegeSections.map(([name, id]) =>
+      name === "Other Courses " ? (
+        <div key={id} className="relative group">
+
+          {/* OTHER COURSES BUTTON */}
+          <div className="px-4 py-2 flex justify-between items-center text-gray-800 hover:bg-red-500 hover:text-white cursor-pointer">
+            {name}
+            <span>▶</span>
+          </div>
+
+          {/* SUB MENU */}
+          <div className="absolute left-full top-0 hidden group-hover:flex flex-col bg-white shadow-md border min-w-[180px]">
+
+            {colleges.map(([collegeName, slug]) => (
+              <NavLink
+                key={slug}
+                to={`/${slug}`}
+                target="_blank"
+                onClick={closeAll}
+                className={dropdownLink}
+              >
+                {collegeName}
+              </NavLink>
+            ))}
+
+          </div>
+        </div>
+      ) : (
+        <a
+          key={id}
+          href={`/${activeCollege}#${id}`}
+          onClick={closeAll}
+          className="px-4 py-2 text-gray-800 hover:bg-red-500 hover:text-white"
+        >
+          {name}
+        </a>
+      )
+    )
+  : colleges.map(([name, slug]) => (
       <NavLink
         key={slug}
         to={`/${slug}`}
         onClick={closeAll}
         className={dropdownLink}
-        target="_blank"
       >
         {name}
       </NavLink>

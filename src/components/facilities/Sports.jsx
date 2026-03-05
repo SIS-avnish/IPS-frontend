@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import trophy from "../../assets/Images/trophy 2.svg";
 import { resolveImageUrl } from "../../services/api";
@@ -117,14 +117,10 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
         {/* DIVIDER */}
         <hr className="h-[2px] bg-[#D9D9D9] border-none my-8 sm:my-6" />
 
-        {/* SPORTS LISTS */}
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-5">
-
-          <SportsList items={col1} />
-          <SportsList items={col2} />
-          <SportsList items={col3} />
-
-        </div>
+        {/* FACILITIES CARDS CAROUSEL */}
+        {facilitiesFeature?.cards?.length > 0 && (
+          <FacilityCarousel title={facilitiesFeature.title} cards={facilitiesFeature.cards} />
+        )}
 
       </div>
     </section>
@@ -154,7 +150,7 @@ function Athlete({ name, desc }) {
 
 /* ---------- Sports List ---------- */
 
-function SportsList({ items }) {
+/* function SportsList({ items }) {
   return (
     <ul className="text-[16px] sm:text-[15px]">
       {items.map((item, i) => (
@@ -164,5 +160,96 @@ function SportsList({ items }) {
         </li>
       ))}
     </ul>
+  );
+} */
+
+
+/* ---------- Facility Cards Carousel ---------- */
+
+function FacilityCarousel({ title, cards }) {
+  const trackRef = useRef(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
+
+  const CARD_WIDTH = 220; // px per scroll step
+
+  const updateArrows = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  const scroll = (dir) => {
+    trackRef.current?.scrollBy({ left: dir * CARD_WIDTH * 2, behavior: "smooth" });
+    setTimeout(updateArrows, 350);
+  };
+
+  return (
+    <div className="mt-10">
+      {title && (
+        <h5 className="text-[32px] md:text-[30px] sm:text-[26px] text-[24px] text-[#002147] font-medium mb-6">
+          {title}
+        </h5>
+      )}
+
+      <div className="relative group">
+        {/* PREV */}
+        {canPrev && (
+          <button
+            onClick={() => scroll(-1)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-[#002147] text-white flex items-center justify-center shadow-lg hover:bg-[#fcb001] transition -translate-x-3"
+            aria-label="Previous"
+          >
+            ‹
+          </button>
+        )}
+
+        {/* TRACK */}
+        <div
+          ref={trackRef}
+          onScroll={updateArrows}
+          className="flex gap-4 overflow-x-auto scroll-smooth pb-2"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {cards.map((card, i) => (
+            <motion.div
+              key={i}
+              variants={cardVariant}
+              initial="hidden"
+              whileInView="visible"
+              custom={i}
+              viewport={{ once: true, amount: 0.1 }}
+              className="flex-shrink-0 w-[200px] sm:w-[280px] bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center gap-3 border border-[#e8e8e8] hover:shadow-lg transition h-60"
+            >
+              <img
+                src={resolveImageUrl(card.icon)}
+                alt={card.title}
+                className="w-44 h-44 object-contain"
+              />
+              <p className="text-[15px] font-medium text-[#002147] leading-snug">
+                {card.title}
+              </p>
+              {card.description && (
+                <p className="text-[13px] text-[#3A3A3A] leading-relaxed">
+                  {card.description}
+                </p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* NEXT */}
+        {canNext && (
+          <button
+            onClick={() => scroll(1)}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-[#002147] text-white flex items-center justify-center shadow-lg hover:bg-[#fcb001] transition translate-x-3"
+            aria-label="Next"
+          >
+            ›
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
