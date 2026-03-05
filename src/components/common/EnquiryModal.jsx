@@ -44,7 +44,7 @@ export default function EnquiryModal() {
         style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
       >
         <MessageSquareText size={26} className="rotate-90" />
-        <span className="text-md font-semibold tracking-wide">Enquiry</span>
+        <span className="text-md font-semibold tracking-wide">Enquire Now</span>
       </button>
 
       {/* ── Modal overlay + panel ──────────────────────────────── */}

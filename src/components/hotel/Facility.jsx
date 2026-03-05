@@ -205,7 +205,7 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
       <section className="bg-[#082c4e] py-16 md:pt-80 md:pb-20 px-4 sm:px-6 md:px-12 lg:px-16 text-white">
 
         <div className="max-w-7xl mx-auto">
-
+sdsadsadasdasdasdasd
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-10 md:mb-12">
 
             <motion.h2
