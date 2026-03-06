@@ -139,7 +139,7 @@ const {collegeSlug} = useParams();
 
             {/* SUBTITLE */}
             <h3 className="text-[#0B2C4D] text-xl md:text-2xl mb-6">
-              {featuresSubtitle}hhhh
+              {featuresSubtitle}
             </h3>
 
             {/* LIST */}
