@@ -226,6 +226,7 @@ const isCollegeHome =
       <NavLink
         key={slug}
         to={`/${slug}`}
+        target="_blank"
         onClick={closeAll}
         className={dropdownLink}
       >

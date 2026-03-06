@@ -39,11 +39,11 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
   // Use ecosystem items from the API, or fallback to defaults
   const features = ecosystemData?.cards
     ? ecosystemData.cards.map((item, i) => ({
-      icon: item.icon || iconMap[i] || iconMap[0],
+      icon: item.icon ,
       title: item.title,
       text: item.description
     }))
-    : defaultFeatures;
+    : (defaultFeatures);
 
   // Growth image from the API gallery section
   const growthImg = growthImage?.images?.[0]
@@ -85,7 +85,7 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
             <Media
               src={growthImg}
               alt={title}
-              className="w-full mt-10 object-cover"
+              className="w-full mt-10 lg:mt-30 object-cover"
             />
           </motion.div>
 
