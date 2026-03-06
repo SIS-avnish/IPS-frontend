@@ -1,10 +1,14 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.07, ease: "easeOut" } }),
 };
+
+
 
 const defaultWhyChoose = [
  
@@ -24,6 +28,9 @@ export default memo(function About({ about, features, whyChooseData }) {
     title: item.title || item.question || "",
     desc: item.description || item.desc || item.answer || "",
   }));
+
+  const navigate = useNavigate();
+const {collegeSlug} = useParams();
 
   return (
     <section id="about" className="py-12 sm:py-14 md:py-10">
@@ -54,7 +61,7 @@ export default memo(function About({ about, features, whyChooseData }) {
             {content}
           </p>
 
-          <button className="mt-5 bg-white border border-[#002147] text-black px-6 py-3  w-full sm:w-auto">
+          <button onClick={() => navigate(`/${collegeSlug}/about`)} className="mt-5 bg-white border border-[#002147] text-black px-6 py-3  w-full sm:w-auto">
             Know More
           </button>
         </motion.div>

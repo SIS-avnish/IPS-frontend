@@ -27,26 +27,7 @@ const slideRight = {
 };
 
 const defaultFeatures = [
-  {
-    icon: onlineTeachingIcon,
-    title: "Ecosystem For Your Growth",
-    text: "From tech-led classrooms to advanced labs and studios, find a world of excellence to lead the future."
-  },
-  {
-    icon: computerIcon,
-    title: "Learn Beyond Textbooks",
-    text: "Dive into industry-tailored, experiential learning to nurture your creativity with career-readiness."
-  },
-  {
-    icon: globalIcon,
-    title: "Be A Global Citizen",
-    text: "Prepare for a successful career and get ready for global opportunities."
-  },
-  {
-    icon: opportunitiesIcon,
-    title: "Connect With Alumni",
-    text: "Grow your network with IPS alumni all over the world."
-  }
+ 
 ];
 
 export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage }) {
@@ -56,11 +37,11 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
     "We are Central India's leading multidisciplinary institution, known for excellence in academics, infrastructure and industry connect.";
 
   // Use ecosystem items from the API, or fallback to defaults
-  const features = ecosystemData?.items
-    ? ecosystemData.items.map((item, i) => ({
-      icon: iconMap[i] || iconMap[0],
-      title: item.question,
-      text: item.answer
+  const features = ecosystemData?.cards
+    ? ecosystemData.cards.map((item, i) => ({
+      icon: item.icon || iconMap[i] || iconMap[0],
+      title: item.title,
+      text: item.description
     }))
     : defaultFeatures;
 
@@ -121,7 +102,11 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
                   className="flex gap-6 w-full"
                 >
 
-                <img src={f.icon} className="w-10 h-10 mt-1" alt={f.title} />
+                <img
+  src={f.icon}
+  alt={f.title}
+  className="w-16 h-12 sm:w-20 sm:h-14 md:w-24 md:h-16 lg:w-28 lg:h-18 xl:w-30 xl:h-20 mt-1 object-contain"
+/>
 
                 <div>
                   <h6 className="text-xl font-medium text-[#002147]">{f.title}</h6>

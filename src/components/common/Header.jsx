@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink, useLocation,Navigate,Link } from "react-router-dom";
+import { NavLink, useLocation,Navigate,Link, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/logos/logo.png";
 import { fetchCollegeInfo } from "../../services/api";
 
@@ -9,6 +9,7 @@ export default function Navbar(){
   const [collegesOpen,setCollegesOpen]=useState(false);
   const [studentOpen,setStudentOpen]=useState(false);
   const [collegeLogo,setCollegeLogo]=useState(null);
+  const navigation = useNavigate();
 
   const location = useLocation();
   const pathParts = location.pathname.split("/");
@@ -27,6 +28,8 @@ const isCollegeHome =
     pathParts[2] === "about"||      pathParts[2] === "placements"||      pathParts[2] === "facilities"||
       pathParts[2] === "contact" ||pathParts[2]==="activities"
   );
+
+  const {collegeSlug} = useParams();
 
 
   useEffect(() => {
@@ -163,7 +166,13 @@ const isCollegeHome =
         onMouseLeave={()=>setCollegesOpen(false)}
       >
         <button
-          onClick={()=>setCollegesOpen(!collegesOpen)}
+          onClick={() => {
+            if (isCollegeHome) {
+              navigation(`/${activeCollege}`);
+            } else {
+              setCollegesOpen(!collegesOpen);
+            }
+          }}
           className="py-2 font-medium text-gray-900 hover:text-red-500"
         >
           {isCollegeHome ? collegeNameMap[activeCollege]: "Courses"} ▾
