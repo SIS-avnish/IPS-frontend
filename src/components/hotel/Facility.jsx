@@ -68,7 +68,7 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-[#002147] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight">
+              <h2 className="text-[#002147] text-3xl sm:text-5xl md:text-4xl lg:text-5xl font-medium leading-tight">
                 {sectionTitle}
               </h2>
 
