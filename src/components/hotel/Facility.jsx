@@ -107,7 +107,7 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
                   <div key={i} className="border-b border-gray-300 pb-5">
 
                     <button
-                      onClick={() => setOpen(open === i ? -1 : i)}
+                      onClick={() => setOpen(open === i ? 1 : i)}
                       className="w-full flex justify-between items-center text-left py-1"
                     >
                       <span className="text-[#002147] text-base sm:text-lg font-medium">
