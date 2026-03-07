@@ -33,8 +33,44 @@ export default memo(function About({ about, features, whyChooseData }) {
 const {collegeSlug} = useParams();
 
   return (
-    <section id="about" className="py-12 sm:py-14 md:py-10">
+    <section id="about" className="py-12 sm:py-14 md:py-0">
+
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center">
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="text-center md:text-left"
+        >
+          <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-5xl font-medium mr-5">
+            {title}
+          </h2>
+          <div className="w-20 sm:w-44 h-[2px] bg-[#faa701] mt-3 mx-auto md:mx-0"></div>
+        </motion.div>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          custom={1}
+          viewport={{ once: true, amount: 0.1 }}
+          className="text-center md:text-left"
+        >
+          <p className="text-gray-600 text-base sm:text-lg ">
+            {content}
+          </p>
+
+          <button onClick={() => navigate(`/${collegeSlug}/about`)} className="mt-5 bg-white border border-[#002147] text-black px-6 py-3  w-full sm:w-auto">
+            Know More
+          </button>
+        </motion.div>
+
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-2 items-center mt-10">
 
         <motion.div
           variants={fadeUp}

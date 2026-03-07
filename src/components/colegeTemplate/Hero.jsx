@@ -13,7 +13,7 @@ export default memo(function Hero({ data }) {
 
   return (
     <section id="banner" className="
-          relative mb-12 sm:mb-16 lg:mb-20
+          relative mb-12 sm:mb-16 lg:mb-15
           w-full max-w-[1592px]
           h-[420px] sm:h-[520px] md:h-[620px] lg:h-[836px]
           mx-auto px-4
@@ -36,7 +36,7 @@ export default memo(function Hero({ data }) {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
             className="absolute bottom-0 left-0
             translate-y-0 lg:translate-y-1/7
-            bg-[#E9E9E9]
+            bg-[#E9E9E9] lg:h-50
             w-full sm:w-[85%] md:w-[70%] lg:w-[40%] xl:w-[40%]
             max-w-3xl
             px-4 sm:px-6 md:px-8 lg:px-10
@@ -44,7 +44,7 @@ export default memo(function Hero({ data }) {
             z-10"
           >
     
-            <div className="text-[#0B2C4D] whitespace-pre-line">
+            <div className="text-[#0B2C4D] whitespace-pre-line lg:pt-10">
   <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl  font-medium">
     {title}
   </h1>
