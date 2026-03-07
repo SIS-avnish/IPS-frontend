@@ -15,14 +15,14 @@ const slideRight = {
   hidden: { opacity: 0, x: 30 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut", delay: 0.1 } },
 };
-export default memo(function About({ data }) {
+export default memo(function Why({ data }) {
   const [expanded, setExpanded] = useState(false);
 
-  const title = data?.title || "About IBMR";
+  const title = data?.title || "Why IBMR";
   const text = data?.content || "Established in 1994, IBMR has been shaping future business leaders through a powerful blend of academic excellence and real-world learning. A NAAC A++ accredited, UGC autonomous institute affiliated to DAVV, Indore, IBMR offers a complete pathway from BBA to MBA and Ph.D., preparing students to thrive in today’s fast-evolving business landscape. Through industry exposure, experiential learning and integration of new-age skills, the institute bridges the gap between classroom knowledge and corporate realities, helping students develop the strategic thinking, leadership mindset and professional confidence needed to succeed in the real world of business.";
 
   return (
-    <section className="max-w-[1140px] mx-auto px-4 py-20 sm:pt-1 mb-1">
+    <section className="max-w-[1140px] mx-auto px-4 py-20 sm:pt-30  mb-1">
       <div className="grid grid-cols-12 gap-x-6">
         {/* Left column - col-12 col-md-6 col-lg-4 */}
         <motion.div

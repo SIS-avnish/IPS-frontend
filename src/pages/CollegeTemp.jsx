@@ -4,17 +4,18 @@ import { fetchCollegePageData } from "../services/api";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/colegeTemplate/Hero";
 import About from "../components/colegeTemplate/About";
-import Advantage from "../components/colegeTemplate/Advantage";
 import Programs from "../components/colegeTemplate/Programs";
 import Facilities from "../components/colegeTemplate/Facilities";
 import Placement from "../components/colegeTemplate/Placement";
 import Faculty from "../components/colegeTemplate/Faculty";
 import Admission from "../components/colegeTemplate/Admission";
 import ApplyForm from "../components/colegeTemplate/ApplyForm";
-import Recruiters from "../components/colegeTemplate/Recruiters";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
 import useSEO from "../hooks/useSEO";
+import Excellence from "@/components/colegeTemplate/Excellence";
+import Experience from "@/components/colegeTemplate/Experience";
+import VissionInfra from "@/components/colegeTemplate/VissionInfra";
 
 export default function IbmrPage() {
   const { collegeSlug } = useParams();
@@ -62,29 +63,14 @@ export default function IbmrPage() {
   return (
     <div className="w-full overflow-x-hidden">
       {sections.hero && <Hero data={sections.hero} />}
-      {sections.about && (
-        <About
-          about={sections.about}
-          features={sections.campus_to_business_boardroom}
-          whyChooseData={sections.why_choose}
-        />
-      )}
-      {sections.experience_learn && <Advantage data={sections.experience_learn} />}
+     <About/>
+     <Excellence/>
+     <Experience/>
+     <VissionInfra/>
       <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />
        <Faculty collegeSlug={collegeSlug} />
       {sections.facilities && <Facilities data={sections.facilities} />}
-      {(sections.career_pathways || sections.news_and_events) && (
-        <Placement
-          placement={sections.career_pathways}
-          testimonials={null}
-        />
-      )}
-      {(sections.placement || sections.testimonials) && (
-        <Placement
-          placement={sections.placement}
-          testimonials={sections.testimonials}
-        />
-      )}
+      <Placement/>
      
       <Admission />
       <ApplyForm collegeSlug={collegeSlug} />
@@ -95,7 +81,7 @@ export default function IbmrPage() {
           testimonials={null}
         />
       )}
-      {sections.recruiter && <Recruiters data={sections.recruiter} />}
+      
       <ScratchSections sections={sections} exclude={['hero', 'about', 'campus_to_business_boardroom', 'why_choose', 'experience_learn', 'programmed_offered', 'facilities', 'career_pathways', 'news_and_events', 'placement', 'testimonials', 'success_stories', 'recruiter']} />
     </div>
   );

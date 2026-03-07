@@ -35,6 +35,21 @@ const steps = [
     title: "Confirmation & Fee Payment",
     desc: "Confirm your seat by completing payment and formalities.",
   },
+  {
+    num: 5,
+    title: "Orientation & Onboarding",
+    desc: "Join orientation sessions to get familiar with campus life.",
+  },
+  {
+    num: 6,
+    title: "Start Your Journey",
+    desc: "Begin your academic journey with us and explore endless opportunities.",
+  },
+  {
+    num: 7,
+    title: "Support & Guidance",
+    desc: "Access ongoing support from our admissions team throughout your journey.",
+  }
 ];
 
 export default memo(function Admission() {
