@@ -71,6 +71,7 @@ export default function IbmrPage() {
       )}
       {sections.experience_learn && <Advantage data={sections.experience_learn} />}
       <Programs data={sections.programmed_offered} collegeSlug={collegeSlug} />
+       <Faculty collegeSlug={collegeSlug} />
       {sections.facilities && <Facilities data={sections.facilities} />}
       {(sections.career_pathways || sections.news_and_events) && (
         <Placement
@@ -84,7 +85,7 @@ export default function IbmrPage() {
           testimonials={sections.testimonials}
         />
       )}
-      <Faculty collegeSlug={collegeSlug} />
+     
       <Admission />
       <ApplyForm collegeSlug={collegeSlug} />
       {sections.success_stories && <SuccessStories data={sections.success_stories} />}
