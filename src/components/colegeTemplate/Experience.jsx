@@ -33,11 +33,12 @@ const cardVariant = {
   }),
 };
 
-export default memo(function Experience() {
+export default memo(function Experience({ data }) {
 
-  const title = "Experience, Learn, Lead: The IBMR Advantage";
+  const rawTitle = data?.title || "Experience, Learn, Lead: The IBMR Advantage";
+  const title = rawTitle.split("/n")[0].trim();
 
-  const cards = [
+  const cards = data?.cards || [
     {
       title: "Experiential Learning",
       description: "Industry projects, internships, and case studies",

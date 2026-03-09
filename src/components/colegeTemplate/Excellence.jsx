@@ -13,9 +13,9 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function Excellence() {
+export default memo(function Excellence({ data, statsData }) {
 
-  const stats = [
+  const stats = statsData?.stats || [
     { value: "30", label: "Year Legacy" },
     { value: "500+", label: "Faculty Members" },
     { value: "1 Lakh+", label: "Alumni Network" },
@@ -23,9 +23,9 @@ export default memo(function Excellence() {
     { value: "500+", label: "Eminent Recruiters" },
   ];
 
-  const excellenceTitle = "High on Excellence Since 1993";
+  const excellenceTitle = data?.title || "High on Excellence Since 1993";
 
-  const excellenceItems = [
+  const excellenceItems = data?.items || [
     {
       question: "NAAC A++",
       answer: "Accredited Management institute",
@@ -126,11 +126,11 @@ export default memo(function Excellence() {
                   max-[576px]:text-center"
                 >
                   <div className="pr-6">
-                    <p className="text-[20px] font-normal leading-[22px]">
+                    <p className="text-[20px] font-normal leading-[26px]">
                       {item.question}
                     </p>
-                    <hr className="my-2 opacity-60" />
-                    <p className="text-[20px] font-normal leading-[22px]">
+                    <hr className="my-1 opacity-60" />
+                    <p className="text-[20px] font-normal leading-[26px]">
                       {item.answer}
                     </p>
                   </div>
@@ -149,10 +149,11 @@ export default memo(function Excellence() {
 
             return (
               <div key={i}>
-                <h4 className="text-[34px] mb-[5px] font-medium max-[576px]:text-[24px]">
+                <h4 className="text-[28px] mb-[1px] font-medium max-[576px]:text-[24px]">
                   {item.question}
                 </h4>
-                <p className="text-[23px] opacity-90 leading-[26px] max-[576px]:text-[16px]">
+                <hr className="my-1 opacity-60" />
+                <p className="text-[23px] opacity-90 leading-[24px] max-[576px]:text-[16px]">
                   {item.answer}
                 </p>
               </div>

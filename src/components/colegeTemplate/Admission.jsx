@@ -14,45 +14,28 @@ const cardVariant = {
   }),
 };
 
-const steps = [
-  {
-    num: 1,
-    title: "Apply Online",
-    desc: "Fill out the online admission form with accurate personal and academic details.",
-  },
-  {
-    num: 2,
-    title: "Document Verification",
-    desc: "Submit required documents for eligibility check.",
-  },
-  {
-    num: 3,
-    title: "Counselling & Interview",
-    desc: "Attend counselling session and interview if required.",
-  },
-  {
-    num: 4,
-    title: "Confirmation & Fee Payment",
-    desc: "Confirm your seat by completing payment and formalities.",
-  },
-  {
-    num: 5,
-    title: "Orientation & Onboarding",
-    desc: "Join orientation sessions to get familiar with campus life.",
-  },
-  {
-    num: 6,
-    title: "Start Your Journey",
-    desc: "Begin your academic journey with us and explore endless opportunities.",
-  },
-  {
-    num: 7,
-    title: "Support & Guidance",
-    desc: "Access ongoing support from our admissions team throughout your journey.",
-  }
+const defaultSteps = [
+  { num: 1, title: "Apply Online", desc: "Fill out the online admission form with accurate personal and academic details." },
+  { num: 2, title: "Document Verification", desc: "Submit required documents for eligibility check." },
+  { num: 3, title: "Counselling & Interview", desc: "Attend counselling session and interview if required." },
+  { num: 4, title: "Confirmation & Fee Payment", desc: "Confirm your seat by completing payment and formalities." },
+  { num: 5, title: "Orientation & Onboarding", desc: "Join orientation sessions to get familiar with campus life." },
+  { num: 6, title: "Start Your Journey", desc: "Begin your academic journey with us and explore endless opportunities." },
+  { num: 7, title: "Support & Guidance", desc: "Access ongoing support from our admissions team throughout your journey." },
 ];
 
-export default memo(function Admission() {
+export default memo(function Admission({ data }) {
+  const rawTitle = data?.title || "Admission Procedure : Follow these simple steps to begin your journey with us.";
+  const [heading, subtitle] = rawTitle.split(":").map((s) => s.trim());
+
+  const steps = data?.items?.length
+    ? data.items.map((item) => ({
+        num: parseInt(item.name, 10) || 0,
+        title: (item.designation || "").trim(),
+        desc: item.story || "",
+      }))
+    : defaultSteps;
+
   return (
     <section id="admission" className="bg-[#f8f9fc] py-12 sm:py-14 md:py-16">
 
@@ -65,14 +48,16 @@ export default memo(function Admission() {
           viewport={{ once: true, amount: 0.1 }}
           className="text-[#002147] text-2xl sm:text-3xl md:text-5xl font-medium text-center md:text-left"
         >
-          Admission Procedure
+          {heading}
         </motion.h2>
 
         <div className="w-24 sm:w-32 h-[2px] bg-[#002147] mt-3 mb-4 mx-auto md:mx-0"></div>
 
-        <p className="text-gray-600 mb-8 sm:mb-10 text-center md:text-left">
-          Follow these simple steps to begin your journey with us.
-        </p>
+        {subtitle && (
+          <p className="text-gray-600 mb-8 sm:mb-10 text-center md:text-left">
+            {subtitle}
+          </p>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
 

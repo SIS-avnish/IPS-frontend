@@ -13,14 +13,18 @@ const slideRight = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function VisionInfra() {
+export default memo(function VisionInfra({ data }) {
 
-  const visionTitle = "Vision";
-  const visionText =
+  const items = data?.items || [];
+  const visionItem = items.find((i) => i.question === "Vision");
+  const missionItem = items.find((i) => i.question === "Mission");
+
+  const visionTitle = visionItem?.question || "Vision";
+  const visionText = visionItem?.answer ||
     "IPS Academy aims to be one of the premier institutions of the country, dedicated to the creation, application, dissemination of knowledge, skills, spirit of competitive excellence, building up generations of global citizens and value driven professionals for the corporate world and the society.";
 
-  const missionTitle = "Mission";
-  const missionText =
+  const missionTitle = missionItem?.question || "Mission";
+  const missionText = missionItem?.answer ||
     "To create professional manpower of the highest order for meeting the current and future demands of the industry and society. To nurture entrepreneurship capabilities amongst the students enabling them to be job providers instead of job seekers. To foster research and development culture in close interaction with the industry, promoting synergistic partnership with the industry, scientific world and society.";
 
   return (
@@ -91,7 +95,7 @@ export default memo(function VisionInfra() {
 
         {/* ---------------- Infrastructure Section ---------------- */}
 
-        <div className="mt-20 grid md:grid-cols-2 gap-10 items-start">
+        {/* <div className="mt-20 grid md:grid-cols-2 gap-10 items-start">
 
           <div>
             <h2 className="text-[#002147] text-4xl md:text-[56px] font-medium leading-tight">
@@ -110,7 +114,7 @@ export default memo(function VisionInfra() {
 
         </div>
 
-        {/* Cards */}
+       
 
         <div className="grid md:grid-cols-2 gap-6 mt-10">
 
@@ -138,7 +142,7 @@ export default memo(function VisionInfra() {
             </p>
           </div>
 
-        </div>
+        </div> */}
 
       </div>
 
