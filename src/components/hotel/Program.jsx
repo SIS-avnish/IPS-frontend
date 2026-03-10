@@ -10,7 +10,10 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
-const Program = memo(({ data }) => {
+const Program = memo(({ data, titleData }) => {
+
+  const programTitle = titleData?.title || "Programmes";
+  const programDescription = titleData?.content || "";
 
   // If API provides scratch HTML, render it dynamically
   if (data?.html) {
@@ -19,9 +22,12 @@ const Program = memo(({ data }) => {
         {/* Heading */}
         <div className="max-w-7xl mx-auto mb-10 md:mb-14">
           <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-semibold">
-            Programmes
+            {programTitle}
           </h2>
           <div className="w-24 sm:w-28 md:w-32 h-[2px] bg-red-400 mt-3"></div>
+          {programDescription && (
+            <p className="text-gray-600 mt-4 max-w-3xl leading-relaxed">{programDescription}</p>
+          )}
         </div>
 
         <div
@@ -39,9 +45,12 @@ const Program = memo(({ data }) => {
       {/* Heading */}
       <div className="max-w-7xl mx-auto mb-10 md:mb-14">
         <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-semibold">
-          Programmes
+          {programTitle}
         </h2>
         <div className="w-24 sm:w-28 md:w-32 h-[2px] bg-red-400 mt-3"></div>
+        {programDescription && (
+          <p className="text-gray-600 mt-4 max-w-3xl leading-relaxed">{programDescription}</p>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto space-y-14 md:space-y-20">
