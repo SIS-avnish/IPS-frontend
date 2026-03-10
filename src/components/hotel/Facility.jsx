@@ -2,11 +2,9 @@ import React, { useState, memo } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 
-import kitchen from "../../assets/Images/Kitchen.png";
-import team from "../../assets/Images/team.png";
-import chief from "../../assets/Images/chief.png";
 
-const Facilities = memo(({ facilitiesData, skillsData }) => {
+
+const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
   const [open, setOpen] = useState(0);
 
@@ -28,21 +26,20 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
         { title: "Garde Manger (Cold Kitchen)", content: "" },
       ];
 
-  const bakeryItems = bakeries.length
-    ? bakeries
-    : [
-        { name: "Bakery 1", description: "Focuses on foundational baking techniques for first-year students, introducing tools and methods for preparing breads, cakes and puddings." },
-        { name: "Bakery 2", description: "Advanced-level baking for second and third-year students, covering intricate cake designs, confectionery and buffet presentations." },
-      ];
+  const bakeryItems = bakeryData?.facilities?.length
+    ? bakeryData.facilities
+    : bakeries.length
+      ? bakeries
+      : [
+          { name: "Bakery 1", image: "", description: "Focuses on foundational baking techniques for first-year students, introducing tools and methods for preparing breads, cakes and puddings." },
+          { name: "Bakery 2", image: "", description: "Advanced-level baking for second and third-year students, covering intricate cake designs, confectionery and buffet presentations." },
+        ];
 
   const sectionTitle = facilitiesData?.title 
   const sectionDesc = facilitiesData?.description 
 
-  // Split subtitle into two parts for section 2 heading and section 1 sub-heading
-  const subtitle = facilitiesData?.subtitle || "";
-  const subtitleParts = subtitle.split(/\s+AND\s+/i);
-  const bakeryHeading = subtitleParts[0]?.trim() || "Dreaming of Success?\nBake it Happen with Exceptional Facilities";
-  const kitchenSubHeading = subtitleParts[1]?.trim() || "Become a Pro at Our 5-star Training Kitchens";
+  const kitchenSubHeading = facilitiesData?.subtitle || "Become a Pro at Our 5-star Training Kitchens";
+  const bakeryHeading = bakeryData?.title || "Dreaming of Success?\nBake it Happen with Exceptional Facilities";
 
   // Skills section (third section)
   const skillsTitle = skillsData?.title?.replace(/\n/g, ' ').trim() || "Want to Launch Your Own Restaurant?\nStar Here with Real-world Training";
@@ -50,13 +47,13 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
   const skillsImage = skillsData?.image || null;
 
   // Get current accordion item's image
-  const currentImage = items[open]?.image || kitchenImg;
+  const currentImage = items[open]?.image || items[0]?.image || "";
 
   return (
     <section>
 
       {/* FIRST SECTION */}
-      <section className="bg-[#ffffff] pt-16 md:pt-24 px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className="bg-[#ffffff] pt-16 md:pt-1 px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="max-w-7xl mx-auto">
 
           {/* TOP ROW */}
@@ -80,7 +77,7 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
-              className="text-gray-600 leading-relaxed max-w-xl"
+              className="text-gray-600 mt-10 leading-relaxed max-w-xl"
             >
               {sectionDesc}
             </motion.p>
@@ -160,15 +157,18 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
       <section className="bg-[#ffffff] py-14 md:mt-[-100px] md:py-0 px-4 sm:px-6 md:px-10 lg:px-12">
         <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
-          <motion.img
-            src={chief}
-            alt="Chief"
+          <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="w-full h-[320px] sm:h-[380px] md:h-[540px] object-cover"
-          />
+          >
+            <Media
+              src={bakeryItems.find(b => b.image)?.image || items[0]?.image || ""}
+              alt="Bakery"
+              className="w-full h-[320px] sm:h-[380px] md:h-[540px] object-cover"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: 80 }}
@@ -235,15 +235,18 @@ const Facilities = memo(({ facilitiesData, skillsData }) => {
 
           </div>
 
-          <motion.img
-            src={skillsImage || team}
-            alt="Restaurant training"
+          <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="w-full h-[300px] sm:h-[380px] md:h-[480px] object-cover rounded-md"
-          />
+          >
+            <Media
+              src={skillsImage || ""}
+              alt="Restaurant training"
+              className="w-full h-[300px] sm:h-[380px] md:h-[480px] object-cover rounded-md"
+            />
+          </motion.div>
 
         </div>
       </section>

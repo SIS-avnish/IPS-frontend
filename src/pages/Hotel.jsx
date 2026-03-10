@@ -41,17 +41,17 @@ const Hotel = () => {
     <div className='w-full overflow-x-hidden'>
       <Hero data={sections?.hero} />
       <About aboutData={sections?.about_college} whyData={sections?.why_college_of_education} />
-      <Excellence data={sections?.excellence} />
+      <Excellence data={sections?.excellence} statsData={sections?.stats} />
       <VissionInfra data={sections?.vision_mission} />
       <Program data={sections?.programmes} titleData={sections?.programmed_offered_title_description} />
-      <Facility facilitiesData={sections?.facilities} skillsData={sections?.skills_iohm} />
+      <Facility facilitiesData={sections?.facilities} skillsData={sections?.skills_iohm} bakeryData={sections?.bakery_1} />
       <Skills data={sections?.skills_iohm} />
       <Faculties data={sections?.train_with_tech_tools} teamData={sections?.learn_from_experts} />
       <Placement data={sections?.placement} recruitersData={sections?.recruiters} />
       {sections?.placement_1 && <SplitSection data={sections.placement_1} />}
       {sections?.success_stories && <SuccessStories data={sections.success_stories} />}
       <Admission data={sections?.admission_procedure} />
-      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'excellence', 'vision_mission', 'programmed_offered_title_description', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'learn_from_experts', 'placement', 'placement_1', 'recruiters', 'success_stories', 'admission_procedure']} />
+      <ScratchSections sections={sections} exclude={['hero', 'about_college', 'why_college_of_education', 'excellence', 'vision_mission', 'programmed_offered_title_description', 'programmes', 'facilities', 'skills_iohm', 'train_with_tech_tools', 'learn_from_experts', 'placement', 'placement_1', 'recruiters', 'success_stories', 'admission_procedure', 'bakery_1', 'stats']} />
       
 
     </div>
