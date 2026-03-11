@@ -42,8 +42,7 @@ function renderByType(data) {
       return <Testimonials data={data} />;
     case "facilities":
       return <Facilities data={data} />;
-    case "gallery":
-      return <GallerySection data={data} />;
+
     default:
       return null;
   }
