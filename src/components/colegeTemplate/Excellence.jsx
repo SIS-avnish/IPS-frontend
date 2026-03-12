@@ -23,7 +23,7 @@ export default memo(function Excellence({ data, statsData }) {
     { value: "500+", label: "Eminent Recruiters" },
   ];
 
-  const excellenceTitle = data?.title || "High on Excellence Since 1993";
+  const excellenceTitle = data?.title;
 
   const excellenceItems = data?.items || [
     {
@@ -93,7 +93,7 @@ export default memo(function Excellence({ data, statsData }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-left text-[54px] font-medium mb-4 
+          className="whitespace-pre-line text-left text-[54px] font-medium mb-4 
           max-[991px]:text-[48px] 
           max-[576px]:text-[30px] 
           max-[576px]:text-center 
@@ -102,10 +102,12 @@ export default memo(function Excellence({ data, statsData }) {
           {excellenceTitle}
         </motion.h2>
 
-        <div className="w-[384px] h-[2px] bg-[#FF7373] 
+        <div
+          className="w-[384px] h-[2px] bg-[#FF7373] 
         max-[576px]:w-[200px] 
         max-[576px]:mx-auto 
-        max-[576px]:mb-5" />
+        max-[576px]:mb-5"
+        />
 
         <div
           className={`grid gap-[30px] py-[18px] 
