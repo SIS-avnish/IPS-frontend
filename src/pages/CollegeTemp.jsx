@@ -42,29 +42,32 @@ function renderByType(data) {
       return <Testimonials data={data} />;
     case "facilities":
       return <Facilities data={data} />;
-
     default:
       return null;
   }
 }
 
 function renderSection(key, data, sections, collegeSlug) {
-  // Key-specific renderers
   switch (key) {
     case "hero":
-      return null; // rendered separately above
+      return null;
+
     case "about":
       return <About data={data} />;
+
     case "stats":
-      // If excellence exists, stats are passed into Excellence
       if (sections.excellence) return null;
       return <StatsSection data={data} />;
+
     case "excellence":
       return <Excellence data={data} statsData={sections.stats} />;
+
     case "experience_learn":
       return <Experience data={data} />;
+
     case "vision_mission":
       return <VissionInfra data={data} />;
+
     case "programmed_offered":
       return (
         <Fragment>
@@ -72,8 +75,10 @@ function renderSection(key, data, sections, collegeSlug) {
           <Faculty collegeSlug={collegeSlug} />
         </Fragment>
       );
+
     case "facilities":
       return <Facilities data={data} />;
+
     case "placement":
       return (
         <Placement
@@ -83,28 +88,33 @@ function renderSection(key, data, sections, collegeSlug) {
           provenRecord={sections.proven_placement_record}
         />
       );
+
     case "placement_count_course_wise":
-      // rendered inside Placement
       if (sections.placement) return null;
       return <StatsSection data={data} />;
+
     case "proven_placement_record":
-      // rendered inside Placement
       if (sections.placement) return null;
       return <FeaturesSection data={data} />;
+
     case "recruiter":
-      // rendered inside Placement
       if (sections.placement) return null;
       return <RecruiterLogos data={data} />;
+
     case "success_stories":
-      return <SuccessStories data={data} />;
+      return null;
+
+    case "testimonials":
+      return null;
+
     case "admission_procedure":
       return <Admission data={data} />;
+
     default:
       break;
   }
 
-  // Type-based fallback for unknown keys
-  if (data.type === "scratch") return null; // handled by ScratchSections
+  if (data.type === "scratch") return null;
   return renderByType(data);
 }
 
@@ -136,7 +146,9 @@ export default function IbmrPage() {
         if (!cancelled) setLoading(false);
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [collegeSlug]);
 
   if (loading) {
@@ -151,11 +163,32 @@ export default function IbmrPage() {
     );
   }
 
-  // Sort sections by sort_order, filter out hero (rendered separately)
   const sortedSections = Object.entries(sections)
+    .filter(
+      ([key]) => key !== "success_stories" && key !== "testimonials"
+    )
     .sort(([, a], [, b]) => (a.sort_order ?? 999) - (b.sort_order ?? 999));
 
-  // Collect all non-scratch keys for ScratchSections exclude
+  let orderedSections = [...sortedSections];
+
+  const moveKeys = ["learning_beyond_the_classroom", "mentorship"];
+  const movedSections = [];
+
+  moveKeys.forEach((key) => {
+    const idx = orderedSections.findIndex(([k]) => k === key);
+    if (idx !== -1) {
+      movedSections.push(orderedSections.splice(idx, 1)[0]);
+    }
+  });
+
+  const admissionIndex = orderedSections.findIndex(
+    ([k]) => k === "admission_procedure"
+  );
+
+  if (admissionIndex !== -1) {
+    orderedSections.splice(admissionIndex, 0, ...movedSections);
+  }
+
   const nonScratchKeys = Object.entries(sections)
     .filter(([, s]) => s.type !== "scratch")
     .map(([k]) => k);
@@ -164,16 +197,26 @@ export default function IbmrPage() {
     <div className="w-full overflow-x-hidden">
       {sections.hero && <Hero data={sections.hero} />}
 
-      {sortedSections.map(([key, data]) => {
+      {orderedSections.map(([key, data]) => {
         const rendered = renderSection(key, data, sections, collegeSlug);
         if (!rendered) return null;
         return <Fragment key={key}>{rendered}</Fragment>;
       })}
 
       {!sections.admission_procedure && <Admission />}
+
       <ApplyForm collegeSlug={collegeSlug} />
 
       <ScratchSections sections={sections} exclude={nonScratchKeys} />
+
+      {/* Testimonials just above footer */}
+      {sections.testimonials && (
+        <Testimonials data={sections.testimonials} />
+      )}
+
+      {sections.success_stories && (
+        <SuccessStories data={sections.success_stories} />
+      )}
     </div>
   );
 }
