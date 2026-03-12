@@ -8,6 +8,7 @@ export default function Navbar(){
   const [menuOpen,setMenuOpen]=useState(false);
   const [collegesOpen,setCollegesOpen]=useState(false);
   const [studentOpen,setStudentOpen]=useState(false);
+  const [otherCoursesOpen,setOtherCoursesOpen]=useState(false);
   const [collegeLogo,setCollegeLogo]=useState(null);
   const navigation = useNavigate();
 
@@ -48,7 +49,14 @@ const isCollegeHome =
     setMenuOpen(false);
     setCollegesOpen(false);
     setStudentOpen(false);
+    setOtherCoursesOpen(false);
   }
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   /* ACTIVE LINK STYLE */
   const linkClass = ({ isActive }) =>
@@ -132,6 +140,7 @@ const isCollegeHome =
         lg:items-center gap-5 lg:gap-8
         px-6 lg:px-0 py-6 lg:py-0
         border-t lg:border-none
+        overflow-y-auto lg:overflow-visible max-h-[calc(100vh-96px)] lg:max-h-none
         ${menuOpen?"flex":"hidden lg:flex"}`}>
 
       {activeCollege === "ipsa" ? (
@@ -189,13 +198,16 @@ const isCollegeHome =
         <div key={id} className="relative group">
 
           {/* OTHER COURSES BUTTON */}
-          <div className="px-4 py-2 flex justify-between items-center text-gray-800 hover:bg-red-500 hover:text-white cursor-pointer">
+          <div
+            className="px-4 py-2 flex justify-between items-center text-gray-800 hover:bg-red-500 hover:text-white cursor-pointer"
+            onClick={()=>setOtherCoursesOpen(!otherCoursesOpen)}
+          >
             {name}
-            <span>▶</span>
+            <span className={`transition-transform lg:rotate-0 ${otherCoursesOpen?"rotate-90":""}`}>▶</span>
           </div>
 
           {/* SUB MENU */}
-          <div className="absolute left-full top-0 hidden group-hover:flex flex-col bg-white shadow-md border min-w-[180px]">
+          <div className={`lg:absolute lg:left-full lg:top-0 lg:hidden lg:group-hover:flex flex-col bg-white shadow-md border lg:min-w-[180px] ${otherCoursesOpen?"flex":"hidden"}`}>
 
             {colleges.map(([collegeName, slug]) => (
               <NavLink
