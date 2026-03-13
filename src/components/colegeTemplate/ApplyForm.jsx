@@ -105,7 +105,7 @@ export default function ApplyForm({ collegeSlug, leftSection }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-8"
+            className="bg-white/10 backdrop-blur border py-auto my-auto border-white/20 rounded-2xl p-8"
           >
             <h4 className="font-bold text-xl mb-6">Apply Now</h4>
 

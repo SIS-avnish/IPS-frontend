@@ -164,8 +164,8 @@ const isCollegeHome =
 )}
 
       {/* ABOUT */}
-      <NavLink to={`/${activeCollege}/about`}  className={linkClass} onClick={closeAll}>
-        {activeCollege === "ipsa" ? "About IPSA" : "About"}
+      <NavLink to={`/ipsa/about`}  className={linkClass} onClick={closeAll}>
+        {activeCollege === "ipsa" ? "About IPSA" : "About IPSA"}
       </NavLink>
 
       {/* COLLEGES */}
@@ -252,7 +252,7 @@ const isCollegeHome =
       </div>
 
       {/* PLACEMENTS */}
-      <NavLink to={`/${activeCollege}/placements`} className={linkClass} onClick={closeAll}>
+      <NavLink to={`/ipsa/placements`} className={linkClass} onClick={closeAll}>
         Placements
       </NavLink>
 
@@ -293,7 +293,7 @@ const isCollegeHome =
       </NavLink>
 
       {/* FACILITIES */}
-      <NavLink to={`/${activeCollege}/facilities`} className={linkClass} onClick={closeAll}>
+      <NavLink to={`/ipsa/facilities`} className={linkClass} onClick={closeAll}>
         Facilities
       </NavLink>
 
