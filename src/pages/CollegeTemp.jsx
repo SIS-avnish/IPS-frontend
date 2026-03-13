@@ -115,6 +115,7 @@ function renderSection(key, data, sections, collegeSlug) {
   }
 
   if (data.type === "scratch") return null;
+
   return renderByType(data);
 }
 
@@ -129,6 +130,7 @@ export default function IbmrPage() {
 
   useEffect(() => {
     let cancelled = false;
+
     setLoading(true);
     setError(null);
 
@@ -151,9 +153,7 @@ export default function IbmrPage() {
     };
   }, [collegeSlug]);
 
-  if (loading) {
-    return <PageSkeleton />;
-  }
+  if (loading) return <PageSkeleton />;
 
   if (error) {
     return (
@@ -164,9 +164,7 @@ export default function IbmrPage() {
   }
 
   const sortedSections = Object.entries(sections)
-    .filter(
-      ([key]) => key !== "success_stories" && key !== "testimonials"
-    )
+    .filter(([key]) => key !== "success_stories" && key !== "testimonials")
     .sort(([, a], [, b]) => (a.sort_order ?? 999) - (b.sort_order ?? 999));
 
   let orderedSections = [...sortedSections];
@@ -176,9 +174,7 @@ export default function IbmrPage() {
 
   moveKeys.forEach((key) => {
     const idx = orderedSections.findIndex(([k]) => k === key);
-    if (idx !== -1) {
-      movedSections.push(orderedSections.splice(idx, 1)[0]);
-    }
+    if (idx !== -1) movedSections.push(orderedSections.splice(idx, 1)[0]);
   });
 
   const admissionIndex = orderedSections.findIndex(
@@ -199,17 +195,29 @@ export default function IbmrPage() {
 
       {orderedSections.map(([key, data]) => {
         const rendered = renderSection(key, data, sections, collegeSlug);
+
         if (!rendered) return null;
+
         return <Fragment key={key}>{rendered}</Fragment>;
       })}
 
       {!sections.admission_procedure && <Admission />}
 
-      <ApplyForm collegeSlug={collegeSlug} />
+      {/* APPLY FORM */}
+      <ApplyForm
+        collegeSlug={collegeSlug}
+        leftSection={sections.just_above_the_footer}
+      />
 
-      <ScratchSections sections={sections} exclude={nonScratchKeys} />
+      {/* SCRATCH SECTIONS (only the second one below) */}
+      <ScratchSections
+        sections={sections}
+        exclude={[
+          ...nonScratchKeys,
+          "just_above_the_footer" // exclude first scratch so it doesn't repeat
+        ]}
+      />
 
-      {/* Testimonials just above footer */}
       {sections.testimonials && (
         <Testimonials data={sections.testimonials} />
       )}
