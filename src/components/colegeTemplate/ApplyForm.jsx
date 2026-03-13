@@ -74,7 +74,7 @@ export default function ApplyForm({ collegeSlug, leftSection }) {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-[#060e22] to-[#0f2b5b] py-16 text-white">
+      <section id="applyform" className="bg-gradient-to-br from-[#060e22] to-[#0f2b5b] py-16 text-white">
 
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-start">
 

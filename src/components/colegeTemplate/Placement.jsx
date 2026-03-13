@@ -31,7 +31,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
   if (!data && !placementStats && !recruiterData) return null;
 
   return (
-    <section className="bg-[#F0EEEF] pt-20 pb-24">
+    <section id="recruiters" className="bg-[#F0EEEF] pt-20 pb-24">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* SPLIT: image + text */}
