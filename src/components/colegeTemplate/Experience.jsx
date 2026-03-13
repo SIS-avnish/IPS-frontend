@@ -36,7 +36,11 @@ const cardVariant = {
 export default memo(function Experience({ data }) {
 
   const rawTitle = data?.title || "Experience, Learn, Lead: The IBMR Advantage";
-  const title = rawTitle.split("/n")[0].trim();
+
+  // comma based split
+  const titleParts = rawTitle.split(",");
+  const firstTitle = titleParts[0];
+  const secondTitle = titleParts.slice(1).join(",");
 
   const cards = data?.cards || [
     {
@@ -69,18 +73,31 @@ export default memo(function Experience({ data }) {
     <section className="bg-[#002147] py-12 sm:py-14 md:pb-16 text-white mt-[-20px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <motion.h2
+        {/* Title Section */}
+        <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-2xl sm:text-3xl md:text-5xl font-medium mb-2 text-center md:text-left"
+          className="text-center md:text-left mb-8"
         >
-          {title}
-        </motion.h2>
 
-        <div className="w-24 sm:w-32 h-[2px] bg-red-500 mb-8 sm:mb-10 mx-auto md:mx-0"></div>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-medium mb-2">
+            {firstTitle}
+          </h2>
 
+          {/* red underline only for first title */}
+          <div className="w-24 sm:w-32 h-[2px] bg-red-500 mb-4 mx-auto md:mx-0"></div>
+
+          {secondTitle && (
+            <h3 className="text-lg sm:text-xl md:text-3xl font-medium">
+              {secondTitle}
+            </h3>
+          )}
+
+        </motion.div>
+
+        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {cards.map((card, idx) => (
             <motion.div
