@@ -85,7 +85,7 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
             <Media
               src={growthImg}
               alt={title}
-              className="w-full mt-10 lg:mt-30 object-cover"
+              className="w-full lg:h-160 mt-10 lg:my-auto object-cover"
             />
           </motion.div>
 
