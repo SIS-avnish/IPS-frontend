@@ -1,4 +1,4 @@
-import React, { memo, useRef, useEffect } from "react";
+import { memo, useRef, useEffect } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import Media from "../common/Media";
 

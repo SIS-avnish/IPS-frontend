@@ -1,5 +1,4 @@
 import { useState, memo } from "react";
-import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 import heroFallback from "../../assets/Images/hero.jpg";
 import Media from "../common/Media";

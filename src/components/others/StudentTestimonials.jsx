@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from "react";
+import { useState, useMemo, memo } from "react";
 import { motion } from "framer-motion";
 import Media, { isVideoUrl } from "../common/Media";
 import { YouTubeThumbnail } from "../common/LazyIframe";

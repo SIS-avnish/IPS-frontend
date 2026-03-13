@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { motion } from "framer-motion";

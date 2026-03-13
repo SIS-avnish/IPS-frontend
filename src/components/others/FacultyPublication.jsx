@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from "react";
+import { useMemo, memo } from "react";
 import { cleanCmsHtml } from "../common/ScratchHtml";
 
 const FacultyPublication = memo(({ html }) => {

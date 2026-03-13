@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
 import faculty from "../../assets/Images/faculty.png";

@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * Reusable skeleton loader with animated shimmer.
  * Variants: "page" (full page), "hero", "card", "text", "inline".

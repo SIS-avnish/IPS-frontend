@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, memo } from "react";
 import logo from "../../assets/logos/logo-white.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faPhone, faEnvelope, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
   faInstagram,
   faFacebookF,

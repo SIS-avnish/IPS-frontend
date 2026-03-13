@@ -1,0 +1,128 @@
+import fetch from 'node-fetch';
+import prerenderConfig from '../prerender.config.js';
+import { URL, URLSearchParams } from 'url';
+
+const PRERENDER_TOKEN = process.env.PRERENDER_TOKEN || '0RLFZu5pp3Ri2LbLEfpn';
+// Use the correct Prerender.io recache endpoint with query params
+const PRERENDER_API_BASE = 'https://api.prerender.io/recache';
+
+/**
+ * Submit routes to Prerender.io for pre-rendering
+ */
+async function triggerPrerender(routes = []) {
+  const routesToRender = routes.length > 0 ? routes : prerenderConfig.routes;
+  
+  console.log(`\n🔄 Starting pre-rendering of ${routesToRender.length} routes...`);
+  console.log(`📍 Base URL: ${prerenderConfig.baseUrl}\n`);
+
+  let successCount = 0;
+  let failureCount = 0;
+  const errors = [];
+
+  for (const route of routesToRender) {
+    try {
+      const url = typeof route === 'string' ? route : route.url;
+      const fullUrl = new URL(url, prerenderConfig.baseUrl).href;
+      
+      console.log(`  ⏳ Pre-rendering: ${url}`);
+
+      // Build the query parameters
+      const params = new URLSearchParams({
+        token: PRERENDER_TOKEN,
+        url: fullUrl,
+      });
+
+      const requestUrl = `${PRERENDER_API_BASE}?${params.toString()}`;
+
+      const response = await fetch(requestUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log(`  ✅ Success: ${url}`);
+        successCount++;
+      } else {
+        const errorMsg = `Failed with status ${response.status}`;
+        console.log(`  ❌ Failed: ${url} - ${errorMsg}`);
+        errors.push({ url, error: errorMsg });
+        failureCount++;
+      }
+    } catch (error) {
+      const errorMsg = error.message;
+      console.log(`  ❌ Error: ${typeof route === 'string' ? route : route.url} - ${errorMsg}`);
+      errors.push({ url: typeof route === 'string' ? route : route.url, error: errorMsg });
+      failureCount++;
+    }
+
+    // Add delay between requests to avoid rate limiting
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+
+  console.log(`\n📊 Pre-rendering Summary:`);
+  console.log(`  ✅ Successful: ${successCount}`);
+  console.log(`  ❌ Failed: ${failureCount}`);
+
+  if (errors.length > 0) {
+    console.log(`\n⚠️  Errors:\n`);
+    errors.forEach(err => {
+      console.log(`  - ${err.url}: ${err.error}`);
+    });
+  }
+
+  return { success: successCount, failed: failureCount, errors };
+}
+
+/**
+ * Verify Prerender token is valid
+ */
+async function verifyToken() {
+  console.log('🔐 Verifying Prerender token...\n');
+
+  try {
+    const params = new URLSearchParams({
+      token: PRERENDER_TOKEN,
+      url: 'https://example.com',
+    });
+
+    const requestUrl = `${PRERENDER_API_BASE}?${params.toString()}`;
+
+    const response = await fetch(requestUrl, {
+      method: 'POST',
+    });
+
+    if (response.ok || response.status === 400) {
+      console.log('✅ Token is valid!\n');
+      return true;
+    } else if (response.status === 401) {
+      console.error('❌ Invalid token: Unauthorized\n');
+      return false;
+    } else {
+      console.error(`❌ Token verification failed: ${response.status}\n`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`❌ Connection error: ${error.message}\n`);
+    return false;
+  }
+}
+
+// CLI execution
+if (process.argv[2]) {
+  const command = process.argv[2];
+
+  if (command === 'verify') {
+    verifyToken();
+  } else if (command === 'render') {
+    triggerPrerender();
+  } else if (command === 'render-custom') {
+    const customRoutes = process.argv.slice(3);
+    triggerPrerender(customRoutes);
+  }
+} else {
+  triggerPrerender();
+}
+
+export { triggerPrerender, verifyToken };
