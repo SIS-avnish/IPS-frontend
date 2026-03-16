@@ -131,22 +131,23 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
 
 /* ---------- Athlete Card ---------- */
 
-function Athlete({ name,image, desc }) {
+function Athlete({ name, image, desc }) {
   return (
-    <div className="p-4 sm:p-3">
+    <div className="p-4 sm:p-3 flex flex-col items-center text-center">
 
       <Media
-  src={image}
-  className="mb-3 sm:mb-2 w-50 h-50 object-cover rounded-full border-4 border-[#FF7373]"
-/>
+        src={image}
+        className="mb-3 w-40 h-40 object-cover rounded-full border-4 border-[#FF7373]"
+      />
 
-      <div className="text-[24px] sm:text-[22px] text-[20px] font-medium text-[#002147] border-b border-[#FFC73E] pb-4 pt-2">
+      <div className="text-[20px] sm:text-[22px] font-medium text-[#002147] border-b border-[#FFC73E] pb-2 pt-2 w-fit">
         {name}
       </div>
 
-      <div className="text-[16px] sm:text-[15px] text-[#3A3A3A] pt-4 leading-relaxed">
+      <div className="text-[16px] sm:text-[20px] text-[#3A3A3A] pt-3 leading-relaxed">
         {desc}
       </div>
+
     </div>
   );
 }
@@ -229,13 +230,13 @@ function FacilityCarousel({ title, cards }) {
               <img
                 src={resolveImageUrl(card.icon)}
                 alt={card.title}
-                className="w-44 h-44 object-contain"
+                className="w-64 h-64 object-contain"
               />
-              <p className="text-[15px] font-medium text-[#002147] leading-snug">
+              <p className="text-[25px] font-medium text-[#002147] leading-snug">
                 {card.title}
               </p>
               {card.description && (
-                <p className="text-[13px] text-[#3A3A3A] leading-relaxed">
+                <p className="text-[13px]  text-[#3A3A3A] leading-relaxed">
                   {card.description}
                 </p>
               )}

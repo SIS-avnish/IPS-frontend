@@ -125,7 +125,7 @@ export default memo(function Excellence({ data, statsData }) {
           max-[576px]:py-[15px]`}
         >
           {excellenceItems.map((item, i) => {
-            if (i === excellenceItems.length - 1) {
+           /*  if (i === excellenceItems.length - 1) {
               return (
                 <div
                   key={i}
@@ -134,7 +134,7 @@ export default memo(function Excellence({ data, statsData }) {
                   max-[576px]:items-center 
                   max-[576px]:text-center"
                 >
-                  <div className="pr-6">
+                  <div className="pr-6 pt-3">
                     <p className="text-[20px] font-normal leading-[26px]">
                       {item.question}
                     </p>
@@ -143,18 +143,9 @@ export default memo(function Excellence({ data, statsData }) {
                       {item.answer}
                     </p>
                   </div>
-
-                  {/* <img
-                    src={nirf}
-                    alt="NIRF Logo"
-                    className="h-[64px] w-auto ml-auto 
-                    max-[576px]:ml-0 
-                    max-[576px]:mt-3 
-                    max-[576px]:h-[44px]"
-                  /> */}
                 </div>
               );
-            }
+            } */
 
             return (
               <div key={i}>
@@ -162,7 +153,7 @@ export default memo(function Excellence({ data, statsData }) {
                   {item.question}
                 </h4>
                 <hr className="my-1 opacity-60" />
-                <p className="text-[18px] opacity-90 leading-[24px] max-[576px]:text-[16px]">
+                <p className="text-[18px] opacity-90 leading-[24px] max-[576px]:text-[20px] mb-2">
                   {item.answer}
                 </p>
               </div>
