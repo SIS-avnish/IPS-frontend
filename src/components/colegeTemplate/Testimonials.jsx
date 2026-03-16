@@ -90,7 +90,7 @@ export default memo(function Testimonials({ data }) {
                   {t.image && (
                     <img
                       src={resolveImageUrl(t.image)}
-                      className="w-14 h-14 rounded-full object-cover"
+                      className="w-24 h-24 rounded-full "
                       alt={t.name}
                       loading="lazy"
                     />
