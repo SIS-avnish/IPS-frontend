@@ -64,7 +64,7 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
               <h5 className="text-[38px] font-medium text-[#002147] !mb-0 max-[576px]:text-[26px]">
                 {stat.value}
               </h5>
-              <p className="text-[24px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
+              <p className="text-[18px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
                 {stat.label}
               </p>
             </div>
@@ -74,7 +74,7 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
 
       {/* Rankings & Accreditations */}
       <div className="max-w-[1140px] mx-auto px-4 text-white">
-        <motion.h2
+        {/* <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -86,12 +86,12 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
           max-[576px]:pt-[30px]"
         >
           {excellenceTitle}
-        </motion.h2>
-
+        </motion.h2> */}
+{/* 
         <div className="w-[384px] h-[2px] bg-[#FF7373] 
         max-[576px]:w-[200px] 
         max-[576px]:mx-auto 
-        max-[576px]:mb-5" />
+        max-[576px]:mb-5" /> */}
 
         <div
           className={`grid gap-[30px] py-[18px] 
@@ -112,23 +112,22 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
                   max-[576px]:text-center"
                 >
                   <div className="pr-6">
-                    <p className="text-[20px] font-normal leading-[22px]">
+                    <p className="text-[34px] mb-[5px] font-medium max-[576px]:text-[24px]">
                       {item.question}
                     </p>
-                    <hr className="my-2 opacity-60" />
-                    <p className="text-[20px] font-normal leading-[22px]">
+                    <p className="text-[23px] opacity-90 leading-[26px] max-[576px]:text-[16px]">
                       {item.answer}
                     </p>
                   </div>
 
-                  <img
+                  {/* <img
                     src={nirf}
                     alt="NIRF Logo"
                     className="h-[64px] w-auto ml-auto 
                     max-[576px]:ml-0 
                     max-[576px]:mt-3 
                     max-[576px]:h-[44px]"
-                  />
+                  /> */}
                 </div>
               );
             }

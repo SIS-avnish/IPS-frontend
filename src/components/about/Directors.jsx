@@ -51,14 +51,17 @@ export default memo(function Directors({ data, department, principal, designatio
         <div className="h-[2px] w-60 bg-[#FF7373]  my-3 mb-8" />
 
         {/* Table-like grid: row-by-row to keep heights in sync */}
-        <div className="overflow-x-auto">
+        <div className="w-full overflow-x-auto">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="grid gap-x-4"
-          style={{ gridTemplateColumns: `repeat(${cols.length}, minmax(160px, 1fr))` }}
+          className="grid gap-x-4 "
+          style={{
+    gridTemplateColumns: `repeat(${cols.length}, minmax(160px, 1fr))`,
+    minWidth: `${cols.length * 160}px`
+  }}
         >
           {/* Header row */}
           {cols.map((col, ci) => (

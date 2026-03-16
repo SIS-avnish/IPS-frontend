@@ -13,7 +13,7 @@ export default memo(function Hero({ data }) {
 
   return (
     <section id="banner" className="
-          relative mb-12 sm:mb-16 lg:mb-15
+          relative mb-5 sm:mb-16 lg:mb-15
           w-full max-w-[1592px]
           h-[420px] sm:h-[520px] md:h-[620px] lg:h-[836px]
           mx-auto px-4

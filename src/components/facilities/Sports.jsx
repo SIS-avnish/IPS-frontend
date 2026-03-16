@@ -97,6 +97,7 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
             <motion.div key={i} variants={cardVariant} initial="hidden" whileInView="visible" custom={i} viewport={{ once: true, amount: 0.1 }}>
               <Athlete
                 name={member.name}
+                image={resolveImageUrl(member.image)}
                 desc={
                   member.description.includes("\n") ? (
                     <ul className="list-disc pl-5">
@@ -130,11 +131,14 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
 
 /* ---------- Athlete Card ---------- */
 
-function Athlete({ name, desc }) {
+function Athlete({ name,image, desc }) {
   return (
     <div className="p-4 sm:p-3">
 
-      <img src={trophy} className="mb-3 sm:mb-2 w-auto h-auto" />
+      <Media
+  src={image}
+  className="mb-3 sm:mb-2 w-50 h-50 object-cover rounded-full border-4 border-[#FF7373]"
+/>
 
       <div className="text-[24px] sm:text-[22px] text-[20px] font-medium text-[#002147] border-b border-[#FFC73E] pb-4 pt-2">
         {name}

@@ -53,7 +53,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
     <section>
 
       {/* FIRST SECTION */}
-      <section className="bg-[#ffffff] pt-16 md:pt-1 px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className="bg-[#ffffff] pt-10 md:pt-1 px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="max-w-7xl mx-auto">
 
           {/* TOP ROW */}
@@ -65,7 +65,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-[#002147] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight">
+              <h2 className="text-[#002147] text-3xl sm:text-5xl md:text-4xl lg:text-5xl font-medium leading-tight">
                 {sectionTitle}
               </h2>
 
@@ -77,7 +77,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
-              className="text-gray-600 mt-10 leading-relaxed max-w-xl"
+              className="text-gray-600 mt-5 leading-relaxed max-w-xl"
             >
               {sectionDesc}
             </motion.p>
@@ -104,7 +104,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
                   <div key={i} className="border-b border-gray-300 pb-5">
 
                     <button
-                      onClick={() => setOpen(open === i ? -1 : i)}
+                      onClick={() => setOpen(open === i ? 1 : i)}
                       className="w-full flex justify-between items-center text-left py-1"
                     >
                       <span className="text-[#002147] text-base sm:text-lg font-medium">
@@ -155,7 +155,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
       {/* SECOND SECTION */}
       <section className="bg-[#ffffff] py-14 md:mt-[-100px] md:py-0 px-4 sm:px-6 md:px-10 lg:px-12">
-        <div className="md:translate-y-50 bg-[#f3f3f3] md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="md:translate-y-50 bg-[#f3f3f3] p-5 md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           <motion.div
             initial={{ opacity: 0, x: -80 }}

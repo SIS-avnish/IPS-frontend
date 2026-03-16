@@ -52,7 +52,7 @@ export default memo(function Hero({ data }) {
         </h1>
 
         {/* CTA button */}
-        {ctaText && (
+        {/* {ctaText && (
           <button
             onClick={() => ctaLink && (window.location.href = ctaLink)}
             className="mt-4 sm:mt-6 flex items-center gap-3 
@@ -66,7 +66,7 @@ export default memo(function Hero({ data }) {
           >
             {ctaText}
           </button>
-        )}
+        )} */}
       </motion.div>
     </section>
   );

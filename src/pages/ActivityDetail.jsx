@@ -13,6 +13,27 @@ const ActivityDetail = () => {
   const [heroData, setHeroData] = useState({})
   const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [selectedImage, setSelectedImage] = useState(null);
+const [currentIndex, setCurrentIndex] = useState(0);
+
+const openImage = (index) => {
+  setCurrentIndex(index);
+  setSelectedImage(activity.gallery_images[index]);
+};
+
+const nextImage = () => {
+  const next = (currentIndex + 1) % activity.gallery_images.length;
+  setCurrentIndex(next);
+  setSelectedImage(activity.gallery_images[next]);
+};
+
+const prevImage = () => {
+  const prev =
+    (currentIndex - 1 + activity.gallery_images.length) %
+    activity.gallery_images.length;
+  setCurrentIndex(prev);
+  setSelectedImage(activity.gallery_images[prev]);
+};
 
   useSEO(seoData)
 
@@ -115,6 +136,7 @@ const ActivityDetail = () => {
           )}
 
           {/* Gallery Images */}
+        
           {activity.gallery_images?.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -125,12 +147,18 @@ const ActivityDetail = () => {
               <h3 className="text-lg sm:text-xl font-semibold text-[#002147] mb-4">Gallery</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {activity.gallery_images.map((img, i) => (
+                  <div
+          key={i}
+          onClick={() => openImage(i)}
+          className="cursor-pointer"
+        >
                   <Media
                     key={i}
                     src={img}
                     alt={`${activity.title} - ${i + 1}`}
                     className="w-full h-[200px] sm:h-[240px] object-cover rounded-md"
                   />
+                  </div>
                 ))}
               </div>
             </motion.div>
@@ -138,8 +166,41 @@ const ActivityDetail = () => {
 
         </div>
       </section>
+      {selectedImage && (
+  <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+
+    <button
+      onClick={() => setSelectedImage(null)}
+      className="absolute top-5 right-5 text-white text-3xl"
+    >
+      ✕
+    </button>
+
+    <button
+      onClick={prevImage}
+      className="absolute left-5 text-white text-3xl"
+    >
+      ❮
+    </button>
+
+    <img
+      src={selectedImage}
+      className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+    />
+
+    <button
+      onClick={nextImage}
+      className="absolute right-5 text-white text-3xl"
+    >
+      ❯
+    </button>
+
+  </div>
+)}
     </div>
+    
   )
+  
 }
 
 export default ActivityDetail

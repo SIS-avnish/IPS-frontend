@@ -182,7 +182,7 @@ export default memo(function Footer() {
         </p>
       </div>
 
-      <div className="flex flex-col items-baseline lg:justify-start">
+      <div className="flex flex-col  justify-center lg:items-baseline">
         <div>
            <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
             <a href="mailto:info@ipsacademy.org" className="hover:underline">

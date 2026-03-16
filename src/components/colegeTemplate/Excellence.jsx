@@ -79,7 +79,7 @@ export default memo(function Excellence({ data, statsData }) {
               <h5 className="text-[38px] font-medium text-[#002147] !mb-0 max-[576px]:text-[26px]">
                 {stat.value}
               </h5>
-              <p className="text-[24px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
+              <p className="text-[18px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
                 {stat.label}
               </p>
             </div>
@@ -144,14 +144,14 @@ export default memo(function Excellence({ data, statsData }) {
                     </p>
                   </div>
 
-                  <img
+                  {/* <img
                     src={nirf}
                     alt="NIRF Logo"
                     className="h-[64px] w-auto ml-auto 
                     max-[576px]:ml-0 
                     max-[576px]:mt-3 
                     max-[576px]:h-[44px]"
-                  />
+                  /> */}
                 </div>
               );
             }
@@ -162,7 +162,7 @@ export default memo(function Excellence({ data, statsData }) {
                   {item.question}
                 </h4>
                 <hr className="my-1 opacity-60" />
-                <p className="text-[23px] opacity-90 leading-[24px] max-[576px]:text-[16px]">
+                <p className="text-[18px] opacity-90 leading-[24px] max-[576px]:text-[16px]">
                   {item.answer}
                 </p>
               </div>

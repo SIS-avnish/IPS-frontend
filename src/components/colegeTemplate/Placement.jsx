@@ -151,7 +151,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
             <motion.div
               className="flex gap-6"
               animate={{ x: ["0%", "-50%"] }}
-              transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             >
               {[...logos, ...logos].map((logo, i) => (
                 <div
