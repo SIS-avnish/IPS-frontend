@@ -74,7 +74,7 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
 
       {/* Rankings & Accreditations */}
       <div className="max-w-[1140px] mx-auto px-4 text-white">
-        {/* <motion.h2
+        <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -86,12 +86,12 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
           max-[576px]:pt-[30px]"
         >
           {excellenceTitle}
-        </motion.h2> */}
-{/* 
+        </motion.h2>
+
         <div className="w-[384px] h-[2px] bg-[#FF7373] 
         max-[576px]:w-[200px] 
         max-[576px]:mx-auto 
-        max-[576px]:mb-5" /> */}
+        max-[576px]:mb-5" />
 
         <div
           className={`grid gap-[30px] py-[18px] 
