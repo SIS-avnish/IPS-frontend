@@ -62,7 +62,7 @@ export default memo(function About({ aboutData, whyData }) {
   return (
     <>
       {/* -------- ABOUT SECTION -------- */}
-      <section id="about" className="py-12 sm:py-14 md:py-16">
+      <section id="about" className="py-12  sm:py-14 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 
                         grid grid-cols-1 md:grid-cols-2 
                         gap-8 md:gap-10 items-center">
@@ -92,19 +92,14 @@ export default memo(function About({ aboutData, whyData }) {
               {aboutContent}
             </p>
 
-            <button className="mt-6 bg-white border border-[#002147] 
-                               text-black px-6 py-3 
-                               w-full sm:w-auto
-                               transition hover:shadow-md active:scale-95">
-              Know More
-            </button>
+            
           </motion.div>
 
         </div>
       </section>
 
       {/* -------- IPS ADVANTAGE SECTION -------- */}
-      <section className="bg-[#002147] py-12 md:py-16 mt-10">
+      <section className="bg-[#002147] py-12 md:py-26 mt-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
           <motion.h2

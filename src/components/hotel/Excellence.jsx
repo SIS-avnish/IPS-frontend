@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { motion } from "framer-motion";
 import Logo from "../../assets/Images/static.jpg";
 import nirf from "../../assets/Images/nirf-logo.png";
@@ -13,16 +13,33 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function StatsSection({ statsData, excellenceData }) {
-  const stats = useMemo(() => statsData?.stats || [], [statsData]);
-  const excellenceTitle =
-    excellenceData?.title || "Rankings & Quality Accreditations";
-  const excellenceItems = useMemo(
-    () => excellenceData?.items || [],
-    [excellenceData]
-  );
+export default memo(function Excellence({ data, statsData }) {
 
-  // ✅ FIX: Tailwind-safe grid columns
+  const stats = statsData?.stats || [
+    { value: "30", label: "Year Legacy" },
+    { value: "500+", label: "Faculty Members" },
+    { value: "1 Lakh+", label: "Alumni Network" },
+    { value: "58", label: "Acre Lush Green Campus" },
+    { value: "500+", label: "Eminent Recruiters" },
+  ];
+
+  const excellenceTitle = data?.title || "High on Excellence Since 1993";
+
+  const excellenceItems = data?.items || [
+    {
+      question: "NAAC A++",
+      answer: "Accredited Management institute",
+    },
+    {
+      question: "UGC",
+      answer: "Autonomous Management Institute",
+    },
+    {
+      question: "For 5 consecutive years 2017-21",
+      answer: "Management ranking in rank band 76-100",
+    },
+  ];
+
   const gridColsClass =
     excellenceItems.length >= 4
       ? "md:grid-cols-4"
@@ -33,15 +50,13 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
       : "md:grid-cols-1";
 
   return (
-    <section className="bg-[#062b4c] pb-[240px] max-[991px]:pb-[240px] max-[576px]:pb-10">
-      {/* Hero Background */}
+    <section className="bg-[#002147] mt-0 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10">
       <div
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
         style={{ backgroundImage: `url(${Logo})` }}
       >
-        {/* Stats Box */}
         <motion.div
           variants={slideLeft}
           initial="hidden"
@@ -72,9 +87,8 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
         </motion.div>
       </div>
 
-      {/* Rankings & Accreditations */}
       <div className="max-w-[1140px] mx-auto px-4 text-white">
-        {/* <motion.h2
+        <motion.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -86,12 +100,12 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
           max-[576px]:pt-[30px]"
         >
           {excellenceTitle}
-        </motion.h2> */}
-{/* 
+        </motion.h2>
+
         <div className="w-[384px] h-[2px] bg-[#FF7373] 
         max-[576px]:w-[200px] 
         max-[576px]:mx-auto 
-        max-[576px]:mb-5" /> */}
+        max-[576px]:mb-5" />
 
         <div
           className={`grid gap-[30px] py-[18px] 
@@ -115,6 +129,7 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
                     <p className="text-[34px] mb-[5px] font-medium max-[576px]:text-[24px]">
                       {item.question}
                     </p>
+                    <hr className="my-1 opacity-60" />
                     <p className="text-[23px] opacity-90 leading-[26px] max-[576px]:text-[16px]">
                       {item.answer}
                     </p>
@@ -134,10 +149,11 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
 
             return (
               <div key={i}>
-                <h4 className="text-[34px] mb-[5px] font-medium max-[576px]:text-[24px]">
+                <h4 className="text-[28px] mb-[1px] font-medium max-[576px]:text-[24px]">
                   {item.question}
                 </h4>
-                <p className="text-[23px] opacity-90 leading-[26px] max-[576px]:text-[16px]">
+                <hr className="my-1 opacity-60" />
+                <p className="text-[23px] opacity-90 leading-[24px] max-[576px]:text-[16px]">
                   {item.answer}
                 </p>
               </div>

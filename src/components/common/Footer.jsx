@@ -69,10 +69,10 @@ export default memo(function Footer() {
 
   const navLinks = useMemo(() => [
     {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
-    {label:"About IPSA", path:`/${activeCollege}/about`},
-    {label:"Placements", path:`/${activeCollege}/placements`},
+    {label:"About IPSA", path:`/ipsa/about`},
+    {label:"Placements", path:`/ipsa/placements`},
     {label:"Activities", path:`/${activeCollege}/activities/cultural`},
-    {label:"Facilities", path:`/${activeCollege}/facilities`},
+    {label:"Facilities", path:`/ipsa/facilities`},
     {label:"Contact Us", path:`/${activeCollege}/contact`}
   ], [activeCollege]);
 
@@ -182,7 +182,7 @@ export default memo(function Footer() {
         </p>
       </div>
 
-      <div className="flex flex-col items-baseline lg:justify-start">
+      <div className="flex flex-col  justify-center lg:items-baseline">
         <div>
            <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
             <a href="mailto:info@ipsacademy.org" className="hover:underline">

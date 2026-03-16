@@ -22,6 +22,7 @@ const ActivityDetail = lazy(() => import("./pages/ActivityDetail"))
 const AlumniDetail = lazy(() => import("./pages/AlumniDetail"))
 const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
+
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
 
 function ScrollToTop() {
