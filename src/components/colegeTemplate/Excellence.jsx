@@ -57,6 +57,7 @@ export default memo(function Excellence({ data, statsData }) {
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
         style={{ backgroundImage: `url(${Logo})` }}
       >
+        {stats.length > 0 &&
         <motion.div
           variants={slideLeft}
           initial="hidden"
@@ -84,7 +85,7 @@ export default memo(function Excellence({ data, statsData }) {
               </p>
             </div>
           ))}
-        </motion.div>
+        </motion.div>}
       </div>
 
       <div className="max-w-[1140px] mx-auto px-4 text-white">

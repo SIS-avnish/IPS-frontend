@@ -43,11 +43,11 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
 
   const defaultIcons = [icon1, icon2, icon3, icon4, icon5, icon5];
 
-  const features = stats?.stats?.length
-    ? stats.stats.map((s, i) => ({
-        icon: defaultIcons[i % defaultIcons.length],
-        title: s.label,
-        desc: s.value,
+  const features = stats?.cards?.length
+    ? stats.cards.map((s) => ({
+        icon: s.icon,
+        title: s.title,
+        desc: s.description,
       }))
     : defaultFeatures;
 
@@ -153,8 +153,7 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
               <img
                 src={f.icon}
                 alt={f.title}
-                className="w-12 sm:w-14 mb-3 sm:mb-4 
-                [filter:brightness(0)_saturate(100%)_invert(15%)_sepia(35%)_saturate(900%)_hue-rotate(190deg)_brightness(85%)_contrast(110%)]"
+                className="w-12 sm:w-14 mb-3 sm:mb-4"
               />
 
               <p className="text-lg sm:text-xl md:text-2xl font-medium text-[#002147]">

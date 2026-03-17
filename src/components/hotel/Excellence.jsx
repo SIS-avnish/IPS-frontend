@@ -15,13 +15,7 @@ const slideLeft = {
 
 export default memo(function Excellence({ data, statsData }) {
 
-  const stats = statsData?.stats || [
-    { value: "30", label: "Year Legacy" },
-    { value: "500+", label: "Faculty Members" },
-    { value: "1 Lakh+", label: "Alumni Network" },
-    { value: "58", label: "Acre Lush Green Campus" },
-    { value: "500+", label: "Eminent Recruiters" },
-  ];
+  const stats = statsData?.stats 
 
   const excellenceTitle = data?.title || "High on Excellence Since 1993";
 
@@ -57,6 +51,7 @@ export default memo(function Excellence({ data, statsData }) {
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
         style={{ backgroundImage: `url(${Logo})` }}
       >
+        {stats.length > 0 && 
         <motion.div
           variants={slideLeft}
           initial="hidden"
@@ -67,7 +62,8 @@ export default memo(function Excellence({ data, statsData }) {
           max-[576px]:mx-auto max-[576px]:max-w-full max-[576px]:grid-cols-1 
           max-[576px]:gap-6 max-[576px]:p-[30px] max-[576px]:text-center"
         >
-          {stats.map((stat, i) => (
+          {stats &&
+          stats.map((stat, i) => (
             <div
               key={i}
               className={
@@ -83,8 +79,10 @@ export default memo(function Excellence({ data, statsData }) {
                 {stat.label}
               </p>
             </div>
-          ))}
+          ))
+          }
         </motion.div>
+        }
       </div>
 
       <div className="max-w-[1140px] mx-auto px-4 text-white">

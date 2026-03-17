@@ -3,6 +3,7 @@ import Group from "../../assets/Images/Group.png";
 import Group96 from "../../assets/Images/Group 96.png";
 import Union from "../../assets/Images/Union.png";
 import Vector from "../../assets/Images/Vector.png";
+import iohm from "../../assets/Images/iohm.svg";
 import Vector1 from "../../assets/Images/Vector (1).png";
 import { useState, memo } from "react";
 
@@ -16,7 +17,7 @@ const fadeUp = {
 };
 export default memo(function About({ aboutData, whyData }) {
 
-  const staticIcons = [Group, Group96, Union, Vector, Vector1];
+  const staticIcons = [Group, Group96, Union, Vector, Vector1, iohm];
 
   const items = whyData?.items?.length
     ? whyData.items.map((item, i) => ({
@@ -50,6 +51,11 @@ export default memo(function About({ aboutData, whyData }) {
           title: "Comprehensive Training",
           desc: "Specialisations in culinary arts, event management, front office operations and hospitality marketing, ensuring students are well-rounded professionals."
         },
+        {
+          icon: iohm,
+          title: "Career-Focused Learning",
+          desc: "Programs emphasise professional grooming, communication skills and industry readiness for hospitality careers."
+        }
       ];
 
       const [expanded, setExpanded] = useState(null);
