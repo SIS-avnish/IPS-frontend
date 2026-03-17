@@ -76,7 +76,7 @@ function App() {
       <EnquiryModal />
        <button
         onClick={() => window.scrollTo({ top: 10, behavior: "smooth" })}
-        className="fixed bottom-5 right-5 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-300"
+        className="fixed bottom-5 right-5 bg-[#0CC2FE] text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-300"
       >
         ↑
       </button>
