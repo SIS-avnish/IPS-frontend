@@ -39,7 +39,6 @@ async function triggerPrerender(routes = []) {
       // Build the query parameters
       const params = new URLSearchParams({
         token: PRERENDER_TOKEN,
-        url: fullUrl,
       });
 
       const requestUrl = `${PRERENDER_API_BASE}?${params.toString()}`;
@@ -55,6 +54,9 @@ async function triggerPrerender(routes = []) {
           'Content-Type': 'application/json',
           'X-Prerender-Token': PRERENDER_TOKEN,
         },
+        body: JSON.stringify({
+          url: fullUrl,
+        }),
       });
 
       if (response.ok) {
@@ -120,7 +122,6 @@ async function verifyToken() {
   try {
     const params = new URLSearchParams({
       token: PRERENDER_TOKEN,
-      url: 'https://example.com',
     });
 
     const requestUrl = `${PRERENDER_API_BASE}?${params.toString()}`;
@@ -128,8 +129,12 @@ async function verifyToken() {
     const response = await fetch(requestUrl, {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         'X-Prerender-Token': PRERENDER_TOKEN,
       },
+      body: JSON.stringify({
+        url: 'https://example.com',
+      }),
     });
 
     if (response.ok || response.status === 400) {
