@@ -8,17 +8,17 @@ export const prereenderConfig = {
   // Routes to pre-render
   routes: [
     // Home & Main Pages
-    { url: '/', name: 'Home' },
-    { url: '/about', name: 'About' },
-    { url: '/facilities', name: 'Facilities' },
-    { url: '/placement', name: 'Placement' },
-    { url: '/contact', name: 'Contact' },
+    { url: '/ipsa/', name: 'Home' },
+    { url: '/ipsa/about', name: 'About' },
+    { url: '/ipsa/facilities', name: 'Facilities' },
+    { url: '/ipsa/placement', name: 'Placement' },
+    { url: '/ipsa/contact', name: 'Contact' },
     
     // Activities & Events
-    { url: '/activities', name: 'Activities' },
-    { url: '/student-life', name: 'Student Life' },
-    { url: '/news', name: 'News' },
-    { url: '/alumni', name: 'Alumni' },
+    { url: '/ipsa/activities', name: 'Activities' },
+    { url: '/ipsa/student-life', name: 'Student Life' },
+    { url: '/ipsa/news', name: 'News' },
+    { url: '/ipsa/alumni', name: 'Alumni' },
     
     // Sitemap for SEO
     { url: '/sitemap.xml', name: 'Sitemap' },
