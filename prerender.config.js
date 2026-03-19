@@ -3,7 +3,7 @@
 
 export const prereenderConfig = {
   token: process.env.PRERENDER_TOKEN || '0RLFZu5pp3Ri2LbLEfpn',
-  baseUrl: process.env.PRERENDER_BASE_URL || 'http://localhost:3000',
+  baseUrl: process.env.PRERENDER_BASE_URL || 'https://ipsacademyindore.edu.in',
   
   // Routes to pre-render
   routes: [

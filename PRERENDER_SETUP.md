@@ -18,6 +18,28 @@ PRERENDER_BASE_URL=http://localhost:3000
 
 ## Available Commands
 
+### ⚠️ Required: Accessible URL
+**Prerender.io needs to reach your site from the internet.** You cannot use `http://localhost:3000`.
+
+For local development, use **ngrok**:
+```bash
+# Terminal 1: Start server
+npm start
+
+# Terminal 2: Expose with ngrok
+ngrok http 3000
+
+# Terminal 3: Use the public URL
+PRERENDER_BASE_URL=https://your-ngrok-url.ngrok.io npm run prerender
+```
+
+For production, set your actual domain:
+```bash
+PRERENDER_BASE_URL=https://www.ipsacademy.edu.in npm run prerender
+```
+
+### Available Commands
+
 ### 1. Verify Token
 ```bash
 npm run prerender:verify

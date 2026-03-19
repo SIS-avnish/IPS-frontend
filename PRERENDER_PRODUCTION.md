@@ -33,9 +33,26 @@ PRERENDER_BASE_URL=https://www.ipsacademy.edu.in   # Your production domain
 ```
 
 ### 3. Trigger Pre-rendering
-Once your site is live, run:
+
+**⚠️ IMPORTANT:** Prerender.io needs to reach your site from the internet. If you're testing locally, use ngrok first:
+
+**For Local Testing:**
 ```bash
-npm run prerender
+# Terminal 1: Start your server
+npm start
+
+# Terminal 2: Expose locally with ngrok
+npm install -g ngrok
+ngrok http 3000
+
+# Terminal 3: Run prerender with public URL
+PRERENDER_BASE_URL=https://your-ngrok-url.ngrok.io npm run prerender
+```
+
+**For Production:**
+Once your site is live on your domain, run:
+```bash
+PRERENDER_BASE_URL=https://www.ipsacademy.edu.in npm run prerender
 ```
 
 This will submit all routes to Prerender.io for caching.

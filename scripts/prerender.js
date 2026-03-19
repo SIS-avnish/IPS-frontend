@@ -15,6 +15,15 @@ async function triggerPrerender(routes = []) {
   console.log(`\n🔄 Starting pre-rendering of ${routesToRender.length} routes...`);
   console.log(`📍 Base URL: ${prerenderConfig.baseUrl}\n`);
 
+  // Check if base URL is localhost
+  if (prerenderConfig.baseUrl.includes('localhost') || prerenderConfig.baseUrl.includes('127.0.0.1')) {
+    console.warn('\n⚠️  WARNING: Using localhost URL!\n');
+    console.warn('Prerender.io cannot reach localhost. You need:');
+    console.warn('  1. A public URL (production deployment)');
+    console.warn('  2. OR use ngrok: ngrok http 3000');
+    console.warn('  3. Then set: PRERENDER_BASE_URL=https://your-ngrok-url.ngrok.io\n');
+  }
+
   let successCount = 0;
   let failureCount = 0;
   const errors = [];
@@ -33,6 +42,9 @@ async function triggerPrerender(routes = []) {
       });
 
       const requestUrl = `${PRERENDER_API_BASE}?${params.toString()}`;
+      
+      // Debug: Show what we're sending (without token)
+      console.log(`     📤 Submitting: ${fullUrl}`);
 
       const response = await fetch(requestUrl, {
         method: 'POST',
@@ -45,7 +57,27 @@ async function triggerPrerender(routes = []) {
         console.log(`  ✅ Success: ${url}`);
         successCount++;
       } else {
-        const errorMsg = `Failed with status ${response.status}`;
+        let errorMsg = `Failed with status ${response.status}`;
+        let responseBody = '';
+        
+        try {
+          responseBody = await response.text();
+        } catch (e) {
+          // Response body not readable
+        }
+        
+        // More helpful error messages
+        if (response.status === 400) {
+          errorMsg += ' (Bad Request)';
+          if (responseBody) {
+            errorMsg += ` - ${responseBody}`;
+          }
+        } else if (response.status === 401) {
+          errorMsg += ' (Unauthorized - invalid token)';
+        } else if (response.status === 403) {
+          errorMsg += ' (Forbidden - plan limit reached)';
+        }
+        
         console.log(`  ❌ Failed: ${url} - ${errorMsg}`);
         errors.push({ url, error: errorMsg });
         failureCount++;
