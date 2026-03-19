@@ -1,7 +1,5 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import Logo from "../../assets/Images/static.jpg";
-import nirf from "../../assets/Images/nirf-logo.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -13,7 +11,7 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function Excellence({ data, statsData }) {
+export default memo(function Excellence({ data, statsData,startData }) {
 
   const stats = statsData?.stats 
 
@@ -44,12 +42,12 @@ export default memo(function Excellence({ data, statsData }) {
       : "md:grid-cols-1";
 
   return (
-    <section className="bg-[#002147] mt-0 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10">
+    <section className="bg-[#002147] mt-0 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10 ">
       <div
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
-        max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
-        style={{ backgroundImage: `url(${Logo})` }}
+        max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-30"
+        style={{ backgroundImage: `url(${startData?.images[0]})` }}
       >
         {stats.length > 0 && 
         <motion.div

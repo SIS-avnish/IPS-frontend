@@ -19,44 +19,21 @@ export default memo(function About({ aboutData, whyData }) {
 
   const staticIcons = [Group, Group96, Union, Vector, Vector1, iohm];
 
-  const items = whyData?.items?.length
-    ? whyData.items.map((item, i) => ({
-        icon: staticIcons[i % staticIcons.length],
-        title: item.question,
-        desc: item.answer,
+  // Handle both 'cards' and 'items' format for dynamic data
+  const items = whyData?.cards?.length
+    ? whyData.cards.map((item, i) => ({
+        icon: item.icon,
+        title: item.title,
+        desc: item.description,
       }))
-    : [
-        {
-          icon: Group,
-          title: "State-of-the-Art Facilities",
-          desc: "With fully equipped kitchens, training restaurants and labs, students receive hands-on exposure to real-world hospitality operations."
-        },
-        {
-          icon: Group96,
-          title: "Industry-focused Curriculum",
-          desc: "Practical training through mock hotel setups, industry internships and exposure to top hospitality brands."
-        },
-        {
-          icon: Union,
-          title: "Experienced Faculty",
-          desc: "Learn from industry professionals with years of experience in hospitality, culinary arts and tourism."
-        },
-        {
-          icon: Vector,
-          title: "Global Exposure",
-          desc: "Deep understanding of international cuisine, luxury hotels, event planning and more, preparing them for the global hospitality market"
-        },
-        {
-          icon: Vector1,
-          title: "Comprehensive Training",
-          desc: "Specialisations in culinary arts, event management, front office operations and hospitality marketing, ensuring students are well-rounded professionals."
-        },
-        {
-          icon: iohm,
-          title: "Career-Focused Learning",
-          desc: "Programs emphasise professional grooming, communication skills and industry readiness for hospitality careers."
-        }
-      ];
+    : whyData?.items?.length
+    ? whyData.items.map((item, i) => ({
+        icon: item.icon,
+        title: item.title,
+        desc: item.description,
+      }))
+    : [];
+
 
       const [expanded, setExpanded] = useState(null);
 
@@ -105,22 +82,22 @@ export default memo(function About({ aboutData, whyData }) {
       </section>
 
       {/* -------- IPS ADVANTAGE SECTION -------- */}
-      <section className="bg-[#002147] py-12 md:py-26 mt-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="bg-[#002147] py-12 sm:py-16 md:py-20 lg:py-28 mt-8 sm:mt-10 md:mt-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
           <motion.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium"
+            className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-tight"
           >
             {whyTitle}
           </motion.h2>
 
-          <div className="w-28 sm:w-36 md:w-40 h-[2px] bg-white mt-3 mb-10"></div>
+          <div className="w-24 sm:w-32 md:w-40 h-1 sm:h-[2px] bg-white mt-3 mb-8 sm:mb-12"></div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
 
             {items.map((item, i) => (
               <motion.div
@@ -130,41 +107,51 @@ export default memo(function About({ aboutData, whyData }) {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
-                className="text-white p-6 border border-white/15 rounded-xl 
+                className="text-white p-5 sm:p-6 border border-white/15 rounded-lg sm:rounded-xl 
                            transition duration-300 
-                           hover:bg-white/5 hover:-translate-y-1"
+                           hover:bg-white/5 hover:-translate-y-1 hover:border-white/30
+                           flex flex-col"
               >
-                {/* PNG Icon */}
-                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 
+                {/* Icon Container - Handle both URL and imported images */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 
                                 flex items-center justify-center 
-                                bg-white/10 rounded-lg mb-4">
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className="w-10 h-10 md:w-12 md:h-12 object-contain"
-                  />
+                                bg-white/10 rounded-lg mb-4 flex-shrink-0">
+                  {item.icon.includes('http') || item.icon.includes('cloudinary') ? (
+                    <img
+                      src={item.icon}
+                      alt={item.title}
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <img
+                      src={item.icon}
+                      alt={item.title}
+                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 object-contain"
+                    />
+                  )}
                 </div>
 
-                <h6 className="text-lg sm:text-xl font-medium mb-1">
+                <h6 className="text-base sm:text-lg md:text-xl font-medium mb-2 leading-snug">
                   {item.title}
                 </h6>
 
-                <p className="text-white/75 text-sm leading-relaxed">
-  {expanded === i
-    ? item.desc
-    : item.desc.length > 140
-      ? item.desc.slice(0, 140) + "..."
-      : item.desc}
-</p>
+                <p className="text-white/75 text-xs sm:text-sm md:text-base leading-relaxed flex-grow">
+                  {expanded === i
+                    ? item.desc
+                    : item.desc.length > 130
+                      ? item.desc.slice(0, 130) + "..."
+                      : item.desc}
+                </p>
 
-{item.desc.length > 140 && (
-  <button
-    onClick={() => setExpanded(expanded === i ? null : i)}
-    className="mt-3 text-xs font-medium text-white underline underline-offset-4 hover:opacity-80"
-  >
-    {expanded === i ? "Show less" : "Know more"}
-  </button>
-)}
+                {item.desc.length > 130 && (
+                  <button
+                    onClick={() => setExpanded(expanded === i ? null : i)}
+                    className="mt-3 text-xs font-medium text-white underline underline-offset-2 hover:opacity-80 transition text-left"
+                  >
+                    {expanded === i ? "Show less" : "Know more"}
+                  </button>
+                )}
 
               </motion.div>
             ))}

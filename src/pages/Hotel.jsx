@@ -41,7 +41,7 @@ const Hotel = () => {
     <div className='w-full overflow-x-hidden'>
       <Hero data={sections?.hero} />
       <About aboutData={sections?.about_college} whyData={sections?.why_college_of_education} />
-      <Excellence data={sections?.excellence} statsData={sections?.stats} />
+      <Excellence data={sections?.excellence} statsData={sections?.stats} startData={sections?.hero_1} />
       <VissionInfra data={sections?.vision_mission} />
       <Program data={sections?.programmes} titleData={sections?.programmed_offered_title_description} />
       <Facility facilitiesData={sections?.facilities} skillsData={sections?.skills_iohm} bakeryData={sections?.bakery_1} />
