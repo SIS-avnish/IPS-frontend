@@ -2,7 +2,8 @@ import fetch from 'node-fetch';
 import prerenderConfig from '../prerender.config.js';
 import { URL, URLSearchParams } from 'url';
 
-const PRERENDER_TOKEN = process.env.PRERENDER_TOKEN || '0RLFZu5pp3Ri2LbLEfpn';
+// Hardcode token to ensure it's not empty
+const PRERENDER_TOKEN = '0RLFZu5pp3Ri2LbLEfpn';
 // Use the correct Prerender.io recache endpoint with query params
 const PRERENDER_API_BASE = 'https://api.prerender.io/recache';
 
@@ -45,11 +46,14 @@ async function triggerPrerender(routes = []) {
       
       // Debug: Show what we're sending (without token)
       console.log(`     📤 Submitting: ${fullUrl}`);
+      console.log(`     🔑 Token set: ${PRERENDER_TOKEN ? 'YES' : 'NO'}`);
+      console.log(`     📝 Request params: token=${PRERENDER_TOKEN.substring(0, 5)}... url=${fullUrl}`);
 
       const response = await fetch(requestUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Prerender-Token': PRERENDER_TOKEN,
         },
       });
 
@@ -123,6 +127,9 @@ async function verifyToken() {
 
     const response = await fetch(requestUrl, {
       method: 'POST',
+      headers: {
+        'X-Prerender-Token': PRERENDER_TOKEN,
+      },
     });
 
     if (response.ok || response.status === 400) {
