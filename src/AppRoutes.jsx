@@ -26,14 +26,32 @@ const MainActivityPage = lazy(() => import("./components/activity/MainActivityPa
 
 const PageLoader = () => <PageSkeleton />
 
+// Helper function to get college slug from subdomain
+const getCollegeSlugFromSubdomain = () => {
+  if (typeof window === 'undefined') return 'ipsa' // SSR fallback
+  
+  const hostname = window.location.hostname
+  const parts = hostname.split('.')
+  
+  // If it's a subdomain (e.g., ibmr.ipsacademyindore.edu.in)
+  if (parts.length > 2) {
+    return parts[0] // Return the subdomain (ibmr, isr, coc, etc.)
+  }
+  
+  // Default to ipsa if it's the main domain
+  return 'ipsa'
+}
+
 export default function AppRoutes() {
+  const collegeSlug = getCollegeSlugFromSubdomain()
+  
   return (
     <>
       <Navbar />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* DEFAULT REDIRECT */}
-          <Route path="/" element={<Navigate to="/ipsa/home" replace />} />
+          <Route path="/" element={<Navigate to={`/${collegeSlug}`} replace />} />
 
           {/* COLLEGE ROUTES */}
           <Route path="/ipsa/home" element={<Home />} />
