@@ -31,14 +31,27 @@ if (!isProduction) {
 } else {
   // Production mode - serve static assets
   const clientDir = path.join(__dirname, 'dist/client')
+  
+  // Serve assets with long cache
   app.use(
     '/assets',
     express.static(path.join(clientDir, 'assets'), {
       maxAge: '1y',
     })
   )
-  // Serve other static files from public directory
+  
+  // Serve public files (sitemap, robots.txt, etc.)
   app.use(express.static(path.join(__dirname, 'public')))
+  
+  // Catch-all for missing static files to prevent React Router from catching them
+  app.use((req, res, next) => {
+    // If the request is for a static file extension, send 404 instead of routing to React
+    const staticExtensions = ['.js', '.css', '.woff', '.woff2', '.ttf', '.eot', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.ico']
+    if (staticExtensions.some(ext => req.url.includes(ext))) {
+      return res.status(404).send('Not Found')
+    }
+    next()
+  })
 }
 
 // HTML template
@@ -50,6 +63,16 @@ const getTemplate = () => {
 }
 
 async function handleSPA(req, res) {
+  // Suppress React Router warnings about unmatched asset paths
+  const originalWarn = console.warn
+  console.warn = (...args) => {
+    // Suppress "No routes matched location" warnings for asset files
+    if (args[0]?.includes?.('No routes matched location')) {
+      return
+    }
+    originalWarn(...args)
+  }
+
   try {
     const template = getTemplate()
     let render
@@ -81,6 +104,9 @@ async function handleSPA(req, res) {
       appHtml = '<div id="error-container"></div>'
     }
 
+    // Restore console.warn
+    console.warn = originalWarn
+
     // Inject app HTML into template
     const html = template.replace(
       '<div id="root"></div>',
@@ -89,6 +115,9 @@ async function handleSPA(req, res) {
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
+    // Restore console.warn in case of error
+    console.warn = originalWarn
+    
     // Handle errors
     if (!isProduction && vite) {
       vite.ssrFixStacktrace(e)
