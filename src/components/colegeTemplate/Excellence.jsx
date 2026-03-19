@@ -13,7 +13,7 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function Excellence({ data, statsData }) {
+export default memo(function Excellence({ data, statsData,startData }) {
 
   const stats = statsData?.stats || [
     { value: "30", label: "Year Legacy" },
@@ -55,7 +55,7 @@ export default memo(function Excellence({ data, statsData }) {
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
-        style={{ backgroundImage: `url(${Logo})` }}
+        style={{ backgroundImage: `url(${startData?.images[0]})` }}
       >
         {stats.length > 0 &&
         <motion.div

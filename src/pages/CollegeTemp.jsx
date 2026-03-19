@@ -60,7 +60,7 @@ function renderSection(key, data, sections, collegeSlug) {
       return <StatsSection data={data} />;
 
     case "excellence":
-      return <Excellence data={data} statsData={sections.stats} />;
+      return <Excellence data={data} statsData={sections.stats} startData={sections.star_image} />;
 
     case "experience_learn":
       return <Experience data={data} />;

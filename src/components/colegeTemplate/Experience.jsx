@@ -42,32 +42,8 @@ export default memo(function Experience({ data }) {
   const firstTitle = titleParts[0];
   const secondTitle = titleParts.slice(1).join(",");
 
-  const cards = data?.cards || [
-    {
-      title: "Experiential Learning",
-      description: "Industry projects, internships, and case studies",
-    },
-    {
-      title: "Research Focus",
-      description: "Opportunities for publication in national and international journals",
-    },
-    {
-      title: "Holistic Growth",
-      description: "Personality development, leadership workshops, and cultural events",
-    },
-    {
-      title: "Internship & Projects",
-      description: "Industrial projects in various domains for real-world exposure",
-    },
-    {
-      title: "Industry Connect",
-      description: "Guest lectures, industrial visits, and networking events with top leaders",
-    },
-    {
-      title: "Skill Development",
-      description: "Value-added certifications in analytics, digital marketing, NSE and more",
-    },
-  ];
+  const cards = data?.cards 
+
 
   return (
     <section className="bg-[#002147] py-12 sm:py-14 md:pb-16 text-white mt-[-20px]">
@@ -118,10 +94,7 @@ export default memo(function Experience({ data }) {
               "
             >
               <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-white/10 mb-4 mx-auto sm:mx-0 group-hover:bg-white/20 transition">
-                <FontAwesomeIcon
-                  icon={fallbackIcons[idx % fallbackIcons.length]}
-                  className="text-xl"
-                />
+                <img src={card.icon} alt={card.title} className="w-full h-full object-contain" />
               </div>
 
               <h6 className="text-lg sm:text-xl font-medium mb-2">
