@@ -55,6 +55,7 @@ export default function Home() {
       <StatsSection
         statsData={sections?.stats}
         excellenceData={sections?.excellence}
+        startData={sections?.start_image}
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />

@@ -1,15 +1,11 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import onlineTeachingIcon from "../../assets/Images/online-teaching 1.svg";
-import computerIcon from "../../assets/Images/computer 1.svg";
-import globalIcon from "../../assets/Images/global 1.svg";
-import opportunitiesIcon from "../../assets/Images/opportunities 1.svg";
-import studentFallback from "../../assets/Images/student.png";
+
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
 
 // Map icons by index (matches the order returned by the API)
-const iconMap = [onlineTeachingIcon, computerIcon, globalIcon, opportunitiesIcon];
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

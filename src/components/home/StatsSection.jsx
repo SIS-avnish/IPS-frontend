@@ -13,7 +13,7 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function StatsSection({ statsData, excellenceData }) {
+export default memo(function StatsSection({ statsData, excellenceData, startData }) {
   const stats = useMemo(() => statsData?.stats || [], [statsData]);
   const excellenceTitle =
     excellenceData?.title || "Rankings & Quality Accreditations";
@@ -39,7 +39,7 @@ export default memo(function StatsSection({ statsData, excellenceData }) {
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
-        style={{ backgroundImage: `url(${Logo})` }}
+        style={{ backgroundImage: `url(${startData?.images[0]})` }}
       >
         {/* Stats Box */}
         <motion.div
