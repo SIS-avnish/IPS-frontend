@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_BASE = "http://165.22.223.163:7777/api/ipsa";
-const SERVER_BASE = "http://165.22.223.163:7777/api";
-const MEDIA_BASE = "http://165.22.223.163:7777";
+const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
+const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
+const MEDIA_BASE = "https://portal.ipsacademyindore.edu.in";
 
 // In-memory cache to avoid re-fetching on repeat navigation
 const pageCache = new Map();
