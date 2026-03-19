@@ -212,7 +212,7 @@ const isCollegeHome =
             {colleges.map(([collegeName, slug]) => (
               <NavLink
                 key={slug}
-                to={`/${slug}`}
+                to={`https://ipsacademyindore.edu.in/${slug}`}
                 target="_blank"
                 onClick={closeAll}
                 className={dropdownLink}
@@ -237,7 +237,7 @@ const isCollegeHome =
   : colleges.map(([name, slug]) => (
       <NavLink
         key={slug}
-        to={`/${slug}`}
+        to={`https://ipsacademyindore.edu.in/${slug}`}
         target="_blank"
         onClick={closeAll}
         className={dropdownLink}
