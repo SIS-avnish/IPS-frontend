@@ -95,10 +95,10 @@ export default memo(function Footer() {
 
           <ul className="space-y-4">
   {sec.links.map((l, idx) => (
-    <li key={idx} className="leading-tight">
+    <li key={idx} className="leading-tight" title= {l}>
       <Link
         to={`/${sec.slug}`}
-        className="hover:text-[#00BFFF] transition"
+        className="hover:text-[#00BFFF] transition  block truncate"
       >
         {l}
       </Link>

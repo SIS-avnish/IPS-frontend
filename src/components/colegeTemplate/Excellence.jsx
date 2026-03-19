@@ -73,11 +73,11 @@ export default memo(function Excellence({ data, statsData }) {
               key={i}
               className={
                 i % 2 === 0 && i + 1 < stats.length
-                  ? "border-r border-white/70 max-[576px]:border-r-0"
+                  ? "border-r border-white/70 max-[576px]:border-r- "
                   : ""
               }
             >
-              <h5 className="text-[38px] font-medium text-[#002147] !mb-0 max-[576px]:text-[26px]">
+              <h5 className="text-[36px] font-medium text-[#002147] !mb-0 max-[576px]:text-[26px]">
                 {stat.value}
               </h5>
               <p className="text-[18px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
