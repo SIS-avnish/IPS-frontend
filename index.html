@@ -6,6 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IPSAcademy</title>
 
+    <!-- Password Protection -->
+    <script>
+      (function() {
+        const CORRECT_PASSWORD = 'sys#123';
+        const sessionKey = 'ipsacademy_authenticated';
+        
+        // Check if already authenticated in this session
+        if (!sessionStorage.getItem(sessionKey)) {
+          // Prompt for password
+          let attempts = 3;
+          let isAuthenticated = false;
+          
+          while (attempts > 0 && !isAuthenticated) {
+            const password = prompt(`🔐 Enter Password (${attempts} attempts remaining):`);
+            
+            if (password === null) {
+              // User clicked cancel
+              window.location.href = 'about:blank';
+              return;
+            }
+            
+            if (password === CORRECT_PASSWORD) {
+              isAuthenticated = true;
+              sessionStorage.setItem(sessionKey, 'true');
+            } else {
+              attempts--;
+              if (attempts > 0) {
+                alert(`❌ Incorrect password. ${attempts} attempts remaining.`);
+              } else {
+                alert('❌ Maximum attempts exceeded. Access denied.');
+                window.location.href = 'about:blank';
+              }
+            }
+          }
+        }
+      })();
+    </script>
+
     <!-- Preconnect to external servers -->
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link rel="preconnect" href="https://portal.ipsacademyindore.edu.in" />
