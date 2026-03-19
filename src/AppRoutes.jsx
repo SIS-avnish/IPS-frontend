@@ -54,14 +54,14 @@ export default function AppRoutes() {
           <Route path="/" element={<Navigate to={`/${collegeSlug}`} replace />} />
 
           {/* COLLEGE ROUTES */}
-          <Route path="/ipsa/home" element={<Home />} />
+          <Route path="https://ipsacademyindore.edu.in/ipsa/home" element={<Home />} />
           <Route path="/ipsa/about" element={<AboutPage />} />
           <Route path="/ipsa/contact" element={<Contact />} />
           <Route path="/ipsa/facilities" element={<FacilitiesPage />} />
           <Route path="/ipsa/student-life" element={<StudentLife />} />
           <Route path="/ipsa/placement" element={<Placements />} />
           <Route path="/student-council" element={<Student />} />
-          <Route path="/social-activities" element={<SocialAct />} />
+        <Route path="/social-activities" element={<SocialAct />} />
           <Route path="/alumni" element={<AlumniPage />} />
           <Route path="/alumni/:slug" element={<AlumniDetail />} />
           <Route path="/news" element={<NewsPage />} />
