@@ -10,15 +10,19 @@ export const prereenderConfig = {
     // Home & Main Pages
     { url: '/ipsa/', name: 'Home' },
     { url: '/ipsa/about', name: 'About' },
+    { url: '/ipsa/placements', name: 'Placements' },
     { url: '/ipsa/facilities', name: 'Facilities' },
-    { url: '/ipsa/placement', name: 'Placement' },
     { url: '/ipsa/contact', name: 'Contact' },
     
-    // Activities & Events
+    // Activities
     { url: '/ipsa/activities', name: 'Activities' },
-    { url: '/ipsa/student-life', name: 'Student Life' },
-    { url: '/ipsa/news', name: 'News' },
-    { url: '/ipsa/alumni', name: 'Alumni' },
+    { url: '/ipsa/activities/cultural', name: 'Cultural Activities' },
+    { url: '/ipsa/activities/events', name: 'Events' },
+    { url: '/ipsa/activities/workshop', name: 'Workshops' },
+    { url: '/ipsa/activities/clubs', name: 'Clubs' },
+    { url: '/ipsa/activities/social', name: 'Social Activities' },
+    { url: '/ipsa/activities/alumni', name: 'Alumni' },
+    { url: '/ipsa/activities/news', name: 'News' },
     
     // Sitemap for SEO
     { url: '/sitemap.xml', name: 'Sitemap' },
