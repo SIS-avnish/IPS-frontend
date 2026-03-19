@@ -37,7 +37,7 @@ async function triggerPrerender(routes = []) {
 
       // Build the query parameters
       const params = new URLSearchParams({
-        prerenderToken: PRERENDER_TOKEN,
+        token: PRERENDER_TOKEN,
         url: fullUrl,
       });
 
@@ -115,7 +115,7 @@ async function verifyToken() {
 
   try {
     const params = new URLSearchParams({
-      prerenderToken: PRERENDER_TOKEN,
+      token: PRERENDER_TOKEN,
       url: 'https://example.com',
     });
 
