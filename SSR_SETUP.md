@@ -35,7 +35,7 @@ npm start
 Or with custom port:
 
 ```bash
-PORT=8080 npm start
+PORT=3000 npm start
 ```
 
 ## Project Structure
