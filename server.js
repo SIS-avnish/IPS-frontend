@@ -3,6 +3,7 @@ import path from 'path'
 import express from 'express'
 import compression from 'compression'
 import { fileURLToPath, pathToFileURL } from 'url'
+import prerenderNode from 'prerender-node'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -11,6 +12,9 @@ const isProduction = process.env.NODE_ENV === 'production'
 const PORT = process.env.PORT || 3000
 
 const app = express()
+
+// Add Prerender middleware for SEO - detects bots and serves pre-rendered HTML
+app.use(prerenderNode.set('prerenderToken', '0RLFZu5pp3Ri2LbLEfpn'))
 
 app.use(compression())
 
