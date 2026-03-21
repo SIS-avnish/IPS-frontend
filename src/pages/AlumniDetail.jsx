@@ -30,6 +30,13 @@ function extractYouTubeId(url) {
   return null;
 }
 
+function isVideoFile(src) {
+  if (!src) return false;
+  const videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'];
+  const extension = src.split('.').pop().toLowerCase();
+  return videoExtensions.includes(extension);
+}
+
 const AlumniDetail = () => {
   const { collegeSlug, alumniId } = useParams();
   const navigate = useNavigate();
@@ -107,7 +114,7 @@ const AlumniDetail = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             onClick={() => navigate(`/${collegeSlug}/activities/alumni`)}
-            className="text-[#002147] text-sm font-medium mb-6 flex items-center gap-1 hover:underline"
+            className="text-[#002147] text-lg font-medium mb-6 flex items-center gap-1 hover:underline"
           >
             ← Back to Alumni
           </motion.button>
@@ -119,14 +126,23 @@ const AlumniDetail = () => {
             transition={{ duration: 0.4 }}
             className="bg-white rounded-2xl shadow-md overflow-hidden mb-10"
           >
-            {/* Image — full-width on top */}
+            {/* Image or Video — full-width on top */}
             {alumni.main_image && (
               <div className="w-full">
-                <img
-                  src={alumni.main_image}
-                  alt={alumni.name}
-                  className="w-full h-64 sm:h-80 md:h-96 object-cover"
-                />
+                {isVideoFile(alumni.main_image) ? (
+                  <video
+                    src={alumni.main_image}
+                    controls
+                    preload="metadata"
+                    className="w-full h-64 sm:h-80 md:h-96 object-cover bg-gray-200"
+                  />
+                ) : (
+                  <img
+                    src={alumni.main_image}
+                    alt={alumni.name}
+                    className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                  />
+                )}
               </div>
             )}
 

@@ -12,6 +12,13 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.45 } },
 };
 
+const isVideoFile = (src) => {
+  if (!src) return false;
+  const videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'];
+  const extension = src.split('.').pop().toLowerCase();
+  return videoExtensions.includes(extension);
+};
+
 const AlumniCards = memo(function AlumniCards({ alumni, collegeSlug }) {
   const navigate = useNavigate();
 
@@ -47,12 +54,20 @@ const AlumniCards = memo(function AlumniCards({ alumni, collegeSlug }) {
               className="bg-white rounded-2xl shadow-md overflow-hidden border cursor-pointer transition-shadow hover:shadow-lg"
             >
               {item.main_image && (
-                <img
-                  src={item.main_image}
-                  alt={item.name}
-                  loading="lazy"
-                  className="w-full h-56 object-cover"
-                />
+                isVideoFile(item.main_image) ? (
+                  <video
+                    src={item.main_image}
+                    controls
+                    className="w-full h-56 object-cover bg-gray-200"
+                  />
+                ) : (
+                  <img
+                    src={item.main_image}
+                    alt={item.name}
+                    loading="lazy"
+                    className="w-full h-56 object-cover"
+                  />
+                )
               )}
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-[#002147] mb-1">
