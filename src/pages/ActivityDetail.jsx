@@ -16,6 +16,14 @@ const ActivityDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 const [currentIndex, setCurrentIndex] = useState(0);
 
+// Helper function to check if the URL is a video
+const isVideo = (url) => {
+  if (!url) return false;
+  const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
+  const urlLower = url.toLowerCase();
+  return videoExtensions.some(ext => urlLower.includes(ext));
+};
+
 const openImage = (index) => {
   setCurrentIndex(index);
   setSelectedImage(activity.gallery_images[index]);
@@ -183,10 +191,18 @@ const prevImage = () => {
       ❮
     </button>
 
-    <img
-      src={selectedImage}
-      className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
-    />
+    {isVideo(selectedImage) ? (
+      <video
+        src={selectedImage}
+        controls
+        className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+      />
+    ) : (
+      <img
+        src={selectedImage}
+        className="max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+      />
+    )}
 
     <button
       onClick={nextImage}
