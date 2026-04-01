@@ -45,7 +45,7 @@ const Hotel = () => {
       <VissionInfra data={sections?.vision_mission} />
       <Program data={sections?.programmes} titleData={sections?.programmed_offered_title_description} />
       <Facility facilitiesData={sections?.facilities} skillsData={sections?.skills_iohm} bakeryData={sections?.bakery_1} />
-      <Skills data={sections?.skills_iohm} />
+      <Skills data={sections?.skills_iohm_featurelist_image || sections?.skills_iohm} />
       <Faculties data={sections?.train_with_tech_tools} teamData={sections?.learn_from_experts} />
       <Placement data={sections?.placement} recruitersData={sections?.recruiters} />
       {sections?.placement_1 && <SplitSection data={sections.placement_1} />}
