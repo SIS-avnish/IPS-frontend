@@ -17,37 +17,16 @@ const Skills = memo(({ data }) => {
 
   const staticImages = [front, language, maintenance, accom];
 
-  // Parse API items: first item is heading, rest are "Title: Description" format
-  const apiItems = data?.items || [];
-  const heading = apiItems[0] || "Master Your Skills in Our Practical Labs";
+  const heading = data?.title || "Master Your Skills in Our Practical Labs";
 
-  const labs = apiItems.length > 1
-    ? apiItems.slice(1).map((item, i) => {
-        const colonIdx = item.indexOf(": ");
-        const title = colonIdx !== -1 ? item.substring(0, colonIdx) : item;
-        const desc = colonIdx !== -1 ? item.substring(colonIdx + 2) : "";
-        return {
-          img: staticImages[i % staticImages.length],
-          title,
-          desc,
-        };
-      })
+  const labs = (data?.cards || []).length
+    ? data.cards.map((card, i) => ({
+        img: card.icon || staticImages[i % staticImages.length],
+        title: card.title,
+        desc: card.description,
+      }))
     : [
-        {
-          img: front,
-          title: "Front Office Lab",
-          desc: "Learn and test your skills in a simulated hotel reception with IDS Next 6i Hotel ERP software, PA systems, luggage rooms and bell desks, offering practical front-office training."
-        },
-        {
-          img: language,
-          title: "Language Lab",
-          desc: "Enhance communication skills through modern software, preparing students for the industry's global demands."
-        },
-        {
-          img: maintenance,
-          title: "Maintenance Lab",
-          desc: "Master essential skills in plumbing, electrical systems and refrigeration, ensuring students can manage hotel maintenance challenges."
-        }
+        
       ];
 
   useEffect(() => {
@@ -64,7 +43,7 @@ const Skills = memo(({ data }) => {
 
     return () => window.removeEventListener("resize", calculateWidth);
 
-  }, [labs]);
+  }, [labs.length]);
 
   const slideLeft = () => {
     setX(prev => Math.min(prev + 500, 0));
