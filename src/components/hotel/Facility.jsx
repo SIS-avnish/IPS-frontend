@@ -7,6 +7,7 @@ import Media from "../common/Media";
 const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
   const [open, setOpen] = useState(0);
+  const [activeBakery, setActiveBakery] = useState(0);
 
 
   // Split facilities into kitchens (with images) and bakeries (without images)
@@ -40,6 +41,8 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
   const kitchenSubHeading = facilitiesData?.subtitle || "Become a Pro at Our 5-star Training Kitchens";
   const bakeryHeading = bakeryData?.title || "Dreaming of Success?\nBake it Happen with Exceptional Facilities";
+
+  const bakeryImage = bakeryItems[activeBakery]?.image || bakeryItems.find(b => b.image)?.image || items[0]?.image || "";
 
   // Skills section (third section)
   const skillsTitle = skillsData?.title?.replace(/\n/g, ' ').trim() || "Want to Launch Your Own Restaurant?\nStar Here with Real-world Training";
@@ -164,7 +167,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
             viewport={{ once: true }}
           >
             <Media
-              src={bakeryItems.find(b => b.image)?.image || items[0]?.image || ""}
+              src={bakeryImage}
               alt="Bakery"
               className="w-full h-[320px] sm:h-[380px] md:h-[540px] object-cover"
             />
@@ -189,7 +192,13 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
               {bakeryItems.map((bakery, i) => (
                 <div key={i}>
-                  <h4 className="text-[#002147] font-semibold mb-2">{bakery.name}</h4>
+                  <button
+                    type="button"
+                    onClick={() => setActiveBakery(i)}
+                    className="text-[#002147] font-semibold mb-2"
+                  >
+                    {bakery.name}
+                  </button>
                   <p>{bakery.description}</p>
                 </div>
               ))}
