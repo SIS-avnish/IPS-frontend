@@ -106,6 +106,36 @@ const NewsDetail = () => {
             />
           )}
 
+          {/* GALLERY SECTION */}
+          {news.gallery_images && news.gallery_images.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-12 pt-8 border-t border-gray-200"
+            >
+              <h2 className="text-2xl font-bold text-[#002147] mb-8">Gallery</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {news.gallery_images.map((image, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
+                    className="overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 group cursor-pointer"
+                  >
+                    <img
+                      src={image}
+                      alt={`${news.title} - Gallery ${index + 1}`}
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
         </div>
       </section>
     </div>

@@ -134,7 +134,6 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug }) => {
                       {event.title}
                     </h3>
                   </div>
-
                 </div>
               </Link>
             );
