@@ -59,6 +59,7 @@ const StudentLife = () => {
 
   const hero = sections?.hero || {};
   const calendarSection = sections?.a_calendar_full_of || {};
+  const gallerySection = sections?.cultural_gallery || {};
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -73,6 +74,8 @@ const StudentLife = () => {
         content={calendarSection.content}
         events={events}
         collegeSlug={collegeSlug}
+        gallery={gallerySection.images || []}
+
       />
       <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of']} />
     </div>
