@@ -59,7 +59,7 @@ export default memo(function Admission({ data }) {
           </p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
 
           {steps.map((s) => (
             <motion.div
@@ -75,7 +75,7 @@ export default memo(function Admission({ data }) {
                 {s.num}
               </div>
 
-              <h6 className="font-semibold mb-2 text-base sm:text-lg">{s.title}</h6>
+              <h4 className="font-semibold mb-2 text-base sm:text-lg">{s.title}</h4>
               {s.desc.includes("\n") ? (
   <ul className="text-gray-600 text-sm list-disc list-inside text-left space-y-1">
     {s.desc.split("\n").map((line, index) => (
@@ -83,7 +83,7 @@ export default memo(function Admission({ data }) {
     ))}
   </ul>
 ) : (
-  <p className="text-gray-600 text-sm">{s.desc}</p>
+  <p className="text-gray-600 text-md">{s.desc}</p>
 )}
             </motion.div>
           ))}

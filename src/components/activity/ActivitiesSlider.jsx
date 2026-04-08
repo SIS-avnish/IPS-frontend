@@ -59,7 +59,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug }) => {
           <div className="w-40 h-[2px] bg-red-400 mt-3"></div>
         </div>
 
-        <p className="text-gray-600 text-base sm:text-[15px]">
+        <p className="text-gray-600 mt-4 text-xl sm:text-[20px]">
           {content ||
             "Life at IPS Academy is a melting pot of diverse cultures, events, learning opportunities and peer activities."}
         </p>

@@ -53,13 +53,13 @@ export default memo(function TextSection({ data }) {
               className={imagePosition === "left" ? "order-2" : "order-1"}
             >
               {title && (
-                <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-medium mb-4">
+                <h2 className="text-[#002147] text-4xl sm:text-3xl md:text-[60px] font-medium mb-4">
                   {title}
                 </h2>
               )}
               <div className="w-24 h-[2px] bg-[#FF7373] mb-4" />
               {content && (
-                <p className="text-gray-600 text-base leading-relaxed whitespace-pre-line">
+                <p className="text-gray-600 text-2xl leading-tight whitespace-pre-line">
                   {content}
                 </p>
               )}
@@ -110,7 +110,7 @@ export default memo(function TextSection({ data }) {
             viewport={{ once: true, amount: 0.1 }}
           >
             <p
-              className={`text-gray-600 text-base sm:text-lg leading-relaxed whitespace-pre-line ${
+              className={`text-gray-600 text-xl sm:text-lg leading-relaxed whitespace-pre-line ${
                 !expanded && isLong ? "line-clamp-3" : ""
               }`}
             >

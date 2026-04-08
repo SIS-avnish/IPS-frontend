@@ -54,7 +54,7 @@ export default memo(function VisionInfra({ data }) {
               {visionTitle}
             </h2>
 
-            <p className="text-black">
+            <p className="text-black text-xl">
               {visionText}
             </p>
           </motion.div>
@@ -77,12 +77,12 @@ export default memo(function VisionInfra({ data }) {
             </h2>
 
             <div className="text-black space-y-2">
-              {missionText.split("\n").map((point, index) => (
-                <p key={index} className="text-sm md:text-base leading-relaxed">
-                  {point.trim()}
-                </p>
-              ))}
-            </div>
+  {missionText.split("\n").map((point, index) => (
+    <p key={index} className="text-xl leading-relaxed">
+      {point.trim()}
+    </p>
+  ))}
+</div>
           </motion.div>
 
           <motion.img

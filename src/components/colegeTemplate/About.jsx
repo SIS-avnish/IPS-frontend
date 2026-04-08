@@ -33,7 +33,7 @@ export default memo(function About({ data }) {
           className="col-span-12 md:col-span-6 lg:col-span-4"
         >
           <div className="flex flex-col max-[576px]:items-center">
-            <h2 className="text-[60px] font-medium text-[#002147] max-[576px]:text-[32px]">
+            <h2 className="text-[40px] font-medium text-[#002147] max-[576px]:text-[32px]">
               {title}
             </h2>
             <div className="w-[168px] h-[2px] bg-[#FF7373] mb-5" />
@@ -48,9 +48,9 @@ export default memo(function About({ data }) {
           viewport={{ once: true, amount: 0.1 }}
           className="col-span-12 md:col-span-6 lg:col-span-8"
         >
-          <div className="flex flex-col max-[576px]:items-center">
+          <div className="flex flex-col mt-6 max-[576px]:items-center">
             <p
-              className={`text-[16px] font-normal text-[#605654] mb-1! leading-[1.8] transition-all duration-300 max-[576px]:text-center ${
+              className={`text-[20px] font-normal text-[#605654] mb-1! leading-[1.2] transition-all duration-300 max-[576px]:text-center ${
                 expanded ? "" : "line-clamp-2"
               }`}
             >
