@@ -97,9 +97,9 @@ export default memo(function Footer() {
   {sec.links.map((l, idx) => (
     <li key={idx} className="leading-tight" title= {l}>
       <Link
-        to={`/${sec.slug}`}
-        className="hover:text-[#00BFFF] transition  block truncate"
-      >
+  to={`/${sec.slug}#courses`} target="blank"
+  className="hover:text-[#00BFFF] transition block truncate"
+>
         {l}
       </Link>
     </li>

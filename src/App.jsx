@@ -1,10 +1,11 @@
 
-import { lazy, Suspense, useEffect } from "react"
-import { Routes, Route, Navigate, useLocation } from "react-router-dom"
+import { lazy, Suspense } from "react"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"
 import EnquiryModal from "./components/common/EnquiryModal"
 import PageSkeleton from "./components/common/SkeletonLoader"
+import { useHashScroll } from "./hooks/useHashScroll"
 
 const Home = lazy(() => import("./pages/Home"))
 const Contact = lazy(() => import("./pages/Contact"))
@@ -25,26 +26,19 @@ const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
 
-// ScrollToTop component - only runs on client side
-function ScrollToTop() {
-  const { pathname } = useLocation()
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0)
-    }
-  }, [pathname])
+// HashScroll component - handles hash-based navigation and smooth scrolling
+function HashScroll() {
+  useHashScroll(150)
   return null
 }
 
 const PageLoader = () => <PageSkeleton />
 
-function App() {
+// Layout wrapper to enable useLocation inside Routes
+function MainLayout() {
   return (
     <>
-      {/* Only render ScrollToTop when on client side */}
-      {typeof window !== 'undefined' && <ScrollToTop />}
-      <Navbar />
-
+      <HashScroll />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* DEFAULT REDIRECT */}
@@ -71,6 +65,15 @@ function App() {
           <Route path="/:collegeSlug/activity/:activityId" element={<ActivityDetail />} />
         </Routes>
       </Suspense>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <>
+      <Navbar />
+      <MainLayout />
 
       <Footer />
       <EnquiryModal />
