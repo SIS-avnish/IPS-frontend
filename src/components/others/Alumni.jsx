@@ -1,8 +1,11 @@
-import { useMemo, memo } from "react";
+import { useMemo, memo, useState } from "react";
 import { motion } from "framer-motion";
 import { cleanCmsHtml } from "../common/ScratchHtml";
+import Modal from "../common/Modal";
 
 const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimonialsTitle }) => {
+  
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
 
   /* ================== ANIMATIONS ================== */
 
@@ -75,28 +78,30 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
                   key={i}
                   variants={fadeUp}
                   whileHover={{ scale: 1.03 }}
-                  className="bg-white rounded-2xl shadow-md p-6 border flex flex-col"
+                  onClick={() => setSelectedTestimonial(t)}
+                  className="bg-white rounded-2xl shadow-md p-6 border flex flex-col h-96 cursor-pointer hover:shadow-lg transition-shadow"
                 >
                   <img
                     src={t.image}
                     alt={t.name}
-                    className="w-40 h-40sm:w-24 sm:h-24md:w-48 md:h-48
+                    className="w-24 h-24 sm:w-24 sm:h-24 md:w-28 md:h-28
                         object-contain
                         object-center
                         bg-gray-100
                         border-4 border-white
                         shadow-lg
-                        mb-2
+                        mb-4
                         mx-auto
+                        flex-shrink-0
   "
                     loading="lazy"
                   />
 
-                  <p className="text-gray-700 text-sm md:text-base leading-relaxed flex-1">
+                  <p className="text-gray-700 text-sm md:text-base leading-relaxed flex-1 overflow-hidden line-clamp-3">
                     {t.story}
                   </p>
 
-                  <div className="mt-4 font-semibold text-[#002147]">
+                  <div className="mt-4 font-semibold text-[#002147] flex-shrink-0">
                     — {t.name}
                   </div>
 
@@ -109,6 +114,26 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
         )}
 
       </div>
+
+      {/* ================= TESTIMONIAL MODAL ================= */}
+      <Modal isOpen={selectedTestimonial !== null} onClose={() => setSelectedTestimonial(null)}>
+        {selectedTestimonial && (
+          <div className="text-center">
+            <img
+              src={selectedTestimonial.image}
+              alt={selectedTestimonial.name}
+              className="w-32 h-32 md:w-40 md:h-40 object-contain object-center bg-gray-100 border-4 border-white shadow-lg mb-6 mx-auto rounded-lg"
+              loading="lazy"
+            />
+            <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
+              {selectedTestimonial.story}
+            </p>
+            <div className="font-semibold text-xl text-[#002147]">
+              — {selectedTestimonial.name}
+            </div>
+          </div>
+        )}
+      </Modal>
 
     </section>
   );

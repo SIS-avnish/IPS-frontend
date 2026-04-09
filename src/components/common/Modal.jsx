@@ -1,23 +1,20 @@
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-      <div className="bg-white rounded-xl shadow-lg w-2xl p-3 relative">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-8 relative">
         
         <button
           onClick={onClose}
-          className="bg-black  text-white px-2 py-1 rounded-lg transition position absolute top-2 right-2"
+          className="bg-black text-white px-3 py-2 rounded-lg transition absolute top-4 right-4 hover:bg-gray-800"
         >
-         X
+         ✕
         </button>
 
-        <img
-          src="/telephone-directory.jpg"
-          alt="Telephone Directory"
-          className="w-full rounded-lg mb-4"
-        />
-
+        <div className="pt-4">
+          {children}
+        </div>
 
       </div>
     </div>

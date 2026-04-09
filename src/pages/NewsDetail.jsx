@@ -268,7 +268,7 @@ const NewsDetail = () => {
             <img
               src={selectedMedia}
               alt="Gallery modal"
-              className="max-w-full max-h-[80vh] rounded-lg object-contain shadow-2xl"
+              className="max-w-150 max-h-[80vh] rounded-lg object-contain shadow-2xl"
             />
 
             {/* Next Button */}
@@ -313,7 +313,7 @@ const NewsDetail = () => {
           >
             <button
               onClick={handleCloseModal}
-              className="absolute -top-10 right-0 sm:right-2 bg-white text-black hover:bg-gray-300 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10 font-bold text-lg"
+              className="absolute -top-10 right-0 sm:right-2 bg-black text-white hover:bg-gray-300 rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10 font-bold text-lg"
               aria-label="Close modal"
             >
               ✕

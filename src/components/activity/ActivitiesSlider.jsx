@@ -223,7 +223,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
             {/* Close Button */}
             <button
               onClick={closeGalleryModal}
-              className="absolute top-4 right-4 bg-red-400 hover:bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors z-10"
+              className="absolute top-1 right-38 bg-black text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors z-10"
               aria-label="Close gallery"
             >
               ×
@@ -235,7 +235,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
                 src={gallery[currentGalleryIndex]}
                 alt={`gallery-${currentGalleryIndex}`}
                 effect="blur"
-                className="w-full h-auto max-h-[80vh] object-contain"
+                className="w-150 mx-auto h-auto max-h-[80vh] object-contain"
                 wrapperClassName="w-full flex justify-center"
               />
             </div>
@@ -245,7 +245,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
               <>
                 <button
                   onClick={prevGallery}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-red-400 hover:bg-red-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white  text-black w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
                   aria-label="Previous image"
                 >
                   ‹
@@ -253,7 +253,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
 
                 <button
                   onClick={nextGallery}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-red-400 hover:bg-red-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white  text-black w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
                   aria-label="Next image"
                 >
                   ›

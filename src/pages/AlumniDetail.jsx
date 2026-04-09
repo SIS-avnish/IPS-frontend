@@ -140,7 +140,7 @@ const AlumniDetail = () => {
                   <img
                     src={alumni.main_image}
                     alt={alumni.name}
-                    className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                    className="w-full h-64 sm:h-80 md:h-96 object-contain"
                   />
                 )}
               </div>
