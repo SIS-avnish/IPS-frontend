@@ -138,15 +138,7 @@ export default function Contact() {
               ))}
             </Info>
 
-            <Info icon={<BookOpen size={20} />} >
-              {/* <a href="#" className="underline">
-                Telephone Directory
-              </a> */}
-                 <button onClick={() => setIsOpen(true)} className="" >
-                   Telephone Directory
-                 </button>
-                <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-            </Info>
+            
        
           </div>
 
@@ -169,7 +161,7 @@ export default function Contact() {
         </div>
 
         <div className="py-10 ">
-            <h2 className="text-3xl font-semibold text-center mb-10"> Contact Numbers for Admissions 2025 </h2>
+            <h2 className="text-3xl font-semibold text-center mb-10"> Contact Numbers for Admissions {new Date().getFullYear()} </h2>
             <div className="grid md:grid-cols-2  lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
 
               {/* Card */}
@@ -199,18 +191,7 @@ export default function Contact() {
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#ff7373] p-4  text-center text-black mb-1">
-                  Business Management
-                </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
-                  MBA, BBA
-                </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
-                  Telephone Call:  0731-4014784 <br/>
-                  Mobile Number: 9111009161,9111008161
-                </p>
-              </div>
+              
 
               <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
                 <h3 className="text-xl  bg-[#a0e0f6] p-4  text-center text-black mb-1">

@@ -3,35 +3,76 @@ import { submitContactForm } from "../../services/api";
 
 // ── Indian states → cities map ──────────────────────────────────────────────
 const STATES_CITIES = {
-  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati", "Nellore", "Kakinada", "Rajahmundry", "Kurnool"],
-  "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Tawang"],
-  "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur"],
-  "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Purnia"],
-  "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Korba", "Durg"],
-  "Delhi": ["New Delhi", "Central Delhi", "South Delhi", "North Delhi", "East Delhi"],
-  "Goa": ["Panaji", "Margao", "Mapusa", "Vasco da Gama"],
-  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar", "Bhavnagar"],
-  "Haryana": ["Gurugram", "Faridabad", "Karnal", "Ambala", "Panipat", "Hisar"],
-  "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Solan", "Mandi"],
-  "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Hazaribagh"],
-  "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli", "Belagavi", "Dharwad"],
-  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam"],
-  "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Rewa"],
-  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Thane", "Kolhapur"],
-  "Manipur": ["Imphal", "Thoubal", "Bishnupur"],
-  "Meghalaya": ["Shillong", "Tura", "Jowai"],
-  "Mizoram": ["Aizawl", "Lunglei", "Champhai"],
-  "Nagaland": ["Kohima", "Dimapur", "Mokokchung"],
-  "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Puri", "Sambalpur"],
-  "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
-  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner"],
-  "Sikkim": ["Gangtok", "Namchi", "Pelling"],
-  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli"],
-  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
-  "Tripura": ["Agartala", "Udaipur", "Dharmanagar"],
-  "Uttar Pradesh": ["Lucknow", "Noida", "Kanpur", "Agra", "Varanasi", "Prayagraj", "Meerut", "Ghaziabad"],
-  "Uttarakhand": ["Dehradun", "Haridwar", "Rishikesh", "Nainital", "Haldwani"],
-  "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri", "Asansol"],
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati", "Nellore", "Kakinada", "Rajahmundry", "Kurnool", "Anantapur", "Kadapa", "Other"],
+
+  "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Tawang", "Pasighat", "Ziro", "Other"],
+
+  "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur", "Nagaon", "Bongaigaon", "Tinsukia", "Karimganj", "Other"],
+
+  "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Purnia", "Darbhanga", "Arrah", "Begusarai", "Katihar", "Other"],
+
+  "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Korba", "Durg", "Rajnandgaon", "Jagdalpur", "Raigarh", "Other"],
+
+  "Goa": ["Panaji", "Margao", "Mapusa", "Vasco da Gama", "Ponda", "Other"],
+
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar", "Bhavnagar", "Jamnagar", "Junagadh", "Anand", "Other"],
+
+  "Haryana": ["Gurugram", "Faridabad", "Karnal", "Ambala", "Panipat", "Hisar", "Rohtak", "Sonipat", "Yamunanagar", "Other"],
+
+  "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Solan", "Mandi", "Kullu", "Other"],
+
+  "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Hazaribagh", "Deoghar", "Other"],
+
+  "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli", "Belagavi", "Dharwad", "Tumakuru", "Udupi", "Other"],
+
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Alappuzha", "Kannur", "Other"],
+
+  "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Rewa", "Satna", "Other"],
+
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Thane", "Kolhapur", "Solapur", "Amravati", "Nanded", "Other"],
+
+  "Manipur": ["Imphal", "Thoubal", "Bishnupur", "Churachandpur", "Other"],
+
+  "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongpoh", "Other"],
+
+  "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip", "Other"],
+
+  "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Wokha", "Other"],
+
+  "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Puri", "Sambalpur", "Berhampur", "Balasore", "Other"],
+
+  "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
+
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner", "Alwar", "Bharatpur", "Other"],
+
+  "Sikkim": ["Gangtok", "Namchi", "Pelling", "Gyalshing", "Other"],
+
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Erode", "Vellore", "Other"],
+
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam", "Adilabad", "Other"],
+
+  "Tripura": ["Agartala", "Udaipur", "Dharmanagar", "Kailashahar", "Other"],
+
+  "Uttar Pradesh": ["Lucknow", "Noida", "Kanpur", "Agra", "Varanasi", "Prayagraj", "Meerut", "Ghaziabad", "Bareilly", "Aligarh", "Other"],
+
+  "Uttarakhand": ["Dehradun", "Haridwar", "Rishikesh", "Nainital", "Haldwani", "Roorkee", "Other"],
+
+  "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Siliguri", "Asansol", "Kharagpur", "Other"],
+
+  // Union Territories
+  "Delhi": ["New Delhi", "Central Delhi", "South Delhi", "North Delhi", "East Delhi", "West Delhi", "Shahdara", "Other"],
+
+  "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Other"],
+
+  "Ladakh": ["Leh", "Kargil", "Other"],
+
+  "Chandigarh": ["Chandigarh", "Other"],
+
+  "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Diu", "Silvassa", "Other"],
+
+  "Lakshadweep": ["Kavaratti", "Agatti", "Minicoy", "Other"],
+
+  "Puducherry": ["Puducherry", "Karaikal", "Mahe", "Yanam", "Other"]
 };
 const STATE_NAMES = Object.keys(STATES_CITIES).sort();
 
@@ -212,7 +253,7 @@ export default function EnquiryForm({
             name="city"
             value={form.city}
             onChange={handleChange}
-            required
+            
             className="bg-white px-6 py-2 text-sm text-gray-500 outline-none h-[45px]"
           >
             <option value="">Select City</option>
