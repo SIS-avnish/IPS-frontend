@@ -30,10 +30,10 @@ export default memo(function VisionInfra({ data }) {
   return (
     <section className="bg-[#f0eeef] py-16 text-white">
 
-      <div className="max-w-6xl mx-auto px-3">
+      <div className="max-w-7xl mx-auto px-3">
 
         {/* Vision */}
-        <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
           <motion.div
             variants={slideLeft}
             initial="hidden"
@@ -54,7 +54,7 @@ export default memo(function VisionInfra({ data }) {
               {visionTitle}
             </h2>
 
-            <p className="text-black text-xl">
+            <p className="text-black text-xl wrap leading-relaxed">
               {visionText}
             </p>
           </motion.div>

@@ -24,10 +24,14 @@ const activeCollege =
 const isCollegeHome =
   activeCollege !== "ipsa" &&
   (
-    pathParts.length === 2 ||      // /ibmr
+    pathParts.length === 2 ||
     pathParts[2] === "home" ||
-    pathParts[2] === "about"||      pathParts[2] === "placements"||      pathParts[2] === "facilities"||
-      pathParts[2] === "contact" ||pathParts[2]==="activities"
+    pathParts[2] === "about" ||
+    pathParts[2] === "placements" ||
+    pathParts[2] === "facilities" ||
+    pathParts[2] === "contact" ||
+    pathParts[2] === "activities" ||
+    pathParts[2] === "faculties"   // ✅ ADD THIS
   );
 
   const {collegeSlug} = useParams();

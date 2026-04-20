@@ -138,6 +138,16 @@ export default function Contact() {
               ))}
             </Info>
 
+            <Info icon={<BookOpen size={20} />} >
+              {/* <a href="#" className="underline">
+                Telephone Directory
+              </a> */}
+                 <button onClick={() => setIsOpen(true)} className="" >
+                   Telephone Directory
+                 </button>
+                <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            </Info>
+
             
        
           </div>
