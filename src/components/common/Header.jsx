@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation,Navigate,Link, useNavigate, useParams } from "react-router-dom";
-import logo from "../../assets/logos/logo.png";
-import { fetchCollegeInfo } from "../../services/api";
+import { fetchCollegeInfo, resolveImageUrl } from "../../services/api";
 
 export default function Navbar(){
 
@@ -38,12 +37,10 @@ const isCollegeHome =
 
 
   useEffect(() => {
-    if (activeCollege && activeCollege !== "ipsa") {
+    if (activeCollege) {
       fetchCollegeInfo(activeCollege)
-        .then((info) => setCollegeLogo(info?.logo || null))
+        .then((info) => setCollegeLogo(info?.logo ? resolveImageUrl(info.logo) : null))
         .catch(() => setCollegeLogo(null));
-    } else {
-      setCollegeLogo(null);
     }
   }, [activeCollege]);
 
@@ -124,7 +121,7 @@ const isCollegeHome =
     {/* LOGO */}
     <div onClick={()=>window.location.href="https://ipsacademyindore.edu.in/"}  className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-36px]">
 
-      <img src={collegeLogo || logo} className="h-[60px] lg:h-[72px] object-contain xl:ml-[50px]" alt="logo"/>
+      <img src={collegeLogo} className="h-20 sm:h-20 lg:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" alt="logo"/>
     </div>
 
     {/* HAMBURGER */}
