@@ -39,7 +39,7 @@ export default memo(function Admission({ data }) {
   return (
     <section id="admission" className="bg-[#F9F4E1] py-12 sm:py-14 md:py-16">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 ">
 
         <motion.h2
           variants={fadeUp}
