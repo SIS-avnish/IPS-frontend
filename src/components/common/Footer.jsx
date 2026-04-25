@@ -78,7 +78,7 @@ export default memo(function Footer() {
 
   return (
 
-<footer className="bg-[#002147] text-white pt-14 pb-10 ">
+<footer className="bg-[#0066A6] text-white pt-14 pb-10 ">
 
   <div className="max-w-7xl mx-auto px-2 ">
 
@@ -88,7 +88,7 @@ export default memo(function Footer() {
       {sections.map((sec,i)=>(
         <div key={i}>
           <h6 className="text-[#00BFFF] font-medium mb-3">
-            <Link to={`/${sec.slug}`} className="text-xl text-[#00BFFF] hover:text-white transition">
+            <Link to={`/${sec.slug}`} className="text-xl text-[#00A7C4] hover:text-white transition">
               {sec.title}
             </Link>
           </h6>
@@ -161,7 +161,7 @@ export default memo(function Footer() {
     </ul>
 
     {/* DIVIDER */}
-    <div className="w-full border-t border-[#0F3D72] mt-4 mb-4"></div>
+    <div className="w-full border-t border-[#F68C1F] mt-4 mb-4"></div>
 
     {/* CONTACT */}
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center lg:text-right">

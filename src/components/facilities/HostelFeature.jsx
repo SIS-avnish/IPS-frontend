@@ -37,15 +37,15 @@ export default memo(function HostelFeatures({ intro, services }) {
         >
 
           <div>
-            <div className="bg-[#0CC2FE] font-medium text-[#002147] px-4 py-1 text-3xl sm:text-xl text-lg w-fit mb-2">
+            <div className="bg-[#F68C1F] font-medium text-[#002147] px-4 py-1 text-3xl sm:text-xl text-lg w-fit mb-2">
               Hostel
             </div>
 
-            <h2 className="text-4xl sm:text-6xl text-2xl font-medium text-[#002147] ">
+            <h2 className="text-4xl sm:text-6xl text-2xl font-medium text-[#0066A6] ">
               {intro?.title || "Discover a Home Away from Home"}
             </h2>
 
-            <div className="w-44 h-[2px] bg-[#fcb001] mt-1"></div>
+            <div className="w-44 h-[3px] bg-[#fcb001] mt-1"></div>
           </div>
 
           <p className="text-[#3A3A3A] text-base sm:text-[15px] mt-0 lg:mt-10 leading-relaxed">

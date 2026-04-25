@@ -57,7 +57,7 @@ export default memo(function About({ aboutData, whyData }) {
             viewport={{ once: true, amount: 0.1 }}
             className="text-center md:text-left"
           >
-            <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium">
+            <h2 className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium">
               {aboutTitle}
             </h2>
             <div className="w-20 sm:w-36 md:w-44 h-[2px] bg-[#faa701] mt-3 mx-auto md:mx-0"></div>
@@ -82,7 +82,7 @@ export default memo(function About({ aboutData, whyData }) {
       </section>
 
       {/* -------- IPS ADVANTAGE SECTION -------- */}
-      <section className="bg-[#002147] py-12 sm:py-16 md:py-20 lg:py-28 mt-8 sm:mt-10 md:mt-16">
+      <section className="bg-[#0066A6] py-12 sm:py-16 md:py-20 lg:py-28 mt-8 sm:mt-10 md:mt-16">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
 
           <motion.h2

@@ -72,7 +72,7 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
   };
 
   return (
-    <section className="bg-[#F0EEEF] py-12 sm:py-16 md:py-20">
+    <section className="bg-[#F9F4E1] py-12 sm:py-16 md:py-20">
 
       <div className="max-w-7xl mx-auto px-6 sm:px-6">
 
@@ -86,7 +86,7 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
         >
 
           <div>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl md:text-6xl font-medium text-[#002147] leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl md:text-6xl font-medium text-[#0066A6] leading-tight">
               {infraTitle}
             </h2>
           </div>
@@ -107,12 +107,12 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
             whileInView="visible"
             custom={0}
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#0CC2FE] text-[#002147] p-6 sm:p-8 md:p-10"
+            className="bg-[#ffffff] text-[#0066A6] p-6 sm:p-8 md:p-10"
           >
             <h3 className="text-xl sm:text-2xl md:text-[32px] font-medium mb-3 leading-tight">
               {vibrantTitle}
             </h3>
-            <p className="leading-[22px] text-sm sm:text-base">
+            <p className="text-[#3A3A3A] leading-[22px] text-sm sm:text-base">
               {vibrantContent}
             </p>
           </motion.div>
@@ -123,12 +123,12 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
             whileInView="visible"
             custom={1}
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#FF7373] text-[#002147] p-6 sm:p-8 md:p-10"
+            className="bg-[#ffffff] text-[#0066A6] p-6 sm:p-8 md:p-10"
           >
             <h3 className="text-xl sm:text-2xl md:text-[32px] font-medium mb-3 leading-tight">
               {collabTitle}
             </h3>
-            <p className="leading-[22px] text-sm sm:text-base">
+            <p className="text-[#3A3A3A] leading-[22px] text-sm sm:text-base">
               {collabContent}
             </p>
           </motion.div>
@@ -156,7 +156,7 @@ export default memo(function Incubation({ infrastructure, vibrant, collaboration
                 className="w-12 sm:w-14 mb-3 sm:mb-4"
               />
 
-              <p className="text-lg sm:text-xl md:text-2xl font-medium text-[#002147]">
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-[#0066A6]">
                 {f.title}
               </p>
 

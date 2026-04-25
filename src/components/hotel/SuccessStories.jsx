@@ -36,7 +36,7 @@ const SuccessStories = memo(({ data }) => {
   if (!stories.length) return null;
 
   return (
-    <section className="bg-[#f3f3f3] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16">
+    <section className="bg-[#F9F4E1] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16">
       <div className="max-w-7xl mx-auto">
 
         {/* Heading + Nav Buttons */}
@@ -48,23 +48,23 @@ const SuccessStories = memo(({ data }) => {
           className="flex items-end justify-between mb-10 md:mb-14"
         >
           <div>
-            <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-semibold">
+            <h2 className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl font-semibold">
               {title}
             </h2>
-            <div className="w-24 sm:w-28 md:w-32 h-[2px] bg-red-400 mt-3"></div>
+            <div className="w-24 sm:w-28 md:w-32 h-[2px] bg-[#F68C1F] mt-3"></div>
           </div>
 
           <div className="flex gap-3">
             <button
               onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-full border-2 border-[#002147] text-[#002147] flex items-center justify-center hover:bg-[#002147] hover:text-white transition"
+              className="w-10 h-10 rounded-full border-2 border-[#0066A6] text-[#0066A6] flex items-center justify-center hover:bg-[#0066A6] hover:text-white transition"
               aria-label="Scroll left"
             >
               &#8592;
             </button>
             <button
               onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-full border-2 border-[#002147] text-[#002147] flex items-center justify-center hover:bg-[#002147] hover:text-white transition"
+              className="w-10 h-10 rounded-full border-2 border-[#0066A6] text-[#0066A6] flex items-center justify-center hover:bg-[#0066A6] hover:text-white transition"
               aria-label="Scroll right"
             >
               &#8594;

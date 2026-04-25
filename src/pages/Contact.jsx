@@ -100,10 +100,10 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.1 }}
             className="mb-6"
           >
-            <h2 className="text-2xl sm:text-3xl font-semibold text-[#002147]">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-[#0066A6]">
               {hero?.description || "Contact Us"}
             </h2>
-            <div className="w-16 h-[2px] bg-[#002147] mt-2"></div>
+            <div className="w-16 h-[3px] bg-[#F68C1F] mt-2"></div>
           </motion.div>
 
           {/* CONTACT INFO */}
@@ -158,10 +158,10 @@ export default function Contact() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#F0EEEF] p-5 sm:p-10"
+            className="bg-[#F9F4E1] p-5 sm:p-10"
           >
 
-            <h5 className="text-[28px] sm:text-[40px] font-normal text-[#002147] mb-4">
+            <h5 className="text-[28px] sm:text-[40px] font-normal text-[#0066A6] mb-4">
               Get in Touch
             </h5>
 
@@ -171,31 +171,31 @@ export default function Contact() {
         </div>
 
         <div className="py-10 ">
-            <h2 className="text-3xl font-semibold text-center mb-10"> Contact Numbers for Admissions {new Date().getFullYear()} </h2>
+            <h2 className="text-3xl text-[#0066A6] font-semibold text-center mb-10"> Contact Numbers for Admissions {new Date().getFullYear()} </h2>
             <div className="grid md:grid-cols-2  lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
 
               {/* Card */}
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#0cc2fe] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Business Management
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                   MBA, BBA
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call:  0731-4014784 <br/>
                   Mobile Number: 9111009161, 9926676161
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#ffc73e] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Commerce
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                 B.Com , M.Com 
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call:  0731-4014515 <br/>
                   Mobile Number: 6232626261, 9111008161
                 </p>
@@ -203,79 +203,79 @@ export default function Contact() {
 
               
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#a0e0f6] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Computer Science
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                  MCA, Integrated MCA, BCA
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call: 0731-4014859 <br/>
                   Mobile Number: 9926999161
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#0cc2fe] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Education
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                  B.Ed
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call:  0731-4014509 <br/>
                   Mobile Number: 0731-4014509
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#ffc73e] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Hotel Management
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                  BHM, BBA (HM)
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call:  - <br/>
                   Mobile Number: 9644711161
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#ff7373] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Fashion Technology
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                   PG Diploma in Fashion Design & Marketing,B.Design (Fashion), Certificate course in Fashion
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call: 0731-4014512 <br/>
                   Mobile Number: 8305672079
                 </p>
               </div>
 
-              <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#a0e0f6] p-4  text-center text-black mb-1">
+              <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                   Law
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                   BA.LLB (Hons), BBA.LLB (Hons), LLB (Hons), LLM
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call: 0731-4014564<br/>
                   Mobile Number: 9926926161
                 </p>
               </div>
              
-               <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#0cc2fe] p-4  text-center text-black mb-1">
+               <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                 Science
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                   M.Sc, B.Sc
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call:<br/> 0731-4014588(M.Sc),<br/> 0731-4014588(B.Sc) <br/>
                   Mobile Number: 9926706161(M.Sc), 9926007161(B.Sc
                 </p>

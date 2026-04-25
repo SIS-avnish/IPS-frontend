@@ -36,7 +36,7 @@ const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
           className="
             absolute left-0 bottom-0
             translate-y-1/5
-            bg-[#E9E9E9]
+            bg-[#F9F4E1]
             w-full sm:w-[82%] lg:w-[70%]
             max-w-2xl
             px-6 sm:px-8 lg:px-10
@@ -47,7 +47,7 @@ const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
         >
 
           <h1 className="
-            text-[#0B2C4D]
+            text-[#0066A6]
             text-xl sm:text-3xl md:text-4xl lg:text-5xl
             leading-tight font-medium
           ">

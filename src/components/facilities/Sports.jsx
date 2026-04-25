@@ -47,11 +47,11 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
           {/* LEFT */}
           <div>
 
-            <div className="bg-[#FF7373] text-[#002147] text-[22px] sm:text-[20px] text-[18px] font-medium px-4 py-1 w-fit mb-2">
+            <div className="bg-[#F68C1F] text-[#ffffff] text-[22px] sm:text-[20px] text-[18px] font-medium px-4 py-1 w-fit mb-2">
               Sports
             </div>
 
-            <h2 className="text-[44px] md:text-[52px] sm:text-[40px] text-[26px] font-medium text-[#002147] leading-12">
+            <h2 className="text-[44px] md:text-[52px] sm:text-[40px] text-[26px] font-medium text-[#0066A6] leading-12">
               {playground.title}
             </h2>
 
@@ -74,8 +74,8 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
           />
 
           {/* CAPTION BOX */}
-          <div className="bg-[#F0EEEF] p-[28px] sm:p-[22px] grid md:grid-cols-2 gap-4 items-center">
-            <p className="text-[32px] md:text-[28px] sm:text-[24px] text-[22px] font-medium text-[#002147] leading-snug">
+          <div className="bg-[#F9F4E1] p-[28px] sm:p-[22px] grid md:grid-cols-2 gap-4 items-center">
+            <p className="text-[32px] md:text-[28px] sm:text-[24px] text-[22px] font-medium text-[#0066A6] leading-snug">
               {joinCommunity?.title}
             </p>
 
@@ -86,7 +86,7 @@ export default memo(function Sports({ playground, joinCommunity, sportstars, fac
         </div>
 
         {/* TITLE */}
-        <h5 className="text-[32px] md:text-[30px] sm:text-[26px] text-[24px] text-[#002147] font-medium mt-14">
+        <h5 className="text-[32px] md:text-[30px] sm:text-[26px] text-[24px] text-[#0066A6] font-medium mt-14">
           {sportstars?.title}
         </h5>
 
@@ -137,7 +137,7 @@ function Athlete({ name, image, desc }) {
 
       <Media
         src={image}
-        className="mb-3 w-40 h-40 object-cover rounded-full border-4 border-[#FF7373]"
+        className="mb-3 w-40 h-40 object-cover rounded-full border-4 border-[#F9F4E1]"
       />
 
       <div className="text-[20px] sm:text-[22px] font-medium text-[#002147] border-b border-[#FFC73E] pb-2 pt-2 w-fit">
@@ -193,7 +193,7 @@ function FacilityCarousel({ title, cards }) {
   return (
     <div className="mt-10">
       {title && (
-        <h5 className="text-[32px] md:text-[30px] sm:text-[26px] text-[24px] text-[#002147] font-medium mb-6">
+        <h5 className="text-[32px] md:text-[30px] sm:text-[26px] text-[24px] text-[#0066A6] font-medium mb-6">
           {title}
         </h5>
       )}
@@ -225,7 +225,7 @@ function FacilityCarousel({ title, cards }) {
               whileInView="visible"
               custom={i}
               viewport={{ once: true, amount: 0.1 }}
-              className="flex-shrink-0 w-[200px] sm:w-[280px] bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center gap-3 border border-[#e8e8e8] hover:shadow-lg transition h-60"
+              className="flex-shrink-0 w-[200px] sm:w-[280px] bg-[#F9F4E1] rounded-xl shadow-md p-5 flex flex-col items-center text-center gap-3 border border-[#e8e8e8] hover:shadow-lg transition h-60"
             >
               <img
                 src={resolveImageUrl(card.icon)}

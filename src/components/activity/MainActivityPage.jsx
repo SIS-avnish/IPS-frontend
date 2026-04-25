@@ -116,12 +116,12 @@ const MainActivityPage = memo(() => {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
             className="
               absolute left-0 bottom-0 translate-y-1/5
-              bg-[#E9E9E9] w-full sm:w-[82%] lg:w-[70%] max-w-2xl
+              bg-[#F9F4E1] w-full sm:w-[82%] lg:w-[70%] max-w-2xl
               px-6 sm:px-8 lg:px-10 py-8 sm:py-10 lg:py-12
               shadow-xl z-20
             "
           >
-            <h1 className="text-[#0B2C4D] text-xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-medium">
+            <h1 className="text-[#0066A6] text-xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-medium">
               {descParts.length > 0
                 ? descParts.map((part, i) => (
                     <span key={i}>
@@ -162,10 +162,10 @@ const MainActivityPage = memo(() => {
             className="grid md:grid-cols-2 gap-6 sm:gap-4 items-start mb-10"
           >
             <div>
-              <h2 className="text-2xl md:text-5xl sm:text-3xl font-medium leading-tight text-[#0B2C4D]">
+              <h2 className="text-2xl md:text-5xl sm:text-3xl font-medium leading-tight text-[#0066A6]">
                 {about?.title || cardsSection?.title || "365 Days to Become Your Best"}
               </h2>
-              <div className="w-40 h-[2px] bg-red-400 mt-3" />
+              <div className="w-40 h-[3px] bg-[#F68C1F] mt-3" />
             </div>
             <p className="text-gray-600 text-base sm:text-[15px]">
               {about?.content ||

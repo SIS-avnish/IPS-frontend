@@ -60,8 +60,8 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
           className="grid md:grid-cols-2 gap-8 pb-5"
         >
           <div>
-            <h2 className="text-[60px] font-medium text-[#002147] text-center sm:text-left" >{title}</h2>
-          <div class="h-[2px] w-60 bg-[#FF7373] mx-auto sm:mx-0"></div>
+            <h2 className="text-[60px] font-medium text-[#0066A6] text-center sm:text-left" >{title}</h2>
+          <div class="h-[3px] w-50 bg-[#F68C1F] mx-auto sm:mx-0"></div>
           </div>
 
           <p className="text-gray-700 text-center sm:text-left">
@@ -105,7 +105,7 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
 />
 
                 <div>
-                  <h6 className="text-xl font-medium text-[#002147]">{f.title}</h6>
+                  <h6 className="text-xl font-medium text-[#0066A6]">{f.title}</h6>
                   <p className="text-gray-600 mt-1">{f.text}</p>
                 </div>
 

@@ -29,7 +29,7 @@ export default memo(function VisionMission({ data }) {
     "To create professional manpower of the highest order and nurture entrepreneurship capabilities amongst students.";
 
   return (
-    <section className="bg-[#f0eeef] py-16 text-white">
+    <section className="bg-[#F9F4E1] py-16 text-white">
 
       <div className="max-w-6xl mx-auto px-3">
 
@@ -42,7 +42,7 @@ export default memo(function VisionMission({ data }) {
             viewport={{ once: true, amount: 0.1 }}
             className="flex justify-center items-center"
           >
-          <img src={visionIcon} className="mx-auto md:mx-0 " alt="Vision" />
+          <img src={visionIcon} className="mx-auto text-[#0066A6] md:mx-0 " alt="Vision" />
           </motion.div>
 
           <motion.div
@@ -51,18 +51,18 @@ export default memo(function VisionMission({ data }) {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
+            <h2 className="text-4xl md:text-[60px] text-[#0066A6] font-medium mb-4 text-center sm:text-left">
               {visionTitle}
             </h2>
 
-            <p className="text-black">
+            <p className="text-[#605654]">
               {visionText}
             </p>
           </motion.div>
 
         </div>
 
-        <div className="h-[2px] bg-gray-200 my-10" />
+        <div className="h-[2px] bg-[#DAD0AA] my-10" />
 
         {/* Mission */}
         <div className="grid md:grid-cols-2 gap-10 items-center">
@@ -74,11 +74,11 @@ export default memo(function VisionMission({ data }) {
             viewport={{ once: true, amount: 0.1 }}
             className="order-2 md:order-1"
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
+            <h2 className="text-4xl md:text-[60px] text-[#0066A6] font-medium mb-4 text-center sm:text-left">
               {missionTitle}
             </h2>
 
-            <p className="text-black">
+            <p className="text-[#605654]">
               {missionText}
             </p>
           </motion.div>

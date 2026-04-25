@@ -5,7 +5,7 @@ import faculty from "../../assets/Images/faculty.png";
 
 const Faculties = memo(({ data, teamData }) => {
 
-  const cardColors = ["#27B5D6", "#F36C6C", "#F2B632"];
+  const cardColors = ["#ffffff", "#ffffff", "#ffffff"];
   const [currentMember, setCurrentMember] = useState(0);
 
   // Build cards: first card is the main section (title + description), rest from facilities array
@@ -33,10 +33,10 @@ const Faculties = memo(({ data, teamData }) => {
       ];
 
   return (
-    <section className="relative bg-[#f2f2f2] pt-16 md:pt-24 overflow-visible">
+    <section className="relative bg-[#F9F4E1] pt-16 md:pt-24 overflow-visible">
 
       {/* Grey strip behind card */}
-      <div className="absolute left-0 right-0 top-[60%] h-[200px] md:h-[220px] bg-[#f2f2f2] -translate-y-1/2"></div>
+      <div className="absolute left-0 right-0 top-[60%] h-[200px] md:h-[220px] bg-[#F9F4E1] -translate-y-1/2"></div>
 
       <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
 
@@ -49,7 +49,7 @@ const Faculties = memo(({ data, teamData }) => {
               className="w-full min-h-[240px] p-6 md:p-8 text-[#0c2946] flex flex-col justify-between"
               style={{ backgroundColor: cardColors[i % cardColors.length] }}
             >
-              <h3 className="text-xl md:text-2xl font-semibold leading-snug">
+              <h3 className="text-xl text-[#0066A6] md:text-2xl font-semibold leading-snug">
                 {card.title}
               </h3>
 
@@ -89,7 +89,7 @@ const Faculties = memo(({ data, teamData }) => {
                 viewport={{ once: true }}
                 className="text-center md:text-left"
               >
-                <h2 className="text-[#0c2946] text-3xl sm:text-4xl md:text-5xl font-medium leading-tight">
+                <h2 className="text-[#0066A6] text-3xl sm:text-4xl md:text-5xl font-medium leading-tight">
                   {teamTitle.split(/\s+/).reduce((acc, word, i) => {
                     if (i > 0 && i % 2 === 0) acc.push(<br key={`br-${i}`} />);
                     if (acc.length > 0 && typeof acc[acc.length - 1] === 'string') {
@@ -101,19 +101,19 @@ const Faculties = memo(({ data, teamData }) => {
                   }, [])}
                 </h2>
 
-                <div className="w-16 h-[2px] bg-[#e45b5b] mt-5 md:mt-6 mb-8 md:mb-10 mx-auto md:mx-0"></div>
+                <div className="w-16 h-[3px] bg-[#e45b5b] mt-5 md:mt-6 mb-8 md:mb-10 mx-auto md:mx-0"></div>
 
                 {members.length > 1 && (
                   <div className="flex gap-3 justify-center md:justify-start">
                     <button
                       onClick={goLeft}
-                      className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95"
+                      className="w-11 h-11 rounded-full border border-[#0066A6] text-[#0066A6] flex items-center justify-center hover:bg-white transition active:scale-95"
                     >
                       ←
                     </button>
                     <button
                       onClick={goRight}
-                      className="w-11 h-11 rounded-full border border-[#f1a2a2] text-[#e45b5b] flex items-center justify-center hover:bg-white transition active:scale-95"
+                      className="w-11 h-11 rounded-full border border-[#0066A6] text-[#0066A6] flex items-center justify-center hover:bg-white transition active:scale-95"
                     >
                       →
                     </button>
@@ -145,7 +145,7 @@ const Faculties = memo(({ data, teamData }) => {
                   {/* CONTENT */}
                   <div className="max-w-xl">
 
-                    <h3 className="text-[#0c2946] text-xl sm:text-2xl font-semibold">
+                    <h3 className="text-[#0066A6] text-xl sm:text-2xl font-semibold">
                       {member.name}
                     </h3>
 

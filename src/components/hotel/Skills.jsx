@@ -64,7 +64,7 @@ const Skills = memo(({ data }) => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-medium mb-4 md:mb-6"
+          className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl font-medium mb-4 md:mb-6"
         >
           {heading}
         </motion.h2>
@@ -123,11 +123,11 @@ const Skills = memo(({ data }) => {
                   />
                 </div>
 
-                <h3 className="text-[#002147] text-lg sm:text-xl font-semibold mt-5 md:mt-6">
+                <h3 className="text-[#0066A6] text-lg sm:text-xl font-semibold mt-5 md:mt-6">
                   {lab.title}
                 </h3>
 
-                <div className="w-full h-[2px] bg-red-400 my-3 md:my-4"></div>
+                <div className="w-full h-[2px] bg-[#F68C1F] my-3 md:my-4"></div>
 
                 <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                   {lab.desc}

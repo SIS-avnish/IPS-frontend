@@ -21,10 +21,10 @@ const Program = memo(({ data, titleData }) => {
       <section className="bg-[#ffffff] py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16">
         {/* Heading */}
         <div className="max-w-7xl mx-auto mb-10 md:mb-14">
-          <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-semibold">
+          <h2 className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl font-semibold">
             {programTitle}
           </h2>
-          <div className="w-24 sm:w-28 md:w-32 h-[2px] bg-red-400 mt-3"></div>
+          <div className="w-24 sm:w-28 md:w-32 h-[3px] bg-red-400 mt-3"></div>
           {programDescription && (
             <p className="text-gray-600 mt-4 max-w-3xl leading-relaxed">{programDescription}</p>
           )}
@@ -80,7 +80,7 @@ const Program = memo(({ data, titleData }) => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h3 className="text-[#002147] text-xl sm:text-2xl font-semibold mb-4">
+            <h3 className="text-[#0066A6] text-xl sm:text-2xl font-semibold mb-4">
               BHM
             </h3>
 
@@ -93,7 +93,7 @@ const Program = memo(({ data, titleData }) => {
               airlines, cruise lines, and event management companies.
             </p>
 
-            <h4 className="text-[#002147] font-medium mb-2">
+            <h4 className="text-[#0066A6] font-medium mb-2">
               Program Highlights
             </h4>
             <ul className="list-disc pl-5 text-gray-600 mb-5 space-y-1">
@@ -101,7 +101,7 @@ const Program = memo(({ data, titleData }) => {
               <li>Hands-on experience in mock hotel and restaurant settings.</li>
             </ul>
 
-            <h4 className="text-[#002147] font-semibold mb-2">
+            <h4 className="text-[#0066A6] font-semibold mb-2">
               Career After BHM
             </h4>
             <ul className="list-disc pl-5 text-gray-600 space-y-1">

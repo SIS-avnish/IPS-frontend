@@ -34,7 +34,7 @@ export default memo(function Hero({ data }) {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
         className="absolute bottom-0 left-0
         translate-y-0 lg:translate-y-1/7
-        bg-[#E9E9E9]
+        bg-[#F9F4E1]
         w-full sm:w-[85%] md:w-[70%] lg:w-[40%] xl:w-[35%]
         max-w-3xl
         px-4 sm:px-6 md:px-8 lg:px-10
@@ -43,7 +43,7 @@ export default memo(function Hero({ data }) {
       >
 
         <h1 className="
-          text-[#0B2C4D]
+          text-[#0066A6]
           text-xl sm:text-2xl md:text-3xl lg:text-5xl
           leading-tight font-medium
         ">

@@ -37,7 +37,7 @@ export default memo(function Admission({ data }) {
     : defaultSteps;
 
   return (
-    <section id="admission" className="bg-[#f8f9fc] py-12 sm:py-14 md:py-16">
+    <section id="admission" className="bg-[#F9F4E1] py-12 sm:py-14 md:py-16">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
@@ -46,12 +46,12 @@ export default memo(function Admission({ data }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-[#002147] text-2xl sm:text-3xl md:text-5xl font-medium text-center md:text-left"
+          className="text-[#0066A6] text-2xl sm:text-3xl md:text-5xl font-medium text-center md:text-left"
         >
           {heading}
         </motion.h2>
 
-        <div className="w-24 sm:w-32 h-[2px] bg-[#002147] mt-3 mb-4 mx-auto md:mx-0"></div>
+        <div className="w-24 sm:w-32 h-[2px] bg-[#F68C1F] mt-3 mb-4 mx-auto md:mx-0"></div>
 
         {subtitle && (
           <p className="text-gray-600 mb-8 sm:mb-10 text-center md:text-left">

@@ -52,10 +52,10 @@ export default memo(function About({ data }) {
           viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:text-6xl font-medium text-[#002147] leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl md:text-6xl font-medium text-[#0066A6] leading-tight">
             {firstPart}
             <br />
-            <span className="border-b-2 border-[#FF7373]">
+            <span className="border-b-2 border-[#F68C1F]">
               {lastTwoWords}
             </span>
           </h2>

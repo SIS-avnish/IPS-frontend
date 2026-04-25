@@ -30,7 +30,7 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
   const advisoryTitle = advisory?.title || "Advisory Board";
 
   return (
-    <section className="bg-[#F0EEEF] py-16">
+    <section className="bg-[#F9F4E1] py-16">
       {sectionTitle && (<div className="max-w-6xl mx-auto px-3">
 
         {/* Heading */}
@@ -39,12 +39,12 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.1 }}
-          className="text-4xl md:text-[60px] font-medium text-[#002147]"
+          className="text-4xl md:text-[60px] font-medium text-[#0066A6]"
         >
           {sectionTitle} 
         </motion.h3> 
 
-        <div className="h-[2px] w-60 bg-[#FF7373] my-3 mb-8" />
+        <div className="h-[3px] w-60 bg-[#F68C1F] my-3 mb-8" />
 
         {/* Governing Members */}
         {leaders.length > 0 && (
@@ -62,10 +62,10 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
                   alt={m.name}
                   className="w-full h-[300px] object-cover mb-3"
                 />
-                <div className="text-xl font-medium text-[#002147]">
+                <div className="text-xl font-medium text-[#0066A6]">
                   {m.name}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-[#0066A6]">
                   {m.role}
                 </div>
               </motion.div>
@@ -76,7 +76,7 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
         {/* Executive Members */}
         {executiveMembers.length > 0 && (
           <div className="pt-16">
-            <h5 className="text-3xl font-medium text-[#002147] mb-6">
+            <h5 className="text-3xl font-medium text-[#0066A6] mb-6">
               {executiveTitle}
             </h5>
 
@@ -95,7 +95,7 @@ export default memo(function Governing({ governingBody, executive, advisory }) {
         {/* Advisory Board */}
         {advisoryBoard.length > 0 && (
           <div className="pt-16">
-            <h5 className="text-3xl font-medium text-[#002147] mb-6">
+            <h5 className="text-3xl font-medium text-[#0066A6] mb-6">
               {advisoryTitle}
             </h5>
 

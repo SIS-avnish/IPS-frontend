@@ -63,12 +63,12 @@ export default memo(function Leadership({ data }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-[35px] md:text-[60px]  font-medium text-[#002147]"
+          className="text-[35px] md:text-[60px]  font-medium text-[#0066A6]"
         >
           {title}
         </motion.h3>
 
-        <div className="h-[2px] w-60 bg-[#FF7373] my-3 mb-7" />
+        <div className="h-[2px] w-60 bg-[#F68C1F] my-3 mb-7" />
 
         {leaders.map((l, i) => (
           <motion.div
@@ -77,7 +77,7 @@ export default memo(function Leadership({ data }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="bg-[#F0EEEF] p-5 sm:p-8 md:p-12 mb-8 mt-10"
+            className="bg-[#F9F4E1] p-5 sm:p-8 md:p-12 mb-8 mt-10"
           >
 
             <div className={`grid md:grid-cols-2 gap-8 items-center ${i === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
@@ -86,7 +86,7 @@ export default memo(function Leadership({ data }) {
 
               <div>
                 <p className="text-gray-700">{l.text}</p>
-                <div className="mt-4 font-semibold text-[#002147]">{l.name}</div>
+                <div className="mt-4 font-semibold text-[#0066A6]">{l.name}</div>
                 <div className="text-gray-500">{l.role}</div>
               </div>
 

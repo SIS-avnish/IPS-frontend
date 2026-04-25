@@ -33,10 +33,10 @@ export default memo(function WhyIPSA({ data }) {
           className="col-span-12 md:col-span-6 lg:col-span-4"
         >
           <div className="flex flex-col max-[576px]:items-center">
-            <h2 className="text-[60px] font-medium text-[#002147] max-[576px]:text-[32px]">
+            <h2 className="text-[60px] font-medium text-[#0066A6] max-[576px]:text-[32px]">
               {title}
             </h2>
-            <div className="w-[168px] h-[2px] bg-[#FF7373] mb-5" />
+            <div className="w-[168px] h-[3px] bg-[#F68C1F] mb-5" />
           </div>
         </motion.div>
 

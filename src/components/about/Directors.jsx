@@ -11,10 +11,10 @@ export default memo(function Directors({ data, department, principal, designatio
   const sectionTitle = data?.title || "Institute Directors";
 
   const colConfigs = [
-    { section: department, color: "bg-[#0CC2FE]" },
-    { section: principal,  color: "bg-[#FFC73E]" },
-    { section: designation, color: "bg-[#FF7373]" },
-    { section: contact,    color: "bg-[#a0e0f6]" },
+    { section: department, color: "bg-[#00A7C4]" },
+    { section: principal,  color: "bg-[#00A7C4]" },
+    { section: designation, color: "bg-[#00A7C4]" },
+    { section: contact,    color: "bg-[#00A7C4]" },
   ];
 
   const cols = colConfigs
@@ -43,12 +43,12 @@ export default memo(function Directors({ data, department, principal, designatio
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-4xl md:text-[60px] font-medium text-[#002147]"
+          className="text-4xl md:text-[60px] font-medium text-[#0066A6]"
         >
           {sectionTitle}
         </motion.h3>
 
-        <div className="h-[2px] w-60 bg-[#FF7373]  my-3 mb-8" />
+        <div className="h-[3px] w-60 bg-[#F68C1F]  my-3 mb-8" />
 
         {/* Table-like grid: row-by-row to keep heights in sync */}
         <div className="w-full overflow-x-auto">
@@ -67,7 +67,7 @@ export default memo(function Directors({ data, department, principal, designatio
           {cols.map((col, ci) => (
             <div
               key={ci}
-              className={`px-4 py-3 font-medium text-[#002147] text-[16px] text-center flex items-center justify-center ${col.color} ${ci < cols.length - 1 ? "border-r border-white/40" : ""}`}
+              className={`px-4 py-3 font-medium text-[#FFFFFF] text-[16px] text-center flex items-center justify-center ${col.color} ${ci < cols.length - 1 ? "border-r border-white/40" : ""}`}
             >
               {col.title}
             </div>
@@ -78,7 +78,7 @@ export default memo(function Directors({ data, department, principal, designatio
             cols.map((col, ci) => (
               <div
                 key={`${rowIdx}-${ci}`}
-                className={`bg-[#F0EEEF] px-4 py-4 flex items-center justify-center border-b border-[#ddd] ${ci < cols.length - 1 ? "border-r border-[#ddd]" : ""}`}
+                className={`bg-[#F9F4E1] px-4 py-4 flex items-center justify-center border-b border-[#ddd] ${ci < cols.length - 1 ? "border-r border-[#ddd]" : ""}`}
               >
                 <p className="text-[#3A3A3A] text-[16px] leading-[22px] font-normal whitespace-pre-line text-center">
                   {col.items[rowIdx] ?? ""}

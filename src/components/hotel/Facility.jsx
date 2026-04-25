@@ -68,11 +68,11 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-[#002147] text-3xl sm:text-5xl md:text-4xl lg:text-5xl font-medium leading-tight">
+              <h2 className="text-[#0066A6] text-3xl sm:text-5xl md:text-4xl lg:text-5xl font-medium leading-tight">
                 {sectionTitle}
               </h2>
 
-              <div className="w-32 sm:w-40 h-[2px] bg-red-400 mt-5 md:mt-6"></div>
+              <div className="w-32 sm:w-40 h-[3px] bg-red-400 mt-5 md:mt-6"></div>
             </motion.div>
 
             <motion.p
@@ -97,7 +97,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-medium mb-6 md:mb-8">
+              <h3 className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl font-medium mb-6 md:mb-8">
                 {kitchenSubHeading}
               </h3>
 
@@ -158,7 +158,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
       {/* SECOND SECTION */}
       <section className="bg-[#ffffff] py-14 md:mt-[-100px] md:py-0 px-4 sm:px-6 md:px-10 lg:px-12">
-        <div className="md:translate-y-50 bg-[#f3f3f3] p-5 md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="md:translate-y-50 bg-[#F9F4E1] p-5 md:ml-16 lg:ml-50 max-w-7xl grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           <motion.div
             initial={{ opacity: 0, x: -80 }}
@@ -179,7 +179,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-[#002147] text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug mb-6 md:mb-8">
+            <h2 className="text-[#0066A6] text-2xl sm:text-3xl md:text-4xl font-semibold leading-snug mb-6 md:mb-8">
               {bakeryHeading.split(/[?]/).map((part, i, arr) => (
                 <span key={i}>
                   {part}{i < arr.length - 1 ? '?' : ''}
@@ -195,7 +195,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
                   <button
                     type="button"
                     onClick={() => setActiveBakery(i)}
-                    className="text-[#002147] font-semibold mb-2"
+                    className="text-[#0066A6] text-xl font-semibold mb-2"
                   >
                     {bakery.name}
                   </button>
@@ -211,7 +211,7 @@ const Facilities = memo(({ facilitiesData, skillsData, bakeryData }) => {
 
 
       {/* THIRD SECTION */}
-      <section className="bg-[#082c4e] py-16 md:pt-80 md:pb-20 px-4 sm:px-6 md:px-12 lg:px-16 text-white">
+      <section className="bg-[#0066A6] py-16 md:pt-80 md:pb-20 px-4 sm:px-6 md:px-12 lg:px-16 text-white">
 
         <div className="max-w-7xl mx-auto">
 

@@ -34,7 +34,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
   };
 
   return (
-    <section className="bg-[#F0EEEF] pt-16 sm:pt-20 md:pt-38 pb-16 sm:pb-20 md:pb-24">
+    <section className="bg-[#F9F4E1] pt-16 mt-12 sm:pt-20 mt-10 md:pt-38 pb-16 sm:pb-20 md:pb-24">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
@@ -44,12 +44,12 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-[#002147] leading-tight"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-[#0066A6] leading-tight"
         >
           Proven Placement Record with <br /> 500+ Recruiters
         </motion.h2>
 
-        <div className="h-[2px] w-40 sm:w-56 md:w-64 bg-[#FF7373] mt-3 sm:mt-4 mb-8 sm:mb-10" />
+        <div className="h-[3px] w-40 sm:w-56 md:w-64 bg-[#F68C1F] mt-3 sm:mt-4 mb-8 sm:mb-10" />
 
        
 
@@ -60,11 +60,11 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-[#002147] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-10"
+          className="bg-[#ffffff] mt-10 sm:mt-12 md:mt-14 p-6 sm:p-8 md:p-10"
         >
 
           {/* TITLE */}
-          <div className="text-white text-xl sm:text-2xl md:text-3xl font-semibold mb-6">
+          <div className="text-[#0066A6] text-xl sm:text-2xl md:text-3xl font-semibold mb-6">
             {highlights?.title || "Placement Highlights"}
           </div>
 
@@ -78,9 +78,9 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
                 return (
                   <div key={i} className="flex items-center">
                     <div className="flex items-center gap-3 pr-6 sm:pr-10">
-                      <span className="text-4xl sm:text-5xl font-bold text-white">{num}</span>
+                      <span className="text-4xl sm:text-5xl font-bold text-[#0066A6]">{num}</span>
                       {label && (
-                        <span className="text-white text-xs sm:text-sm font-medium leading-tight max-w-[100px]">
+                        <span className="text-[#0066A6] text-xs sm:text-sm font-medium leading-tight max-w-[100px]">
                           {label}
                         </span>
                       )}
@@ -95,7 +95,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
           )}
 
          {courseStats?.stats?.length > 0 && (
-  <div className="text-white">
+  <div className="text-[#0066A6]">
 
     {/* TOP STATS */}
     <div className="flex items-center mb-8">

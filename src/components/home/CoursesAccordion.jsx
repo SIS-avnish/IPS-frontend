@@ -56,7 +56,7 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
   if (!courses.length) return null;
 
   return (
-    <div className="bg-[#F0EEEF]  pt-[80px] pb-[60px] px-2 -mt-[13%] max-[991px]:-mt-[24%] max-[576px]:pt-[30px] max-[576px]:pb-[30px] max-[576px]:px-5 max-[576px]:mt-0!">
+    <div className="bg-[#F9F4E1]  pt-[80px] pb-[60px] px-2 -mt-[13%] max-[991px]:-mt-[24%] max-[576px]:pt-[30px] max-[576px]:pb-[30px] max-[576px]:px-5 max-[576px]:mt-0!">
       <section className="max-w-[1140px] mx-auto px-3">
 
 
@@ -70,11 +70,11 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
         >
           <div className="col-span-12 lg:col-span-7">
             <div className="max-[576px]:text-center">
-              <h2 className="text-[50px] text-[#002147] mb-4 font-medium leading-[60px] max-[991px]:text-[48px] max-[576px]:text-[32px] max-[576px]:leading-[38px]">
+              <h2 className="text-[50px] text-[#0066A6] mb-4 font-medium leading-[60px] max-[991px]:text-[48px] max-[576px]:text-[32px] max-[576px]:leading-[38px]">
                 {sectionTitle}<br />
                 {sectionSubtitle}
               </h2>
-              <div className="w-[340px] h-[2px] bg-[#FF7373] max-[576px]:w-auto max-[576px]:mx-auto" />
+              <div className="w-[340px] h-[3px] bg-[#F68C1F] max-[576px]:w-auto max-[576px]:mx-auto" />
             </div>
           </div>
           <div className="col-span-12 lg:col-span-5">
@@ -103,8 +103,8 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
           max-[576px]:px-5 max-[576px]:py-4
           
           ${isOpen
-            ? "bg-[#F26D6D] text-white"
-            : "bg-[#EDEBED] text-[#0B2A4A]"
+            ? "bg-[#00A7C4] text-white"
+            : "bg-[#F9F4E1] text-[#0066A6]"
           }`}
         >
           <span className="text-[28px] leading-[34px] font-medium max-[991px]:text-[24px] max-[576px]:text-[20px]">

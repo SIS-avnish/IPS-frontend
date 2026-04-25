@@ -42,7 +42,7 @@ export default memo(function Excellence({ data, statsData,startData }) {
       : "md:grid-cols-1";
 
   return (
-    <section className="bg-[#002147] mt-0 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10 ">
+    <section className="bg-[#0066A6] mt-0 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10 ">
       <div
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full

@@ -38,7 +38,7 @@ export default memo(function FuturePlan({ data }) {
   };
 
   return (
-    <section className="bg-[#F0EEEF] py-12 sm:py-10 xs:py-8">
+    <section className="bg-[#F9F4E1] py-12 sm:py-10 xs:py-8">
 
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-5">
 
@@ -53,16 +53,16 @@ export default memo(function FuturePlan({ data }) {
           >
 
             {/* badge */}
-            <div className="bg-[#0CC2FE] text-[#002147] px-4 py-1 text-2xl sm:text-xl text-lg w-fit mb-2 text-medium">
+            <div className="bg-[#F68C1F] text-[#ffffff] px-4 py-1 text-2xl sm:text-xl text-lg w-fit mb-2 text-medium">
               {data.tag || "NCC"}
             </div>
 
             {/* title */}
-            <h2 className="text-2xl sm:text-6xl text-xl font-medium text-[#002147]">
+            <h2 className="text-2xl sm:text-6xl text-xl font-medium text-[#0066A6]">
               {data.title}
             </h2>
 
-            <div className="w-24 h-[2px] bg-[#002147] mt-2"></div>
+            <div className="w-34 h-[3px] bg-[#F68C1F] mt-2"></div>
 
             {/* image */}
             <Media

@@ -19,7 +19,7 @@ export default memo(function LibraryVision({ library, yourService, facilitiesFor
   const serviceCol2 = serviceItems.slice(mid);
 
   return (
-    <section className="bg-[#f7f7f7] lg:pt-[160px] md:pt-[120px] pt-[40px] pb-[40px]">
+    <section className="bg-[#F9F4E1] lg:pt-[160px] md:pt-[120px] pt-[40px] pb-[40px]">
 
       <div className="w-full">
 
@@ -30,7 +30,7 @@ export default memo(function LibraryVision({ library, yourService, facilitiesFor
     transition={{ duration: 0.45, ease: "easeOut" }}
     viewport={{ once: true, amount: 0.1 }}
     className="
-    bg-[#FFC73E]
+    bg-[#0066A6]
     w-[92%] lg:w-[88%]        /* makes card slightly smaller */
     mr-auto                   /* keeps it aligned left */
     p-6 md:p-8
@@ -52,25 +52,25 @@ export default memo(function LibraryVision({ library, yourService, facilitiesFor
 
         <div>
 
-          <span className="text-[#002147] text-xl md:text-2xl font-medium">
+          <span className="text-[#ffffff] bg-[#F68C1F] px-4 py-1 text-xl md:text-2xl font-medium">
             {library.tag || "Library"}
           </span>
 
-          <h5 className="text-[26px] sm:text-[30px] md:text-[48px] lg:text-[60px] leading-none text-[#002147] font-medium mb-3">
+          <h5 className="text-[26px] sm:text-[30px] md:text-[48px] lg:text-[60px] leading-none text-[#ffffff] font-medium mb-3">
             {library.title}
           </h5>
 
-          <div className="w-[168px] h-[2px] bg-[#FF7373] my-4"></div>
+          <div className="w-[168px] h-[3px] bg-[#F68C1F] my-4"></div>
 
-          <p className="text-[#3A3A3A] leading-snug text-base sm:text-[15px]">
+          <p className="text-[#ffffff] leading-snug text-base sm:text-[15px]">
             {library.description}
           </p>
 
-          <h6 className="text-[22px] md:text-[28px] lg:text-[32px] mt-4 font-medium text-[#002147]">
+          <h6 className="text-[22px] md:text-[28px] lg:text-[32px] mt-4 font-medium text-[#ffffff]">
             Wisdom at your fingertips
           </h6>
 
-          <ul className="list-disc pl-5 text-sm mt-2 space-y-1">
+          <ul className="list-disc text-[#ffffff] pl-5 text-sm mt-2 space-y-1">
             {(library.items || []).map((item, i) => (
               <li key={i}>{item}</li>
             ))}
@@ -85,13 +85,13 @@ export default memo(function LibraryVision({ library, yourService, facilitiesFor
 </div>
 
 
-      <div className="max-w-6xl mx-auto md:ml-60 px-4 sm:px-5">         
+      <div className="max-w-6xl bg-[#F9F4E1] mx-auto md:ml-60 px-4 sm:px-5">         
 
         {/* SERVICES */}
         {serviceItems.length > 0 && (
         <div className="mt-12 lg:mt-14 sm:mt-10">
 
-          <h3 className="text-[26px] md:text-[30px] lg:text-[32px] sm:text-[24px] text-[#002147] font-medium mb-6 sm:mb-4">
+          <h3 className="text-[26px] md:text-[30px] lg:text-[32px] sm:text-[24px] text-[#0066A6] font-medium mb-6 sm:mb-4">
             {yourService?.title || "Your Service"}
           </h3>
 
@@ -118,7 +118,7 @@ export default memo(function LibraryVision({ library, yourService, facilitiesFor
         {facilityItems.length > 0 && (
         <div className="mt-12 sm:mt-10">
 
-          <div className="text-[26px] md:text-[30px] lg:text-[32px] sm:text-[24px] text-[#002147] font-medium mb-6 sm:mb-4">
+          <div className="text-[26px] md:text-[30px] lg:text-[32px] sm:text-[24px] text-[#0066A6] font-medium mb-6 sm:mb-4">
             Facilities for you
           </div>
 

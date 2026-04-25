@@ -14,7 +14,7 @@ const scaleUp = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-const badgeColors = ["#FFC73E", "#FF7373", "#0CC2FE", "#FFC73E"];
+const badgeColors = ["#F68C1F", "#F68C1F", "#F68C1F", "#F68C1F"];
 
 export default memo(function FacilityBlocks({ wellnessCenter, transport, canteen, mess, sportsFacility }) {
   const sections = [wellnessCenter, transport, canteen, mess].filter(Boolean);
@@ -50,17 +50,17 @@ export default memo(function FacilityBlocks({ wellnessCenter, transport, canteen
             >
 
               <div
-                className="px-4 py-1 text-[#002147] text-xl sm:text-lg text-base font-medium w-fit mb-2"
+                className="px-4 py-1 text-[#ffffff] text-xl sm:text-lg text-base font-medium w-fit mb-2"
                 style={{ backgroundColor: b.color }}
               >
                 {b.badge}
               </div>
 
-              <h2 className="text-3xl sm:text-6xl  text-[#002147] font-medium whitespace-pre-line"> 
+              <h2 className="text-3xl sm:text-6xl  text-[#0066A6] font-medium whitespace-pre-line"> 
                 {b.title}
               </h2>
 
-              <div className="w-44 h-[2px] bg-[#fcb001] mt-1"></div>
+              <div className="w-44 h-[3px] bg-[#F68C1F] mt-1"></div>
 
               <p className="text-[#3A3A3A] mt-5 mb-2 text-base sm:text-[15px] ">
                 {b.text}

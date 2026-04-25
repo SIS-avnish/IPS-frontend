@@ -53,7 +53,7 @@ const Placement = memo(({ data, recruitersData }) => {
   }, [recruiterLogos, x]);
 
   return (
-    <section className="bg-[#ffffff] pt-20 sm:pt-28 md:pt-32 lg:pt-40 pb-16 md:pb-20">
+    <section className="bg-[#F9F4E1] pt-20 sm:pt-28 md:pt-32 lg:pt-40 pb-16 md:pb-20">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
 
         {/* TOP ROW */}
@@ -66,11 +66,11 @@ const Placement = memo(({ data, recruitersData }) => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h2 className="text-[#0c2946] text-3xl lg:mt-30 sm:text-4xl md:text-5xl font-semibold leading-tight">
+            <h2 className="text-[#0066A6] text-3xl lg:mt-30 sm:text-4xl md:text-5xl font-semibold leading-tight">
              {title}
             </h2>
 
-            <div className="w-20 sm:w-24 h-[3px] bg-[#e45b5b] mt-5 md:mt-6 mx-auto md:mx-0"></div>
+            <div className="w-20 sm:w-24 h-[3px] bg-[#F68C1F] mt-5 md:mt-6 mx-auto md:mx-0"></div>
           </motion.div>
 
           {/* RIGHT TEXT */}

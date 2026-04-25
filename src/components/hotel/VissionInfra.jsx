@@ -28,7 +28,7 @@ export default memo(function VisionInfra({ data }) {
     "To create professional manpower of the highest order for meeting the current and future demands of the industry and society. To nurture entrepreneurship capabilities amongst the students enabling them to be job providers instead of job seekers. To foster research and development culture in close interaction with the industry, promoting synergistic partnership with the industry, scientific world and society.";
 
   return (
-    <section className="bg-[#f0eeef] py-16 text-white">
+    <section className="bg-[#F9F4E1] py-16 text-white">
 
       <div className="max-w-6xl mx-auto px-3">
 
@@ -50,7 +50,7 @@ export default memo(function VisionInfra({ data }) {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
+            <h2 className="text-4xl md:text-[60px] text-[#0066A6] font-medium mb-4 text-center sm:text-left">
               {visionTitle}
             </h2>
 
@@ -72,7 +72,7 @@ export default memo(function VisionInfra({ data }) {
             viewport={{ once: true, amount: 0.1 }}
             className="order-2 md:order-1"
           >
-            <h2 className="text-4xl md:text-[60px] text-[#002147] font-medium mb-4 text-center sm:text-left">
+            <h2 className="text-4xl md:text-[60px] text-[#0066A6] font-medium mb-4 text-center sm:text-left">
               {missionTitle}
             </h2>
 

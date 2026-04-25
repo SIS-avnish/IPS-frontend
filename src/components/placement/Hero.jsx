@@ -32,14 +32,14 @@ export default memo(function Hero({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
         className="absolute bottom-0 left-0 transform translate-y-1/4
-                bg-[#E9E9E9] 
+                bg-[#F9F4E1] 
                 w-full sm:w-[80%] lg:w-[50%] 
                 max-w-2xl 
                 px-4 sm:px-6 lg:px-10 
                 py-6 sm:py-8 lg:py-8"
       >
         <h1
-          className="text-[#0B2C4D] 
+          className="text-[#0066A6] 
                  text-xl sm:text-2xl md:text-4xl lg:text-6xl 
                  leading-tight font-medium whitespace-pre-line"
         >

@@ -40,14 +40,14 @@ export default memo(function Hero({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
         className="absolute left-0 -bottom-12
-                        bg-[#E9E9E9]
+                        bg-[#F9F4E1]
                         max-w-[637px]
                         px-8 py-8
                         shadow-lg
                         max-[991px]:w-[75%] max-[991px]:px-6 max-[991px]:py-6 max-[991px]:-bottom-10
                         max-[576px]:w-[90%] max-[576px]:px-5 max-[576px]:py-5 max-[576px]:-bottom-8">
 
-        <h1 className="text-[#0B2C4D]
+        <h1 className="text-[#0066A6]
                         text-[1.3rem]
                         sm:text-[2.2rem]
                         lg:text-[3rem]
