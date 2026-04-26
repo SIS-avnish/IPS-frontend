@@ -31,7 +31,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
   if (!data && !placementStats && !recruiterData) return null;
 
   return (
-    <section id="recruiters" className="bg-[#F0EEEF] pt-20 pb-24">
+    <section id="recruiters" className="bg-[#0066A6] pt-20 pb-24">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* SPLIT: image + text */}
@@ -50,13 +50,13 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
                 </span>
               )}
               {title && (
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147] leading-tight mb-4">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white leading-tight mb-4">
                   {title}
                 </h2>
               )}
               <div className="h-[2px] w-64 bg-[#FF7373] mb-6" />
               {description && (
-                <p className="text-gray-600 leading-relaxed mb-6 whitespace-pre-line">{description}</p>
+                <p className="text-white leading-relaxed mb-6 whitespace-pre-line">{description}</p>
               )}
               {items.length > 0 && (
                 <ul className="space-y-3">
@@ -96,7 +96,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
 
             
 
-            <div className="bg-[#002147] p-6 sm:p-10 text-white rounded-xl">
+            <div className="bg-[#F9F4E1] p-6 sm:p-10 text-white rounded-xl">
               <h3 className="text-2xl sm:text-3xl font-semibold mb-8">
                 {provenRecord?.subtitle || "Placement Highlights"}
               </h3>
@@ -110,8 +110,8 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
                         i < highlights.length - 1 ? "pr-6 sm:pr-12 border-r border-white/40" : ""
                       }`}
                     >
-                      <span className="text-4xl sm:text-5xl font-bold">{h.value}</span>
-                      <span className="uppercase text-xs sm:text-sm max-w-[140px]">{h.label}</span>
+                      <span className="text-4xl text-[#0066A6] sm:text-5xl font-bold">{h.value}</span>
+                      <span className="uppercase text-[#0066A6] text-xs sm:text-sm max-w-[140px]">{h.label}</span>
                     </div>
                   ))}
                 </div>
@@ -119,12 +119,12 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
 
               {sectors.length > 0 && (
                 <>
-                  <h4 className="text-xl sm:text-2xl font-medium mb-4">Sectors</h4>
+                  <h4 className="text-xl sm:text-2xl text-[#0066A6] font-medium mb-4">Sectors</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 gap-x-4 text-white">
                     {sectors.map((s, i) => (
                       <div key={i} className="border-b border-white/30 pb-2">
-                        <span className="text-2xl sm:text-3xl font-bold mr-2">{s.value}</span>
-                        <span className="uppercase text-xs sm:text-sm">{s.label}</span>
+                        <span className="text-2xl text-[#0066A6] sm:text-3xl font-bold mr-2">{s.value}</span>
+                        <span className="uppercase text-[#0066A6] text-xs sm:text-sm">{s.label}</span>
                       </div>
                     ))}
                   </div>
@@ -141,7 +141,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className=" mt-10 text-5xl font-medium text-[#002147] leading-tight"
+              className=" mt-10 text-5xl font-medium text-white leading-tight"
             >
               {provenRecord?.title}
             </motion.h2>

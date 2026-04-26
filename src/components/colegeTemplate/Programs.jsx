@@ -63,21 +63,21 @@ export default memo(function Programs({ data, collegeSlug }) {
 
               {/* HEADER */}
               <thead>
-                <tr className="text-left text-base sm:text-lg font-medium">
-                  <th className="p-3 sm:p-4 bg-cyan-400 text-[#002147] whitespace-nowrap">
+                <tr className="text-left  bg-[#0066A6] text-base sm:text-lg font-medium">
+                  <th className="p-3 sm:p-4 bg-[#0066A6] text-[#ffffff] whitespace-nowrap">
                     Programme
                   </th>
-                  <th className="p-3 sm:p-4 bg-red-400 text-[#002147] whitespace-nowrap">
+                  <th className="p-3 sm:p-4 bg-[#0066A6] text-[#ffffff] whitespace-nowrap">
                     Programme Details
                   </th>
-                  <th className="p-3 sm:p-4 bg-yellow-300 text-[#002147] whitespace-nowrap">
+                  <th className="p-3 sm:p-4 bg-[#0066A6] text-[#ffffff] whitespace-nowrap">
                     Eligibility
                   </th>
                 </tr>
               </thead>
 
               {/* BODY */}
-              <tbody className="text-gray-700 bg-gray-100">
+              <tbody className="text-gray-700 bg-[#F9F4E1]">
 
                 {courses.map((course) => (
                   <tr key={course.id} className="border-t">
@@ -86,12 +86,12 @@ export default memo(function Programs({ data, collegeSlug }) {
                     </td>
 
                     <td
-                      className="p-3 sm:p-4 bg-gray-100 prose prose-sm max-w-none"
+                      className="p-3 sm:p-4 bg-[#F9F4E1] prose prose-sm max-w-none"
                       dangerouslySetInnerHTML={{ __html: course.description }}
                     />
 
                     <td
-                      className="p-3 sm:p-4 bg-gray-100 prose prose-sm max-w-none"
+                      className="p-3 sm:p-4 bg-[#F9F4E1] prose prose-sm max-w-none"
                       dangerouslySetInnerHTML={{ __html: course.eligibility }}
                     />
                   </tr>

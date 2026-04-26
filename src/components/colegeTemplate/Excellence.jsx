@@ -50,7 +50,7 @@ export default memo(function Excellence({ data, statsData,startData }) {
       : "md:grid-cols-1";
 
   return (
-    <section className="bg-[#002147] mt-20 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10">
+    <section className="bg-[#0066A6] mt-20 pb-[40px] max-[991px]:pb-[240px] max-[576px]:pb-10">
       <div
         className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
@@ -63,7 +63,7 @@ export default memo(function Excellence({ data, statsData,startData }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="absolute left-[3%] top-1/2 -translate-y-1/2 bg-[#0CC2FE] p-[50px] max-w-[503px] text-white grid grid-cols-2 gap-10
+          className="absolute left-[3%] top-1/2 -translate-y-1/2 bg-[#F9F4E1] p-[50px] max-w-[503px] text-white grid grid-cols-2 gap-10
           max-[576px]:relative max-[576px]:left-0 max-[576px]:top-0 max-[576px]:translate-y-0 
           max-[576px]:mx-auto max-[576px]:max-w-full max-[576px]:grid-cols-1 
           max-[576px]:gap-6 max-[576px]:p-[30px] max-[576px]:text-center"
@@ -77,10 +77,10 @@ export default memo(function Excellence({ data, statsData,startData }) {
                   : ""
               }
             >
-              <h5 className="text-[36px] font-medium text-[#002147] !mb-0 max-[576px]:text-[26px]">
+              <h5 className="text-[36px] font-medium text-[#0066A6] !mb-0 max-[576px]:text-[26px]">
                 {stat.value}
               </h5>
-              <p className="text-[18px] text-[#002147] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
+              <p className="text-[18px] text-[#0066A6] leading-[26px] !mb-0 max-[576px]:text-[16px] max-[576px]:leading-5">
                 {stat.label}
               </p>
             </div>
@@ -108,7 +108,7 @@ export default memo(function Excellence({ data, statsData,startData }) {
             </motion.h2>
 
             <div
-              className="w-[384px] h-[2px] bg-[#FF7373] 
+              className="w-[384px] h-[2px] bg-[#F68C1F] 
               max-[576px]:w-[200px] 
               max-[576px]:mx-auto 
               max-[576px]:mb-5"

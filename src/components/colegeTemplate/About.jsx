@@ -33,10 +33,10 @@ export default memo(function About({ data }) {
           className="col-span-12 md:col-span-6 lg:col-span-4"
         >
           <div className="flex flex-col max-[576px]:items-center">
-            <h2 className="text-[40px] font-medium text-[#002147] max-[576px]:text-[32px]">
+            <h2 className="text-[40px] font-medium text-[#0066A6] max-[576px]:text-[32px]">
               {title}
             </h2>
-            <div className="w-[168px] h-[2px] bg-[#FF7373] mb-5" />
+            <div className="w-[168px] h-[2px] bg-[#F68C1F] mb-5" />
           </div>
         </motion.div>
 
@@ -50,7 +50,7 @@ export default memo(function About({ data }) {
         >
           <div className="flex flex-col mt-6 max-[576px]:items-center">
             <p
-              className={`text-[20px] font-normal text-[#605654] mb-1! leading-[1.2] transition-all duration-300 max-[576px]:text-center ${
+              className={`text-[20px] font-normal text-[#3A3A3A] mb-1! leading-[1.2] transition-all duration-300 max-[576px]:text-center ${
                 expanded ? "" : "line-clamp-2"
               }`}
             >

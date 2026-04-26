@@ -41,7 +41,7 @@ export default memo(function TextSection({ data }) {
   // Split layout when image is present
   if (image) {
     return (
-      <section className="py-12 sm:py-14 md:py-16 bg-white">
+      <section className="py-12 sm:py-14 md:py-16 bg-[#F9F4E1]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Text Content */}
@@ -53,11 +53,11 @@ export default memo(function TextSection({ data }) {
               className={imagePosition === "left" ? "order-2" : "order-1"}
             >
               {title && (
-                <h2 className="text-[#002147] text-4xl sm:text-3xl md:text-[60px] font-medium mb-4">
+                <h2 className="text-[#0066A6] text-4xl sm:text-3xl md:text-[60px] font-medium mb-4">
                   {title}
                 </h2>
               )}
-              <div className="w-24 h-[2px] bg-[#FF7373] mb-4" />
+              <div className="w-24 h-[2px] bg-[#F68C1F] mb-4" />
               {content && (
                 <p className="text-gray-600 text-2xl leading-tight whitespace-pre-line">
                   {content}
@@ -100,7 +100,7 @@ export default memo(function TextSection({ data }) {
           </motion.h2>
         )}
 
-        <div className="w-24 sm:w-32 h-[2px] bg-[#FF7373] mt-3 mb-6 mx-auto md:mx-0" />
+        <div className="w-24 sm:w-32 h-[2px] bg-[#F68C1F] mt-3 mb-6 mx-auto md:mx-0" />
 
         {content && (
           <motion.div

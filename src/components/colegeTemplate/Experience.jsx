@@ -46,7 +46,7 @@ export default memo(function Experience({ data }) {
 
 
   return (
-    <section className="bg-[#002147] py-12 sm:py-14 md:pb-16 text-white mt-[-20px]">
+    <section className="bg-[#0066A6] py-12 sm:py-14 md:pb-16 text-white mt-[-20px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Title Section */}
