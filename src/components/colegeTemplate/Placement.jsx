@@ -45,7 +45,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
               className={imagePosition === "left" ? "order-2" : "order-1"}
             >
               {tag && (
-                <span className="inline-block bg-[#0CC2FE] text-white text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
+                <span className="inline-block bg-[#0CC2FE] text-white text-s font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
                   {tag}
                 </span>
               )}
@@ -97,7 +97,7 @@ export default memo(function Placement({ data, recruiterData, placementStats, pr
             
 
             <div className="bg-[#F9F4E1] p-6 sm:p-10 text-white rounded-xl">
-              <h3 className="text-2xl sm:text-3xl font-semibold mb-8">
+              <h3 className="text-2xl text-[#0066A6] sm:text-3xl font-semibold mb-8">
                 {provenRecord?.subtitle || "Placement Highlights"}
               </h3>
 

@@ -38,7 +38,7 @@ export default memo(function Testimonials({ data }) {
     setIndex(index + 2 >= items.length ? 0 : index + 2);
 
   return (
-    <section className="py-12 sm:py-14 md:py-16 bg-[#F0EEEF]">
+    <section className="py-12 sm:py-14 md:py-16 bg-[#F9F4E1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
 
         {/* Title */}
@@ -47,26 +47,26 @@ export default memo(function Testimonials({ data }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#002147]"
+          className="text-3xl sm:text-4xl md:text-5xl font-medium text-[#0066A6] "
         >
           {title}
         </motion.h2>
 
-        <div className="h-[2px] w-40 bg-[#002147] mt-4 mb-12" />
+        <div className="h-[2px] w-40 bg-[#F68C1F] mt-4 mb-12" />
 
         {/* Navigation Buttons */}
         {items.length > 2 && (
           <>
             <button
               onClick={prev}
-              className="absolute left-0 top-[60%] bg-[#002147] text-white w-10 h-10 rounded-full z-10 hidden md:flex items-center justify-center"
+              className="absolute left-0 top-[60%] bg-[#0066A6] text-white w-10 h-10 rounded-full z-10 hidden md:flex items-center justify-center"
             >
               ‹
             </button>
 
             <button
               onClick={next}
-              className="absolute right-0 top-[60%] bg-[#002147] text-white w-10 h-10 rounded-full z-10 hidden md:flex items-center justify-center"
+              className="absolute right-0 top-[60%] bg-[#0066A6] text-white w-10 h-10 rounded-full z-10 hidden md:flex items-center justify-center"
             >
               ›
             </button>

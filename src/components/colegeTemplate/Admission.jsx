@@ -69,7 +69,7 @@ export default memo(function Admission({ data }) {
               whileInView="visible"
               custom={s.num - 1}
               viewport={{ once: true, amount: 0.1 }}
-              className="bg-white p-5 sm:p-6 rounded-xl text-center shadow hover:-translate-y-1 transition"
+              className="bg-[#F9F4E1] p-5 sm:p-6 rounded-xl text-center shadow hover:-translate-y-1 transition"
             >
               <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center font-bold mb-3">
                 {s.num}
