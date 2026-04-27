@@ -71,11 +71,11 @@ export default function EnquiryModal() {
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="fixed left-1/2 top-8 z-50 -translate-x-1/2
                          w-[95%] max-w-md max-h-[85vh] overflow-y-auto
-                         bg-[#F0EEEF] rounded-xl shadow-2xl"
+                         bg-[#0066A6] rounded-xl shadow-2xl"
             >
               {/* header */}
               <div className="sticky top-0 z-10 flex items-center justify-between
-                              bg-[#002147] px-5 py-4">
+                              bg-[#0066A6] px-5 py-4">
                 <h4 className="text-white text-lg font-semibold">Enquiry</h4>
                 <button
                   onClick={handleClose}

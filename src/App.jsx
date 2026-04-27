@@ -1,6 +1,6 @@
 
 import { lazy, Suspense } from "react"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"
 import EnquiryModal from "./components/common/EnquiryModal"
@@ -25,6 +25,7 @@ const AlumniDetail = lazy(() => import("./pages/AlumniDetail"))
 const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
+const AdmissionPage = lazy(() => import("./pages/AdmissionPage"))
 
 // HashScroll component - handles hash-based navigation and smooth scrolling
 function HashScroll() {
@@ -63,6 +64,7 @@ function MainLayout() {
           <Route path="/:collegeSlug/activities/news/:newsId" element={<NewsDetail />} />
           <Route path="/:collegeSlug/activities/events/:eventId" element={<EventDetail />} />
           <Route path="/:collegeSlug/activity/:activityId" element={<ActivityDetail />} />
+          <Route path="/:collegeSlug/ipsadmissions" element={<AdmissionPage />} />
         </Routes>
       </Suspense>
     </>
@@ -70,13 +72,17 @@ function MainLayout() {
 }
 
 function App() {
+  const location = useLocation()
+  const isAdmissionPage = location.pathname.includes('ipsadmissions')
+
   return (
     <>
       <Navbar />
       <MainLayout />
 
       <Footer />
-      <EnquiryModal />
+      {!isAdmissionPage && <EnquiryModal />}
+
        <button
         onClick={() => window.scrollTo({ top: 10, behavior: "smooth" })}
         className="fixed bottom-5 right-5 bg-[#0CC2FE] text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-300"

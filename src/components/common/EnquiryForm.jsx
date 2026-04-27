@@ -309,7 +309,7 @@ export default function EnquiryForm({
         <button
           type="submit"
           disabled={submitting}
-          className="bg-[#002147] text-white px-8 py-2 text-sm hover:bg-[#081f36] transition disabled:opacity-60"
+          className="bg-[#0066A6] text-white px-8 py-2 text-sm hover:bg-[#081f36] transition disabled:opacity-60"
         >
           {submitting ? "Submitting..." : "Submit"}
         </button>
