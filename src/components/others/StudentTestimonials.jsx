@@ -92,13 +92,14 @@ const StudentTestimonials = memo(({
               >
                 {t.image && (
                   <div
-                    onClick={() =>
+                    onClick={() => {
+                      document.querySelectorAll('video').forEach(v => v.pause());
                       setSelectedMedia({
                         url: t.image,
                         type: getMediaType(t.image),
                         youtubeId: extractYouTubeId(t.image),
-                      })
-                    }
+                      });
+                    }}
                     className="cursor-pointer"
                   >
                     <Media
@@ -148,7 +149,10 @@ const StudentTestimonials = memo(({
                 key={i}
                 variants={card}
                 whileHover={{ scale: 1.03 }}
-                onClick={() => setSelectedMedia(media)}
+                onClick={() => {
+                  document.querySelectorAll('video').forEach(v => v.pause());
+                  setSelectedMedia(media);
+                }}
                 className="bg-white rounded-2xl shadow-md border overflow-hidden cursor-pointer"
               >
                 {media.type === "youtube" && (
@@ -167,6 +171,11 @@ const StudentTestimonials = memo(({
                       controls
                       playsInline
                       preload="metadata"
+                      onPlay={(e) => {
+                        document.querySelectorAll('video').forEach(v => {
+                          if (v !== e.target) v.pause();
+                        });
+                      }}
                     />
                   </div>
                 )}
@@ -229,6 +238,11 @@ const StudentTestimonials = memo(({
                 src={selectedMedia.url}
                 controls
                 autoPlay
+                onPlay={(e) => {
+                  document.querySelectorAll('video').forEach(v => {
+                    if (v !== e.target) v.pause();
+                  });
+                }}
               />
             )}
 

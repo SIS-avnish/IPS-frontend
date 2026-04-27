@@ -2,6 +2,7 @@ import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media from "../common/Media";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import rajeev from "../../assets/Images/Rajeev-Shukla.webp";
 import nihit from "../../assets/Images/Nihit Agrawal.png";
@@ -76,46 +77,52 @@ export default memo(function Team({ data }) {
 
       <div className="max-w-7xl mx-auto pt-4 sm:px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
 
-        {/* LEFT TITLE */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.1 }}
-          
-        >
-          <p className="ml-5 sm:ml-0 text-lg sm:text-lg font-medium text-[#0066A6]">
-            {sectionTitle}
-          </p>
+        
 
-          <h2 className="ml-5 sm:ml-0 text-5xl sm:text-3xl md:text-5xl font-medium text-[#0066A6] mt-2 leading-tight">
-            With You at 
-            <br />
-            Every Step
-          </h2>
- <button
-            onClick={prev}
-            className="absolute right-[18%] top-[25%] sm:left-[10%] sm:top-[74%] -translate-y-1/2 
-                       w-8 h-8 rounded-full border border-[#0066A6] 
-                       text-[#0066A6] flex items-center justify-center
-                       bg-white sm:bg-transparent
-                       hover:bg-[#0066A6] hover:text-white transition"
-          >
-            ‹
-          </button>
+<motion.div
+  initial={{ opacity: 0, x: -30 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.45, ease: "easeOut" }}
+  viewport={{ once: true, amount: 0.1 }}
+  className="flex flex-col"
+>
+  <p className="text-lg font-medium text-[#0066A6]">
+    {sectionTitle}
+  </p>
 
-          <button
-            onClick={next}
-            className="absolute right-[9%] top-[25%] sm:left-[13%] sm:top-[74%] -translate-y-1/2
-                       w-8 h-8 rounded-full border border-[#0066A6] 
-                       text-[#0066A6] flex items-center justify-center
-                       bg-white sm:bg-transparent
-                       hover:bg-[#0066A6] hover:text-white transition"
-          >
-            ›
-          </button>
-          <div className="ml-5 sm:ml-0 h-[2px] w-32 sm:w-40 bg-[#0066A6] mt-3 sm:mt-4"/>
-        </motion.div>
+  <h2 className="text-3xl sm:text-5xl font-medium text-[#0066A6] mt-2 leading-tight">
+    With You at 
+    <br />
+    Every Step
+  </h2>
+
+  <div className="h-[2px] w-32 sm:w-40 bg-[#F68C1F] mt-4" />
+
+  {/* Navigation Buttons */}
+  <div className="flex gap-3 mt-6">
+    <button
+      onClick={prev}
+      className="w-10 h-10 rounded-full border-2 border-[#0066A6] 
+                 text-[#0066A6] flex items-center justify-center
+                 bg-white hover:bg-[#0066A6] hover:text-white 
+                 transition-colors"
+      aria-label="Previous"
+    >
+      <FiChevronLeft className="text-lg" />
+    </button>
+
+    <button
+      onClick={next}
+      className="w-10 h-10 rounded-full border-2 border-[#0066A6] 
+                 text-[#0066A6] flex items-center justify-center
+                 bg-white hover:bg-[#0066A6] hover:text-white 
+                 transition-colors"
+      aria-label="Next"
+    >
+      <FiChevronRight className="text-lg" />
+    </button>
+  </div>
+</motion.div>
 
  
         {/* RIGHT CAROUSEL */}
@@ -124,7 +131,7 @@ export default memo(function Team({ data }) {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}
           viewport={{ once: true, amount: 0.1 }}
-          className="lg:col-span-2  translate-y-0 lg:translate-y-2/5  mt-5 sm:mt-[-150px]"
+          className="lg:col-span-2"
         >
 
           <div className="bg-white shadow-[8px_8px_30px_2px_#00000026] p-4 sm:p-6">

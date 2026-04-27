@@ -88,7 +88,7 @@ export default memo(function Footer() {
       {sections.map((sec,i)=>(
         <div key={i}>
           <h6 className="text-[#00BFFF] font-medium mb-3">
-            <Link to={`/${sec.slug}`} className="text-xl text-[#00A7C4] hover:text-white transition">
+            <Link to={`/${sec.slug}`} target="_blank" className="text-xl text-[#00A7C4] hover:text-white transition">
               {sec.title}
             </Link>
           </h6>

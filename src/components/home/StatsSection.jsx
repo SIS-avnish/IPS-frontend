@@ -57,7 +57,7 @@ export default memo(function StatsSection({ statsData, excellenceData, startData
               key={i}
               className={
                 i % 2 === 0 && i + 1 < stats.length
-                  ? "border-r border-white/70 max-[576px]:border-r-0"
+                  ? "border-r border-[#F68C1F] max-[576px]:border-r-0"
                   : ""
               }
             >

@@ -64,9 +64,16 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
         >
 
           {/* TITLE */}
-          <div className="text-[#0066A6] text-xl sm:text-2xl md:text-3xl font-semibold mb-6">
-            {highlights?.title || "Placement Highlights"}
-          </div>
+          <div className="text-[#0066A6] text-xl sm:text-2xl md:text-4xl font-semibold mb-6">
+  {(highlights?.title || "Placement Highlights")
+    .split(/\\n|\n/)
+    .map((line, i) => (
+      <span key={i}>
+        {line}
+        <br />
+      </span>
+    ))}
+</div>
 
           {/* STAT ITEMS ROW */}
           {highlights?.items?.length > 0 && (
@@ -86,7 +93,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
                       )}
                     </div>
                     {i < highlights.items.length - 1 && (
-                      <div className="w-[1px] h-12 bg-white mr-6 sm:mr-10" />
+                      <div className="w-[1px] h-12 bg-[#F68C1F] mr-6 sm:mr-10" />
                     )}
                   </div>
                 );
@@ -105,7 +112,7 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
           key={i}
           className={`flex items-center ${
             i === 0
-              ? "pr-6 border-r border-white/40"
+              ? "pr-6 border-r-2 border-[#F68C1F]"
               : "pl-6"
           }`}
         >
@@ -133,24 +140,28 @@ export default memo(function Recruiters({ highlights, courseStats, logos: custom
 
     {/* SECTOR GRID */}
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6">
-      {courseStats.stats.slice(2).map((s, i) => (
-        <div
-          key={i}
-          className="border-b border-white/40  font-semi-bold flex items-center gap-2"
-        >
-          <span className="text-2xl sm:text-3xl font-bold mr-2">
-            {s.value}
-          </span>
+  {courseStats.stats.slice(2).map((s, i) => (
+    <div key={i} className="font-semi-bold flex items-center gap-2">
+      
+      {/* Wrapper div for both spans */}
+      <div className="flex items-end gap-2 border-b border-[#F68C1F] pb-1">
+        
+        <span className="text-2xl sm:text-3xl font-bold">
+          {s.value}
+        </span>
 
-          <span className="text-xs sm:text-sm uppercase tracking-wide">
-            {s.label.replace(
-              /Total No\. of Students Who are Placed\s*/i,
-              ""
-            )}
-          </span>
-        </div>
-      ))}
+        <span className="text-sm sm:text-base uppercase tracking-wide">
+          {s.label.replace(
+            /Total No\. of Students Who are Placed\s*/i,
+            ""
+          )}
+        </span>
+
+      </div>
+
     </div>
+  ))}
+</div>
 
   </div>
 )}
