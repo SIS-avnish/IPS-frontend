@@ -4,7 +4,7 @@ import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"
 import EnquiryModal from "./components/common/EnquiryModal"
 import PageSkeleton from "./components/common/SkeletonLoader"
-
+import AdmissionPage from "./pages/AdmissionPage"
 const Home = lazy(() => import("./pages/Home"))
 const Contact = lazy(() => import("./pages/Contact"))
 const FacilitiesPage = lazy(() => import("./pages/Facilities"))
@@ -70,13 +70,12 @@ export default function AppRoutes() {
           <Route path="/activities/:slug" element={<ActivityDetail />} />
           <Route path="/events/:slug" element={<EventDetail />} />
           <Route path="/all-faculty" element={<AllFaculty />} />
-
+          <Route path="/ipsa/ipsadmissions" element={<AdmissionPage />} />
           {/* COLLEGE TEMPLATE ROUTES */}
           <Route path="/:collegeSlug" element={<CollegeTemp />} />
           <Route path="/:collegeSlug/hotel" element={<Hotel />} />
         </Routes>
       </Suspense>
-      <EnquiryModal />
       <Footer />
     </>
   )
