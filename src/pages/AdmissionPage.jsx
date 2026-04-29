@@ -54,15 +54,9 @@ export default function AdmissionPage() {
   return (
     <div className="w-full overflow-x-hidden">
       <Admission data={sections?.here} />
-      {/* <WhyIPSA data={sections?.why_ips} />
-      <StatsSection
-        statsData={sections?.stats}
-        excellenceData={sections?.excellence}
-        startData={sections?.start_image}
-      />
-      <ExperienceSection data={sections?.["360_video"]} />
-      <CoursesAccordion data={sections?.courses} courses={courses} />
-      <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', 'start_image', '360_video', 'courses']} /> */}
+
+     
+
     </div>
   );
 }

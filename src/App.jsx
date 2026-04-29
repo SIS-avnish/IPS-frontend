@@ -74,7 +74,9 @@ function MainLayout() {
 function App() {
   const location = useLocation()
   const isAdmissionPage = location.pathname.includes('ipsadmissions')
+
   const hideNavbar = location.pathname === "/ipsa/ipsadmissions"
+
 
   return (
     <>
