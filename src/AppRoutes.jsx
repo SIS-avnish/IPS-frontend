@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"
 import EnquiryModal from "./components/common/EnquiryModal"
@@ -44,10 +44,12 @@ const getCollegeSlugFromSubdomain = () => {
 
 export default function AppRoutes() {
   const collegeSlug = getCollegeSlugFromSubdomain()
+  const location = useLocation()
+  const hideNavbar = location.pathname === "/ipsa/ipsadmissions"
   
   return (
     <>
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* DEFAULT REDIRECT */}

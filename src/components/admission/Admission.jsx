@@ -14,8 +14,7 @@ import tinaImg from "../../assets/Images/TINAVAISHNAV.png";
 import harshitImg from "../../assets/Images/harshitmukati.png";
 import rivaaImg from "../../assets/Images/Riyabhargava.png";
 import soumitraImg from "../../assets/Images/soumitrabajaj.png";
-
-const API_BASE = "https://countriesnow.space/api/v0.1/countries";
+import EnquiryForm from "../common/EnquiryForm";
 
 const logoModules = import.meta.glob("../../assets/logos/*.png", {
   eager: true,
@@ -43,13 +42,32 @@ const fadeUp = {
   },
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const stagger = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
+  },
+};
+
+const cardFade = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: "easeOut" },
+  },
+};
+
 const containerClass = "w-[90%] max-w-[1200px] mx-auto";
 
 const sectionTitleClass =
   "text-[#2397bd] text-[28px] font-normal text-center mb-8 tracking-[0.5px] leading-[1.3] max-[600px]:text-[22px] max-[600px]:mb-[25px]";
-
-const fieldClass =
-  "w-full h-[30px] border border-[#e0e0e0] bg-white px-[10px] text-[#777] text-[11px] rounded-[2px] outline-none focus:border-[#2d9bc3] max-[600px]:h-[36px] max-[600px]:text-[12px]";
 
 const stats = [
   { value: "33", lines: ["Years of", "Academic Legacy"] },
@@ -193,13 +211,6 @@ function WhatsappBadge({ className = "" }) {
 
 export default memo(function Admission() {
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedState, setSelectedState] = useState("");
-  const [statesLoading, setStatesLoading] = useState(false);
-  const [citiesLoading, setCitiesLoading] = useState(false);
-  const [statesError, setStatesError] = useState("");
-  const [citiesError, setCitiesError] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -210,68 +221,6 @@ export default memo(function Admission() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    const loadStates = async () => {
-      setStatesLoading(true);
-      setStatesError("");
-
-      try {
-        const response = await fetch(`${API_BASE}/states`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ country: "India" }),
-        });
-
-        const result = await response.json();
-        const stateList = result?.data?.states || [];
-        setStates(stateList.map((state) => state.name));
-      } catch (error) {
-        setStates([]);
-        setStatesError("State not loaded");
-        console.log(error);
-      } finally {
-        setStatesLoading(false);
-      }
-    };
-
-    loadStates();
-  }, []);
-
-  const loadCities = async (stateName) => {
-    setCitiesLoading(true);
-    setCitiesError("");
-
-    try {
-      const response = await fetch(`${API_BASE}/state/cities`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ country: "India", state: stateName }),
-      });
-
-      const result = await response.json();
-      const cityList = result?.data || [];
-      setCities(cityList);
-    } catch (error) {
-      setCities([]);
-      setCitiesError("City not loaded");
-      console.log(error);
-    } finally {
-      setCitiesLoading(false);
-    }
-  };
-
-  const handleStateChange = (event) => {
-    const nextState = event.target.value;
-    setSelectedState(nextState);
-
-    if (nextState) {
-      loadCities(nextState);
-    } else {
-      setCities([]);
-      setCitiesError("");
-    }
-  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -367,87 +316,9 @@ export default memo(function Admission() {
             <div className="bg-[#2d9bc3] text-white text-[13px] font-bold px-[15px] py-[10px] flex items-center justify-between tracking-[1px]">
               ENQUIRY <span className="text-[16px] cursor-pointer">×</span>
             </div>
-            <form className="p-[14px] pb-[20px] flex flex-col gap-[8px]">
-              <input type="text" placeholder="Enter Name" className={fieldClass} />
-              <input
-                type="email"
-                placeholder="Enter Email Address"
-                className={fieldClass}
-              />
-              <input
-                type="text"
-                placeholder="+91 | Phone Number"
-                className={fieldClass}
-              />
-
-              <div className="grid grid-cols-2 gap-[7px] max-[600px]:grid-cols-1 max-[600px]:gap-0">
-                <select
-                  value={selectedState}
-                  onChange={handleStateChange}
-                  className={fieldClass}
-                >
-                  {statesLoading && <option value="">Loading...</option>}
-                  {!statesLoading && !statesError && (
-                    <option value="">Select State</option>
-                  )}
-                  {statesError && <option value="">{statesError}</option>}
-                  {!statesLoading &&
-                    !statesError &&
-                    states.map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                </select>
-
-                <select className={fieldClass}>
-                  {citiesLoading && <option value="">Loading...</option>}
-                  {!citiesLoading && !citiesError && (
-                    <option value="">Select City</option>
-                  )}
-                  {citiesError && <option value="">{citiesError}</option>}
-                  {!citiesLoading &&
-                    !citiesError &&
-                    cities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
-              <input
-                type="text"
-                placeholder="Course Applied For"
-                className={fieldClass}
-              />
-              <select className={fieldClass}>
-                <option>Specialization</option>
-              </select>
-
-              <div className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  id="authorize"
-                  className="w-[13px] h-[13px] mt-[2px] flex-shrink-0"
-                />
-                <label
-                  htmlFor="authorize"
-                  className="text-[10px] leading-[1.4] text-[#555]"
-                >
-                  I authorize IPS Academy Indore & its representatives to contact
-                  me with updates and notifications via Email/SMS/What&apos;sApp/Call.
-                  *
-                </label>
-              </div>
-
-              <button
-                type="button"
-                className="border-0 bg-[#2d9bc3] text-white px-[14px] py-[9px] text-[12px] font-bold cursor-pointer rounded-[2px] transition-colors hover:bg-[#1a7a96] w-full"
-              >
-                Submit
-              </button>
-            </form>
+            <div className="p-[14px] pb-[20px]">
+              <EnquiryForm collegeSlug="ipsa" compact />
+            </div>
           </div>
         </div>
 
@@ -462,14 +333,27 @@ export default memo(function Admission() {
 
       <section className="bg-[#e9e9e9] py-[60px] pb-[70px] text-center">
         <div className={containerClass}>
-          <h2 className={sectionTitleClass}>
+          <motion.h2
+            className={sectionTitleClass}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             WHY THOUSANDS OF <b>PEOPLE TRUST</b> IPS ACADEMY?
-          </h2>
-          <div className="grid grid-cols-6 gap-4 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1">
+          </motion.h2>
+          <motion.div
+            className="grid grid-cols-6 gap-4 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             {stats.map((stat) => (
-              <div
+              <motion.div
                 key={stat.value}
                 className="bg-white rounded-[16px] p-[28px] px-[12px] min-h-[140px] flex flex-col items-center justify-center max-[600px]:min-h-0 max-[600px]:py-[24px]"
+                variants={cardFade}
               >
                 <h3 className="text-[#2d9bc3] text-[30px] leading-none mb-2">
                   {stat.value}
@@ -481,19 +365,31 @@ export default memo(function Admission() {
                     </span>
                   ))}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       <section className="py-[55px] bg-white border-b border-[#e5e5e5] overflow-hidden">
         <div className={containerClass}>
-          <h2 className={sectionTitleClass}>
+          <motion.h2
+            className={sectionTitleClass}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             OUR <b>RECRUITERS</b>
-          </h2>
+          </motion.h2>
 
-          <div className="overflow-hidden w-full">
+          <motion.div
+            className="overflow-hidden w-full"
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <motion.div
               className="flex w-max"
               animate={{ x: ["0%", "-50%"] }}
@@ -509,19 +405,31 @@ export default memo(function Admission() {
                 />
               ))}
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       <section id="about" className="py-[60px] border-b border-[#e5e5e5]">
         <div className={containerClass}>
-          <h2 className={sectionTitleClass}>
+          <motion.h2
+            className={sectionTitleClass}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             STRONG FOUNDATIONS. <b>FUTURE-READY</b> LEARNING.
-          </h2>
+          </motion.h2>
 
-          <div className="grid grid-cols-5 gap-8 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1 max-[768px]:gap-6">
+          <motion.div
+            className="grid grid-cols-5 gap-8 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1 max-[768px]:gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             {features.map((feature) => (
-              <div key={feature.desc}>
+              <motion.div key={feature.desc} variants={cardFade}>
                 <div
                   className="w-full h-[180px] rounded-[10px] mb-4 bg-cover bg-center max-[600px]:h-[220px]"
                   style={{ backgroundImage: `url(${feature.image})` }}
@@ -540,9 +448,9 @@ export default memo(function Admission() {
                 <p className="text-[#666] text-[13px] leading-[1.4]">
                   {feature.desc}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -554,21 +462,32 @@ export default memo(function Admission() {
         }}
       >
         <div className={containerClass}>
-          <h2
+          <motion.h2
             className={`${sectionTitleClass} text-[#111] max-[600px]:text-[22px]`}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
           >
             ONE INSTITUTE. <b>INFINITE POSSIBILITIES.</b>
-          </h2>
+          </motion.h2>
 
-          <div className="grid grid-cols-5 gap-y-[120px] gap-x-[28px] max-[1200px]:gap-y-[90px] max-[1024px]:grid-cols-3 max-[1024px]:gap-[28px] max-[768px]:grid-cols-2 max-[768px]:gap-[20px] max-[600px]:gap-[14px] max-[420px]:grid-cols-1">
+          <motion.div
+            className="grid grid-cols-5 gap-y-[120px] gap-x-[28px] max-[1200px]:gap-y-[90px] max-[1024px]:grid-cols-3 max-[1024px]:gap-[28px] max-[768px]:grid-cols-2 max-[768px]:gap-[20px] max-[600px]:gap-[14px] max-[420px]:grid-cols-1"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             {programs.map((program, index) => (
-              <div
+              <motion.div
                 key={program.titleLines.join(" ")}
                 className={`bg-white/90 min-h-[160px] rounded-[14px] p-[24px] px-[20px] shadow-[0_2px_12px_rgba(0,0,0,0.08)] transition-transform hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.13)] max-[992px]:bg-white/70 max-[992px]:min-h-[150px] max-[992px]:p-[22px] max-[600px]:min-h-[125px] max-[600px]:p-[15px] ${
                   index === 5 ? "lg:col-start-1" : ""
                 } ${index === 6 ? "lg:col-start-2" : ""} ${
                   index === 7 ? "lg:col-start-4" : ""
                 } ${index === 8 ? "lg:col-start-5" : ""}`}
+                variants={cardFade}
               >
                 <h3
                   className={`text-[17px] leading-[1.2] mb-[10px] font-semibold max-[600px]:text-[14px] ${
@@ -588,21 +507,33 @@ export default memo(function Admission() {
                     </span>
                   ))}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       <section className="py-[60px]">
         <div className={containerClass}>
-          <h2 className={sectionTitleClass}>
+          <motion.h2
+            className={sectionTitleClass}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             STRONG FOUNDATIONS. <b>FUTURE-READY</b> LEARNING.
-          </h2>
+          </motion.h2>
 
-          <div className="grid grid-cols-5 gap-9 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1 max-[768px]:gap-7">
+          <motion.div
+            className="grid grid-cols-5 gap-9 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[600px]:grid-cols-1 max-[768px]:gap-7"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
             {testimonials.map((item) => (
-              <div key={item.name} className="group">
+              <motion.div key={item.name} className="group" variants={cardFade}>
                 <img
                   src={item.image}
                   className="w-full h-[180px] object-cover border-b-4 border-[#e58c18] mb-[14px] block rounded-t-[4px] grayscale-[80%] transition group-hover:grayscale-0 max-[600px]:h-[220px]"
@@ -622,9 +553,9 @@ export default memo(function Admission() {
                     </span>
                   ))}
                 </span>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
