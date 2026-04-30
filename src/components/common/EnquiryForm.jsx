@@ -203,13 +203,16 @@ export default function EnquiryForm({
 
       setSubmitting(true);
       try {
+        const selectedCourse = form.course;
         const payload = {
           name: form.name,
           email: form.email,
           phone_number: `${form.countryCode}${form.phone_no}`,
-          course_interested: form.course,
+          state: form.state,
+          city: form.city,
+          course_interested: selectedCourse,
           message: form.message,
-          c_course: form.course,
+          c_course: selectedCourse,
           c_specialization: form.specialization,
         };
         await submitInquiry(collegeSlug, payload);
