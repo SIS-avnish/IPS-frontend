@@ -76,6 +76,56 @@ const STATES_CITIES = {
 };
 const STATE_NAMES = Object.keys(STATES_CITIES).sort();
 
+// ── Courses → specializations map ─────────────────────────────────────────
+const COURSE_SPECIALIZATIONS = {
+  Commerce: [
+    "B.Com-Plain",
+    "B.Com-Tax",
+    "B.Com-Foreign Trade",
+    "B.Com-Computer Application",
+    "B.Com-Hons",
+    "M.Com",
+  ],
+  Computers: ["BCA", "Integrated MCA", "MCA"],
+  Science: [
+    "B.Sc.-PCM",
+    "B.Sc.-Computer Science",
+    "B.Sc.-Life Science",
+    "B.Sc.-Biotechnology",
+    "B.Sc.-Forensic",
+    "B.Sc.-Horticulture",
+    "M.Sc-Microbiology",
+    "M.Sc-Biotechnology",
+    "M.Sc-Mathematics",
+    "M.Sc-Chemistry",
+    "M.Sc-Pharma Chemistry",
+    "M.Sc-Physics",
+  ],
+  Law: ["BA. LLB (Hons)", "BBA. LLB (Hons)", "LLB (Hons)", "LLM"],
+  "Hotel Management": ["BBA-Hotel Management", "Bachelor of Hotel Management"],
+  Management: [
+    "BBA-Plain",
+    "BBA-Foreign Trade",
+    "MBA-Full Time",
+    "MBA-Financial Administration",
+    "MBA-Marketing Management",
+    "MBA-International Business",
+    "PhD-Management",
+  ],
+  Economics: ["PhD-Economics"],
+  Arts: ["BA", "MSW", "BA (Hons)"],
+  Fashion: [
+    "B. Design-Fashion",
+    "PG Diploma in Fashion Design & Marketing",
+    "Certificate Course - Fashion Design",
+  ],
+  "Library Science": ["B.Lib"],
+  Education: ["B.Ed"],
+  "Master of Social Work": ["Master of Social Work"],
+};
+
+const COURSE_NAMES = Object.keys(COURSE_SPECIALIZATIONS);
+
 // ── Simple math captcha generator ───────────────────────────────────────────
 function generateCaptcha() {
   const a = Math.floor(Math.random() * 20) + 1;
@@ -91,6 +141,8 @@ const INITIAL_FORM = {
   state: "",
   city: "",
   address: "",
+  course: "",
+  specialization: "",
   message: "",
 };
 
@@ -122,11 +174,17 @@ export default function EnquiryForm({
     [form.state]
   );
 
+  const specializations = useMemo(
+    () => (form.course ? COURSE_SPECIALIZATIONS[form.course] || [] : []),
+    [form.course]
+  );
+
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setForm((prev) => {
       const next = { ...prev, [name]: value };
       if (name === "state") next.city = "";
+      if (name === "course") next.specialization = "";
       return next;
     });
   }, []);
@@ -152,6 +210,8 @@ export default function EnquiryForm({
           state: form.state,
           city: form.city,
           address: form.address,
+          course: form.course,
+          specialization: form.specialization,
           message: form.message,
         };
         await submitContactForm(collegeSlug, payload);
@@ -262,6 +322,40 @@ export default function EnquiryForm({
             ))}
           </select>
 
+        </div>
+
+        {/* COURSE SPECIALIZATION */}
+        <div className="grid md:grid-cols-2 gap-3">
+          <select
+            name="course"
+            value={form.course}
+            onChange={handleChange}
+            required
+            className="bg-white px-6 py-2 text-sm text-gray-500 outline-none h-[45px]"
+          >
+            <option value="">Select Course</option>
+            {COURSE_NAMES.map((course) => (
+              <option key={course} value={course}>
+                {course}
+              </option>
+            ))}
+          </select>
+
+          <select
+            name="specialization"
+            value={form.specialization}
+            onChange={handleChange}
+            required
+            disabled={!form.course}
+            className="bg-white px-6 py-2 text-sm text-gray-500 outline-none h-[45px]"
+          >
+            <option value="">Select Specialization</option>
+            {specializations.map((spec) => (
+              <option key={spec} value={spec}>
+                {spec}
+              </option>
+            ))}
+          </select>
         </div>
 
         <textarea
