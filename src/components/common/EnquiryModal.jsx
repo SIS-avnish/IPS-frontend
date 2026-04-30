@@ -71,7 +71,7 @@ export default function EnquiryModal() {
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="fixed left-1/2 top-8 z-50 -translate-x-1/2
                          w-[95%] max-w-md max-h-[85vh] overflow-y-auto
-                         bg-[#0066A6] rounded-xl shadow-2xl"
+                         bg-gray-100 rounded-xl shadow-2xl"
             >
               {/* header */}
               <div className="sticky top-0 z-10 flex items-center justify-between
@@ -80,7 +80,7 @@ export default function EnquiryModal() {
                 <button
                   onClick={handleClose}
                   aria-label="Close"
-                  className="text-white hover:opacity-70 transition"
+                  className="text-white  hover:opacity-70 transition"
                 >
                   <X size={22} />
                 </button>

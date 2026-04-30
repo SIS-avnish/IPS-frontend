@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { submitContactForm } from "../../services/api";
+import { submitInquiry } from "../../services/api";
 
 // ── Indian states → cities map ──────────────────────────────────────────────
 const STATES_CITIES = {
@@ -206,15 +206,13 @@ export default function EnquiryForm({
         const payload = {
           name: form.name,
           email: form.email,
-          phone_no: `${form.countryCode}${form.phone_no}`,
-          state: form.state,
-          city: form.city,
-          address: form.address,
-          course: form.course,
-          specialization: form.specialization,
+          phone_number: `${form.countryCode}${form.phone_no}`,
+          course_interested: form.course,
           message: form.message,
+          c_course: form.course,
+          c_specialization: form.specialization,
         };
-        await submitContactForm(collegeSlug, payload);
+        await submitInquiry(collegeSlug, payload);
         setSubmitMsg({ type: "success", text: "Your enquiry has been submitted successfully!" });
         setForm(INITIAL_FORM);
         setCaptchaInput("");
@@ -250,7 +248,7 @@ export default function EnquiryForm({
           onChange={handleChange}
           required
           placeholder="Enter Name"
-          className="w-full bg-white px-6 py-2 text-sm placeholder-[#8F8F8F] focus:outline-none"
+          className="w-full border bg-white px-6 py-2 text-sm placeholder-[#8F8F8F] focus:outline-none"
         />
 
         <input

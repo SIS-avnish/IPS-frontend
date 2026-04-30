@@ -313,7 +313,7 @@ export default memo(function Admission() {
             </h3>
           </motion.div>
 
-          <div className="w-[300px] flex-shrink-0 bg-[#f5f5f5] shadow-[0_4px_20px_rgba(0,0,0,0.2)] rounded-[4px] overflow-hidden max-[992px]:w-[420px] max-[992px]:max-w-full max-[768px]:w-full max-[768px]:max-w-[400px]">
+          <div className="w-[400px] flex-shrink-0 bg-[#f5f5f5] shadow-[0_4px_20px_rgba(0,0,0,0.2)] rounded-[4px] overflow-hidden max-[992px]:w-[420px] max-[992px]:max-w-full max-[768px]:w-full max-[768px]:max-w-[400px]">
             <div className="bg-[#2d9bc3] text-white text-[13px] font-bold px-[15px] py-[10px] flex items-center justify-between tracking-[1px]">
               ENQUIRY <span className="text-[16px] cursor-pointer">×</span>
             </div>
