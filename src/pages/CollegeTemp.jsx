@@ -12,15 +12,15 @@ import ApplyForm from "../components/colegeTemplate/ApplyForm";
 import SuccessStories from "../components/colegeTemplate/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
 import useSEO from "../hooks/useSEO";
-import Excellence from "@/components/colegeTemplate/Excellence";
-import Experience from "@/components/colegeTemplate/Experience";
-import VissionInfra from "@/components/colegeTemplate/VissionInfra";
-import StatsSection from "@/components/colegeTemplate/StatsSection";
-import TextSection, { FeaturesSection } from "@/components/colegeTemplate/TextSection";
-import SplitSection from "@/components/colegeTemplate/SplitSection";
-import RecruiterLogos from "@/components/colegeTemplate/RecruiterLogos";
-import Testimonials from "@/components/colegeTemplate/Testimonials";
-import Placement from "@/components/colegeTemplate/Placement";
+import Excellence from "../components/colegeTemplate/Excellence";
+import Experience from "../components/colegeTemplate/Experience";
+import VissionInfra from "../components/colegeTemplate/VissionInfra";
+import StatsSection from "../components/colegeTemplate/StatsSection";
+import TextSection, { FeaturesSection } from "../components/colegeTemplate/TextSection";
+import SplitSection from "../components/colegeTemplate/SplitSection";
+import RecruiterLogos from "../components/colegeTemplate/RecruiterLogos";
+import Testimonials from "../components/colegeTemplate/Testimonials";
+import Placement from "../components/colegeTemplate/Placement";
 
 function renderByType(data) {
   switch (data.type) {

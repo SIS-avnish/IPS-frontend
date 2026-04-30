@@ -291,7 +291,7 @@ export default memo(function Admission() {
         style={{ backgroundImage: `url(${heroImage})` }}
       >
         <div
-          className={`${containerClass} min-h-[580px] flex justify-between items-center gap-[30px] px-0 max-[992px]:min-h-0 max-[992px]:flex-col max-[992px]:items-center max-[992px]:text-center max-[992px]:py-[50px] max-[768px]:items-start max-[768px]:text-left max-[768px]:py-[35px] max-[768px]:pb-[120px] max-[600px]:py-[35px]`}
+          className={`${containerClass} min-h-[580px] flex justify-between items-center gap-[30px] px-0 max-[992px]:min-h-0 max-[992px]:flex-col max-[992px]:items-center max-[992px]:text-center max-[992px]:py-[50px] max-[768px]:items-start max-[768px]:text-left max-[768px]:py-[35px] max-[768px]:pb-[120px] max-[600px]:py-[35px] max-[600px]:pb-[120px]`}
         >
           <motion.div
             variants={fadeUp}
@@ -323,7 +323,7 @@ export default memo(function Admission() {
           </div>
         </div>
 
-        <div className="absolute left-0 bottom-[65px] w-[40%] m-0 px-[20px] pl-[70px] py-[12px] bg-[#1aaebc] text-white text-[26px] font-black leading-none tracking-[0.5px] max-[992px]:text-[32px] max-[768px]:left-0 max-[768px]:bottom-[35px] max-[768px]:w-full max-[768px]:px-[15px] max-[768px]:text-center max-[768px]:text-[20px] max-[600px]:text-[24px] max-[420px]:text-[21px]">
+        <div className="absolute left-0 bottom-[65px] w-[40%] m-0 px-[20px] pl-[70px] py-[12px] bg-[#1aaebc] text-white text-[26px] font-black leading-none tracking-[0.5px] max-[992px]:text-[24px] max-[768px]:left-0 max-[768px]:bottom-[35px] max-[768px]:w-full max-[768px]:px-[15px] max-[768px]:text-center max-[768px]:text-[20px] max-[600px]:text-[18px] max-[420px]:text-[16px]">
           <span className="text-[#f39a18] italic font-black">#</span>
           Ambition
           <span className="text-[#f39a18] italic font-black">Se</span>
@@ -581,7 +581,7 @@ export default memo(function Admission() {
             <br />
             understand how IPS Academy supports your journey of
           </p>
-          <h3 className="text-[28px] font-black my-[10px] mb-[28px] leading-[1.2] text-center text-[#2397bd] whitespace-nowrap [text-shadow:1px_1px_2px_rgba(0,0,0,0.15)] max-[768px]:text-[22px] max-[768px]:whitespace-normal max-[600px]:text-[28px] max-[600px]:break-words max-[600px]:[overflow-wrap:anywhere]">
+          <h3 className="text-[28px] font-black my-[10px] mb-[28px] leading-[1.2] text-center text-[#2397bd] whitespace-nowrap [text-shadow:1px_1px_2px_rgba(0,0,0,0.15)] max-[768px]:text-[22px] max-[768px]:whitespace-normal max-[600px]:text-[20px] max-[600px]:break-words max-[600px]:[overflow-wrap:anywhere] max-[420px]:text-[18px]">
             <span className="text-[#f39a18] italic font-black">#</span>
             Ambition
             <span className="text-[#f39a18] italic font-black">Se</span>

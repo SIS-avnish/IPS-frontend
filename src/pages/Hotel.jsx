@@ -12,9 +12,9 @@ import SuccessStories from "../components/hotel/SuccessStories";
 import { ScratchSections } from "../components/common/ScratchHtml";
 import useSEO from "../hooks/useSEO";
 import Admission from "../components/hotel/Admission";
-import Excellence from "@/components/hotel/Excellence";
-import VissionInfra from "@/components/hotel/VissionInfra";
-import SplitSection from "@/components/colegeTemplate/SplitSection";
+import Excellence from "../components/hotel/Excellence";
+import VissionInfra from "../components/hotel/VissionInfra";
+import SplitSection from "../components/colegeTemplate/SplitSection";
 
 const Hotel = () => {
   const [sections, setSections] = useState(null);
