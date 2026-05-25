@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
 import { fetchCollegeFaculties, fetchCollegePageData } from "../services/api";
-import { isVideoUrl } from "../components/common/Media";
+import Media, { isVideoUrl } from "../components/common/Media";
 import Hero from "../components/colegeTemplate/Hero";
 
 const fadeUp = {
@@ -103,25 +101,12 @@ export default function AllFaculty() {
                 onClick={() => setSelectedFaculty(f)}
                 className="w-[290px] cursor-pointer bg-white/10 backdrop-blur rounded overflow-hidden hover:translate-y-[-6px] transition"
               >
-                {isVideoUrl(f.image) ? (
-                  <video
-                    src={f.image}
-                    className="w-full h-56 sm:h-60 md:h-64 object-cover"
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    controls
-                  />
-                ) : (
-                  <LazyLoadImage
-                    src={f.image}
-                    alt={f.name}
-                    effect="blur"
-                    className="w-full h-56 sm:h-60 md:h-64 object-cover"
-                    wrapperClassName="w-full"
-                  />
-                )}
+                <Media
+                  src={f.image}
+                  alt={f.name}
+                  className="w-full h-56 sm:h-60 md:h-64 object-cover"
+                  aspectRatio="1/1"
+                />
 
                 <div className="p-4 sm:p-5 text-center sm:text-left">
                   <h5 className="font-medium text-base sm:text-lg">

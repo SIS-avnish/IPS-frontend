@@ -7,8 +7,9 @@ import Incubation from "../components/placement/Incubation";
 import Team from "../components/placement/Team";
 import Recruiters from "../components/placement/Recruiter";
 import { useParams } from "react-router-dom";
-import { ScratchSections, cleanCmsHtml } from "../components/common/ScratchHtml";
+import SafeHtml from "../components/common/SafeHtml";
 import useSEO from "../hooks/useSEO";
+import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Placements() {
   const [data, setData] = useState(null);
@@ -64,7 +65,7 @@ export default function Placements() {
       {sections.placed_student?.html && (
         <section className="bg-white py-12 sm:py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: cleanCmsHtml(sections.placed_student.html) }} />
+            <SafeHtml className="overflow-x-auto" html={sections.placed_student.html} />
           </div>
         </section>
       )}

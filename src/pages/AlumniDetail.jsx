@@ -196,6 +196,8 @@ const AlumniDetail = () => {
                     src={img}
                     alt={`${alumni.name} gallery ${idx + 1}`}
                     loading="lazy"
+                    width="800"
+                    height="600"
                     onClick={() => setLightboxImg(img)}
                     className="w-full h-48 sm:h-56 object-cover rounded-xl shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
                   />

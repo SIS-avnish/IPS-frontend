@@ -26,6 +26,7 @@ const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
 const AdmissionPage = lazy(() => import("./pages/AdmissionPage"))
+const NotFound = lazy(() => import("./pages/NotFound"))
 
 // HashScroll component - handles hash-based navigation and smooth scrolling
 function HashScroll() {
@@ -36,7 +37,7 @@ function HashScroll() {
 const PageLoader = () => <PageSkeleton />
 
 // Layout wrapper to enable useLocation inside Routes
-function MainLayout() {
+function MainLayout({ initialServerState }) {
   return (
     <>
       <HashScroll />
@@ -45,8 +46,12 @@ function MainLayout() {
           {/* DEFAULT REDIRECT */}
           <Route path="/" element={<Navigate to="/ipsa/home" replace />} />
 
+          {/* STATIC ERROR PAGES */}
+          <Route path="/404" element={<NotFound />} />
+          <Route path="/404.html" element={<NotFound />} />
+
           {/* COLLEGE ROUTES */}
-          <Route path="/:collegeSlug/home" element={<Home />} />
+          <Route path="/:collegeSlug/home" element={<Home initialServerState={initialServerState} />} />
           <Route path="/:collegeSlug/about" element={<AboutPage />} />
           <Route path="/:collegeSlug/contact" element={<Contact />} />
           <Route path="/:collegeSlug/facilities" element={<FacilitiesPage />} />
@@ -65,13 +70,16 @@ function MainLayout() {
           <Route path="/:collegeSlug/activities/events/:eventId" element={<EventDetail />} />
           <Route path="/:collegeSlug/activity/:activityId" element={<ActivityDetail />} />
           <Route path="/:collegeSlug/ipsadmissions" element={<AdmissionPage />} />
+
+          {/* CATCH-ALL 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </>
   )
 }
 
-function App() {
+function App({ initialServerState }) {
   const location = useLocation()
   const isAdmissionPage = location.pathname.includes('ipsadmissions')
 
@@ -81,7 +89,7 @@ function App() {
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <MainLayout />
+      <MainLayout initialServerState={initialServerState} />
 
       <Footer />
       {!isAdmissionPage && <EnquiryModal />}

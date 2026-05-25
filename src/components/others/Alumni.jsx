@@ -95,6 +95,8 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
                         flex-shrink-0
   "
                     loading="lazy"
+                    width="112"
+                    height="112"
                   />
 
                   <p className="text-gray-700 text-sm md:text-base leading-relaxed flex-1 overflow-hidden line-clamp-3">
@@ -124,6 +126,8 @@ const Alumini = memo(({ alumniHtml, socialActivitiesHtml, testimonials, testimon
               alt={selectedTestimonial.name}
               className="w-32 h-32 md:w-40 md:h-40 object-contain object-center bg-gray-100 border-4 border-white shadow-lg mb-6 mx-auto rounded-lg"
               loading="lazy"
+              width="160"
+              height="160"
             />
             <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
               {selectedTestimonial.story}

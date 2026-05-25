@@ -1,8 +1,7 @@
 import { memo } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
+import Media from "../common/Media";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -69,11 +68,10 @@ loop={true}
           className="bg-white rounded-xl p-2 sm:p-2 md:p-2 flex flex-col items-center justify-center shadow hover:-translate-y-1 transition"
         >
           {/* LOGO */}
-          <LazyLoadImage
+          <Media
             src={resolveImageUrl(item.logo)}
             alt={item.name || `Recruiter ${i + 1}`}
-            effect="blur"
-            className="h-16 sm:h-20 md:h-20 w-auto object-contain w-auto transition"
+            className="h-16 sm:h-20 md:h-20 w-auto object-contain transition"
           />
 
           {/* NAME UNDER LOGO */}

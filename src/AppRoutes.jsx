@@ -29,15 +29,15 @@ const PageLoader = () => <PageSkeleton />
 // Helper function to get college slug from subdomain
 const getCollegeSlugFromSubdomain = () => {
   if (typeof window === 'undefined') return 'ipsa' // SSR fallback
-  
+
   const hostname = window.location.hostname
   const parts = hostname.split('.')
-  
+
   // If it's a subdomain (e.g., ibmr.ipsacademyindore.edu.in)
   if (parts.length > 2) {
     return parts[0] // Return the subdomain (ibmr, isr, coc, etc.)
   }
-  
+
   // Default to ipsa if it's the main domain
   return 'ipsa'
 }
@@ -46,7 +46,7 @@ export default function AppRoutes() {
   const collegeSlug = getCollegeSlugFromSubdomain()
   const location = useLocation()
   const hideNavbar = location.pathname === "/ipsa/ipsadmissions"
-  
+
   return (
     <>
       {!hideNavbar && <Navbar />}
@@ -63,7 +63,7 @@ export default function AppRoutes() {
           <Route path="/ipsa/student-life" element={<StudentLife />} />
           <Route path="/ipsa/placement" element={<Placements />} />
           <Route path="/student-council" element={<Student />} />
-        <Route path="/social-activities" element={<SocialAct />} />
+          <Route path="/social-activities" element={<SocialAct />} />
           <Route path="/alumni" element={<AlumniPage />} />
           <Route path="/alumni/:slug" element={<AlumniDetail />} />
           <Route path="/news" element={<NewsPage />} />

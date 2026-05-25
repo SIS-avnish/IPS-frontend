@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Hero from '../components/others/Hero'
 import { fetchCollegeNewsDetail, fetchPageData } from '../services/api'
 import useSEO from '../hooks/useSEO'
+import SafeHtml from '../components/common/SafeHtml'
 
 const NewsDetail = () => {
   const { collegeSlug, newsId } = useParams()
@@ -183,12 +184,13 @@ const NewsDetail = () => {
 
           {/* HTML Content from API */}
           {news.content_html && (
-            <motion.div
+            <SafeHtml
+              as={motion.div}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="prose prose-lg max-w-none overflow-x-auto"
-              dangerouslySetInnerHTML={{ __html: news.content_html }}
+              html={news.content_html}
             />
           )}
 
@@ -216,6 +218,8 @@ const NewsDetail = () => {
                       alt={`${news.title} - Gallery ${index + 1}`}
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
+                      width="800"
+                      height="600"
                     />
                   </motion.div>
                 ))}

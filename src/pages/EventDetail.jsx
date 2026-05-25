@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import ActivitiesHero from '../components/activity/ActivitiesHero'
 import { fetchCollegeEventDetail, fetchPageData } from '../services/api'
 import useSEO from '../hooks/useSEO'
+import SafeHtml from '../components/common/SafeHtml'
 
 const EventDetail = () => {
   const { collegeSlug, eventId } = useParams()
@@ -115,12 +116,13 @@ const EventDetail = () => {
 
           {/* HTML Content from API */}
           {event.content_html && (
-            <motion.div
+            <SafeHtml
+              as={motion.div}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="prose prose-lg max-w-none overflow-x-auto flex flex-col md:flex-row  gap-2"
-              dangerouslySetInnerHTML={{ __html: event.content_html }}
+              html={event.content_html}
             />
           )}
 

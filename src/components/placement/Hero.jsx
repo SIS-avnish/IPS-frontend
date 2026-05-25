@@ -22,7 +22,7 @@ export default memo(function Hero({ data }) {
         src={heroImage}
         alt="hero"
         loading="eager"
-        fetchpriority="high"
+        fetchPriority="high"
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
       />

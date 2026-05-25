@@ -6,6 +6,7 @@ import ActivitiesHero from '../components/activity/ActivitiesHero'
 import { fetchActivityDetail, fetchPageData } from '../services/api'
 import Media from '../components/common/Media'
 import useSEO from '../hooks/useSEO'
+import SafeHtml from '../components/common/SafeHtml'
 
 const ActivityDetail = () => {
   const { collegeSlug, activityId } = useParams()
@@ -49,10 +50,10 @@ const prevImage = () => {
     const load = async () => {
       try {
         setLoading(true)
-        const [detail, pageData] = await Promise.all([
-          fetchActivityDetail(collegeSlug, activityId),
-          fetchPageData(collegeSlug, `activities/${activityId}`).catch(() => ({ sections: {} })),
+        const [detail] = await Promise.all([
+          fetchActivityDetail(collegeSlug, activityId)
         ])
+        const pageData = { sections: {} }
         setActivity(detail)
         setSeoData(pageData)
         setHeroData(pageData?.sections?.hero || {})
@@ -134,12 +135,13 @@ const prevImage = () => {
 
           {/* HTML Content from API */}
           {activity.content_html && (
-            <motion.div
+            <SafeHtml
+              as={motion.div}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="prose prose-lg max-w-none overflow-x-auto"
-              dangerouslySetInnerHTML={{ __html: activity.content_html }}
+              html={activity.content_html}
             />
           )}
 

@@ -1,9 +1,7 @@
 import { useState, useEffect, memo } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
-import { isVideoUrl } from "../common/Media";
+import Media, { isVideoUrl } from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -70,20 +68,12 @@ export default memo(function SuccessStories({ data }) {
               {/* IMAGE */}
               {current.image && (
                 <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-[#faa701]">
-                  {isVideoUrl(resolveImageUrl(current.image)) ? (
-                    <video
-                      src={resolveImageUrl(current.image)}
-                      className="w-full h-full object-cover"
-                      muted autoPlay loop playsInline controls
-                    />
-                  ) : (
-                  <LazyLoadImage
+                  <Media
                     src={resolveImageUrl(current.image)}
                     alt={current.name}
-                    effect="blur"
                     className="w-full h-full object-cover"
+                    aspectRatio="1/1"
                   />
-                  )}
                 </div>
               )}
 

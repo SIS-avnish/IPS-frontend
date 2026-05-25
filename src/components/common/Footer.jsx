@@ -29,7 +29,7 @@ export default memo(function Footer() {
   const pathParts = location.pathname.split("/");
 
   const activeCollege =
-    pathParts[1] && !["about","contact","placements","facilities"].includes(pathParts[1])
+    pathParts[1] && !["about", "contact", "placements", "facilities", "404.html", "404"].includes(pathParts[1])
       ? pathParts[1]
       : "ipsa";
 
@@ -68,144 +68,144 @@ export default memo(function Footer() {
   );
 
   const navLinks = useMemo(() => [
-    {label:"Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}`},
-    {label:"About IPSA", path:`/ipsa/about`},
-    {label:"Placements", path:`/ipsa/placements`},
-    {label:"Activities", path:`/${activeCollege}/activities/cultural`},
-    {label:"Facilities", path:`/ipsa/facilities`},
-    {label:"Contact Us", path:`/${activeCollege}/contact`}
+    { label: "Home", path: activeCollege === "ipsa" ? "/ipsa/home" : `/${activeCollege}` },
+    { label: "About IPSA", path: `/ipsa/about` },
+    { label: "Placements", path: `/ipsa/placements` },
+    { label: "Activities", path: `/${activeCollege}/activities/cultural` },
+    { label: "Facilities", path: `/ipsa/facilities` },
+    { label: "Contact Us", path: `/${activeCollege}/contact` }
   ], [activeCollege]);
 
   return (
 
-<footer className="bg-[#0066A6] text-white pt-14 pb-10 ">
+    <footer className="bg-[#0066A6] text-white pt-14 pb-10 ">
 
-  <div className="max-w-7xl mx-auto px-2 ">
+      <div className="max-w-7xl mx-auto px-2 ">
 
-    {/* ================= TOP COLLEGE GRID ================= */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-4 gap-y-10">
+        {/* ================= TOP COLLEGE GRID ================= */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-x-4 gap-y-10">
 
-      {sections.map((sec,i)=>(
-        <div key={i}>
-          <h6 className="text-[#00BFFF] font-medium mb-3">
-            <Link to={`/${sec.slug}`} target="_blank" className="text-xl text-[#00A7C4] hover:text-white transition">
-              {sec.title}
-            </Link>
-          </h6>
+          {sections.map((sec, i) => (
+            <div key={i}>
+              <h6 className="text-[#00BFFF] font-medium mb-3">
+                <Link to={`/${sec.slug}`} target="_blank" className="text-xl text-[#00A7C4] hover:text-white transition">
+                  {sec.title}
+                </Link>
+              </h6>
 
-          <ul className="space-y-4">
-  {sec.links.map((l, idx) => (
-    <li key={idx} className="leading-tight" title= {l}>
-      <Link
-  to={`/${sec.slug}#courses`} target="blank"
-  className="hover:text-[#00BFFF] transition block truncate"
->
-        {l}
-      </Link>
-    </li>
-  ))}
-</ul>
+              <ul className="space-y-4">
+                {sec.links.map((l, idx) => (
+                  <li key={idx} className="leading-tight" title={l}>
+                    <Link
+                      to={`/${sec.slug}#courses`} target="blank"
+                      className="hover:text-[#00BFFF] transition block truncate"
+                    >
+                      {l}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
         </div>
-      ))}
-
-    </div>
 
 
-   {/* LOGO + RIGHT CONTENT */}
-<div className="flex flex-col lg:flex-row items-center lg:items-start justify-between mt-12 gap-10">
+        {/* LOGO + RIGHT CONTENT */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between mt-12 gap-10">
 
-  {/* LOGO */}
-  <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-5">
-  <img
-    src={collegeLogo || logo}
-    className="h-[80px] lg:h-[96px] bg-transparent object-contain mx-auto lg:mx-0"
-    alt="IPS Logo"
-  />
+          {/* LOGO */}
+          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-5">
+            <img
+              src={collegeLogo || logo}
+              className="h-[80px] lg:h-[96px] bg-transparent object-contain mx-auto lg:mx-0"
+              alt="IPS Logo"
+            />
 
-  {/* SOCIAL MEDIA */}
-  {socialLinks.length > 0 && (
-    <div className="flex items-center gap-3 flex-wrap justify-center lg:justify-start">
-      {socialLinks.map((link) => {
-        const icon = SOCIAL_ICONS[link.platform?.toLowerCase()];
-        if (!icon || !link.url) return null;
-        return (
-          <a
-            key={link.platform}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.platform}
-            className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center
+            {/* SOCIAL MEDIA */}
+            {socialLinks.length > 0 && (
+              <div className="flex items-center gap-3 flex-wrap justify-center lg:justify-start">
+                {socialLinks.map((link) => {
+                  const icon = SOCIAL_ICONS[link.platform?.toLowerCase()];
+                  if (!icon || !link.url) return null;
+                  return (
+                    <a
+                      key={link.platform}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={link.platform}
+                      className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center
                        text-white hover:bg-[#00BFFF] hover:text-white transition-colors"
-          >
-            <FontAwesomeIcon icon={icon} className="text-[15px]" />
-          </a>
-        );
-      })}
-    </div>
-  )}
-  </div>
-
-  {/* RIGHT SIDE */}
-  <div className=" flex flex-col items-center lg:items-start w-full">
-
-    {/* NAV */}
-    <ul className="flex flex-wrap justify-center lg:justify-start gap-6 sm:gap-8 md:gap-[55px] text-[15px] sm:text-[16px]">
-      {navLinks.map((n,i)=>(
-        <li key={i}>
-          <Link to={n.path} className="hover:text-[#00BFFF] transition">
-            {n.label}
-          </Link>
-        </li>
-      ))}
-    </ul>
-
-    {/* DIVIDER */}
-    <div className="w-full border-t border-[#F68C1F] mt-4 mb-4"></div>
-
-    {/* CONTACT */}
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center lg:text-right">
-
-      <div className="flex gap-3 justify-center lg:justify-start">
-        <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faMapMarkerAlt} /></span>
-        <p className="text-left">
-          IPS Academy, knowledge village,<br/>
-          Rajendra Nagar, Indore (M.P)
-        </p>
-      </div>
-
-      <div className="flex gap-3 justify-center lg:justify-start">
-        <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faPhone} /></span>
-        <p className="text-left">
-          +91 92294 98055<br/>
-          +91 99778 35161
-        </p>
-      </div>
-
-      <div className="flex flex-col  justify-center lg:items-baseline">
-        <div>
-           <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
-            <a href="mailto:info@ipsacademy.org" className="hover:underline">
-            info@ipsacademy.org
-            </a>
-        </div>
-        <div>
-              <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span> <a href="mailto:admission@ipsacademy.org" className="hover:underline">
-             admission@ipsacademy.org
-             </a>
+                    >
+                      <FontAwesomeIcon icon={icon} className="text-[15px]" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        
+
+          {/* RIGHT SIDE */}
+          <div className=" flex flex-col items-center lg:items-start w-full">
+
+            {/* NAV */}
+            <ul className="flex flex-wrap justify-center lg:justify-start gap-6 sm:gap-8 md:gap-[55px] text-[15px] sm:text-[16px]">
+              {navLinks.map((n, i) => (
+                <li key={i}>
+                  <Link to={n.path} className="hover:text-[#00BFFF] transition">
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* DIVIDER */}
+            <div className="w-full border-t border-[#F68C1F] mt-4 mb-4"></div>
+
+            {/* CONTACT */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center lg:text-right">
+
+              <div className="flex gap-3 justify-center lg:justify-start">
+                <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faMapMarkerAlt} /></span>
+                <p className="text-left">
+                  IPS Academy, knowledge village,<br />
+                  Rajendra Nagar, Indore (M.P)
+                </p>
+              </div>
+
+              <div className="flex gap-3 justify-center lg:justify-start">
+                <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faPhone} /></span>
+                <p className="text-left">
+                  +91 92294 98055<br />
+                  +91 99778 35161
+                </p>
+              </div>
+
+              <div className="flex flex-col  justify-center lg:items-baseline">
+                <div>
+                  <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
+                  <a href="mailto:info@ipsacademy.org" className="hover:underline">
+                    info@ipsacademy.org
+                  </a>
+                </div>
+                <div>
+                  <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span> <a href="mailto:admission@ipsacademy.org" className="hover:underline">
+                    admission@ipsacademy.org
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
-    </div>
-
-  </div>
-
-</div>
-
-  </div>
-
-</footer>
+    </footer>
 
   );
 })

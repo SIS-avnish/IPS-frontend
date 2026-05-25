@@ -22,8 +22,17 @@ function stripHtml(html) {
   text = text.replace(/\\n/g, "\n");
 
   // Parse and strip remaining HTML
-  const doc = new DOMParser().parseFromString(text, "text/html");
-  text = doc.body.textContent || "";
+  if (typeof window !== "undefined" && typeof DOMParser !== "undefined") {
+    try {
+      const doc = new DOMParser().parseFromString(text, "text/html");
+      text = doc.body.textContent || "";
+    } catch (e) {
+      text = text.replace(/<\/?[^>]+(>|$)/g, "");
+    }
+  } else {
+    // Server-side fallback: strip HTML tags using regex
+    text = text.replace(/<\/?[^>]+(>|$)/g, "");
+  }
 
   // Clean extra spaces but preserve newlines
   return text
@@ -38,13 +47,13 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
   // Prefer dedicated courses API data; fall back to page section items
   const courses = useMemo(() => apiCourses.length
     ? apiCourses.map((c) => ({
-        title: c.name || "",
-        desc: stripHtml(c.description),
-      }))
+      title: c.name || "",
+      desc: stripHtml(c.description),
+    }))
     : (data?.items || []).map((item) => ({
-        title: item.title || item.question || "",
-        desc: item.description || item.answer || "",
-      })), [apiCourses, data]);
+      title: item.title || item.question || "",
+      desc: item.description || item.answer || "",
+    })), [apiCourses, data]);
 
   const sectionTitle = data?.title || "Innovative Courses";
   const sectionSubtitle = data?.subtitle || "Tailored for the Industry";
@@ -85,90 +94,90 @@ export default memo(function CoursesAccordion({ data, courses: apiCourses = [] }
         </motion.div>
 
         {/* Accordion */}
-<div className="py-12 max-w-[1420px]  px-2 max-[676px]:py-6">
+        <div className="py-12 max-w-[1420px]  px-2 max-[676px]:py-6">
 
-  {courses.map((c, i) => {
-    const isOpen = open === i;
-    const isExpanded = expanded[i];
+          {courses.map((c, i) => {
+            const isOpen = open === i;
+            const isExpanded = expanded[i];
 
-    return (
-      <div key={i} className="border-b-[3px] border-white">
+            return (
+              <div key={i} className="border-b-[3px] border-white">
 
 
-        {/* HEADER */}
-        <button
-          onClick={() => setOpen(isOpen ? null : i)}
-          className={`w-full flex justify-between items-center text-left
+                {/* HEADER */}
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className={`w-full flex justify-between items-center text-left
           px-9 py-6 transition-all duration-300
           max-[576px]:px-5 max-[576px]:py-4
           
           ${isOpen
-            ? "bg-[#00A7C4] text-white"
-            : "bg-[#F9F4E1] text-[#0066A6]"
-          }`}
-        >
-          <span className="text-[28px] leading-[34px] font-medium max-[991px]:text-[24px] max-[576px]:text-[20px]">
-            {c.title}
-          </span>
+                      ? "bg-[#00A7C4] text-white"
+                      : "bg-[#F9F4E1] text-[#0066A6]"
+                    }`}
+                >
+                  <span className="text-[28px] leading-[34px] font-medium max-[991px]:text-[24px] max-[576px]:text-[20px]">
+                    {c.title}
+                  </span>
 
-          {/* ARROW CIRCLE */}
-          <div className={`w-9 h-9 min-w-9 min-w-9 flex items-center justify-center rounded-full border transition-all
+                  {/* ARROW CIRCLE */}
+                  <div className={`w-9 h-9 min-w-9 min-w-9 flex items-center justify-center rounded-full border transition-all
             ${isOpen ? "border-white" : "border-[#F26D6D]"}`}>
-            <ChevronRight
-              size={20}
-              className={`transition-transform duration-300
+                    <ChevronRight
+                      size={20}
+                      className={`transition-transform duration-300
                 ${isOpen ? "rotate-90 text-white" : "text-[#F26D6D]"}`}
-            />
-          </div>
-        </button>
+                    />
+                  </div>
+                </button>
 
-        {/* BODY */}
-        <div
-          className={`overflow-hidden transition-all duration-500
+                {/* BODY */}
+                <div
+                  className={`overflow-hidden transition-all duration-500
           ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
-        >
-          <div className="bg-[#fff] px-9 py-6 text-[#605654] max-[576px]:px-5">
+                >
+                  <div className="bg-[#fff] px-9 py-6 text-[#605654] max-[576px]:px-5">
 
-            <p className="text-[16px] leading-[26px] whitespace-pre-line">
-  {(() => {
-    const text = isExpanded
-      ? c.desc
-      : c.desc.slice(0, 500) + (c.desc.length > 500 ? ".." : "");
+                    <p className="text-[16px] leading-[26px] whitespace-pre-line">
+                      {(() => {
+                        const text = isExpanded
+                          ? c.desc
+                          : c.desc.slice(0, 500) + (c.desc.length > 500 ? ".." : "");
 
-    const parts = text.split("\n");
+                        const parts = text.split("\n");
 
-    if (parts.length > 1) {
-      return (
-        <>
-          <span className="font-semibold">{parts[0]}</span>
-          {"\n"}
-          {parts.slice(1).join("\n")}
-        </>
-      );
-    }
+                        if (parts.length > 1) {
+                          return (
+                            <>
+                              <span className="font-semibold">{parts[0]}</span>
+                              {"\n"}
+                              {parts.slice(1).join("\n")}
+                            </>
+                          );
+                        }
 
-    return text;
-  })()}
-</p>
+                        return text;
+                      })()}
+                    </p>
 
-            {c.desc.length > 500 && (
-              <button
-                onClick={() =>
-                  setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
-                }
-                className="mt-3 text-[#F26D6D] underline font-medium"
-              >
-                {isExpanded ? "Read Less" : "Read More"}
-              </button>
-            )}
+                    {c.desc.length > 500 && (
+                      <button
+                        onClick={() =>
+                          setExpanded(prev => ({ ...prev, [i]: !prev[i] }))
+                        }
+                        className="mt-3 text-[#F26D6D] underline font-medium"
+                      >
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
 
-          </div>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
         </div>
-
-      </div>
-    );
-  })}
-</div>
       </section>
     </div>
   );

@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo, memo, useCallback } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { isVideoUrl } from "../common/Media";
+import Media, { isVideoUrl } from "../common/Media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -68,7 +66,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
 
     const timer = setInterval(() => {
       setIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 3000);
+    }, 7000); // Increased to 7000ms (7s) for a relaxed, user-friendly reading delay
 
     return () => clearInterval(timer);
   }, [slides.length]);
@@ -125,60 +123,68 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
           </div>
         )}
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 pt-4">
-          {slides[index].map((event, i) => {
-            const linkTo = event._isActivity
-              ? `/${collegeSlug}/activity/${event.id}`
-              : `/${collegeSlug}/activities/events/${event.id}`;
+        {/* Grid with slow, smooth, premium cloud-like slide-up transition */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 pt-4"
+          >
+            {slides[index].map((event, i) => {
+              const linkTo = event._isActivity
+                ? `/${collegeSlug}/activity/${event.id}`
+                : `/${collegeSlug}/activities/events/${event.id}`;
 
-            return (
-              <Link
-                to={linkTo}
-                key={event.id || i}
-                className="block group"
-              >
-                <div className="relative overflow-hidden border-2 border-[#ff7373] shadow-md">
+              return (
+                <Link
+                  to={linkTo}
+                  key={event.id || i}
+                  className="block group"
+                >
+                  <div className="relative overflow-hidden border-2 border-[#ff7373] shadow-md">
 
-                  {/* Image / Video */}
-                  {event.thumbnail_image ? (
-                    isVideoUrl(event.thumbnail_image) ? (
-                      <video
-                        src={event.thumbnail_image}
-                        className="w-full h-[320px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
-                      />
+                    {/* Image / Video */}
+                    {event.thumbnail_image ? (
+                      isVideoUrl(event.thumbnail_image) ? (
+                        <video
+                          src={event.thumbnail_image}
+                          className="w-full h-[320px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
+                          muted
+                          autoPlay
+                          loop
+                          playsInline
+                        />
+                      ) : (
+                        <img
+                          src={event.thumbnail_image}
+                          alt={event.title || `event-${i}`}
+                          className="w-full h-[320px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="eager"
+                        />
+                      )
                     ) : (
-                      <LazyLoadImage
-                        src={event.thumbnail_image}
-                        alt={event.title || `event-${i}`}
-                        effect="blur"
-                        className="w-full h-[320px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
-                        wrapperClassName="w-full"
-                      />
-                    )
-                  ) : (
-                    <div className="w-full h-[320px] sm:h-[260px] bg-white flex items-center justify-center p-6">
-                      <h3 className="text-[#002147] font-semibold text-lg text-center">
+                      <div className="w-full h-[320px] sm:h-[260px] bg-white flex items-center justify-center p-6">
+                        <h3 className="text-[#002147] font-semibold text-lg text-center">
+                          {event.title}
+                        </h3>
+                      </div>
+                    )}
+
+                    {/* Overlay Title */}
+                    <div className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm text-center py-3 px-4">
+                      <h3 className="text-white text-lg font-semibold line-clamp-1">
                         {event.title}
                       </h3>
                     </div>
-                  )}
-
-                  {/* Overlay Title */}
-                  <div className="absolute bottom-0 left-0 w-full bg-black/60 backdrop-blur-sm text-center py-3 px-4">
-                    <h3 className="text-white text-lg font-semibold line-clamp-1">
-                      {event.title}
-                    </h3>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
 
       </div>
 
@@ -192,12 +198,11 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
                 onClick={() => openGalleryModal(idx)}
                 className="block group relative overflow-hidden border-2 border-[#ff7373] shadow-md rounded-lg hover:shadow-lg transition-shadow"
               >
-                <LazyLoadImage
+                <Media
                   src={image}
                   alt={`gallery-${idx}`}
-                  effect="blur"
                   className="w-full h-[240px] sm:h-[200px] object-cover transition-transform duration-500 group-hover:scale-105"
-                  wrapperClassName="w-full"
+                  aspectRatio="4/3"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                   <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-2xl">
@@ -230,13 +235,12 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
             </button>
 
             {/* Image */}
-            <div className="relative w-full">
-              <LazyLoadImage
+            <div className="relative w-full flex justify-center">
+              <img
                 src={gallery[currentGalleryIndex]}
                 alt={`gallery-${currentGalleryIndex}`}
-                effect="blur"
                 className="w-150 mx-auto h-auto max-h-[80vh] object-contain"
-                wrapperClassName="w-full flex justify-center"
+                loading="eager"
               />
             </div>
 

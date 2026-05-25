@@ -20,7 +20,7 @@ const Hero = memo(({ heroImage, description, ctaText, ctaLink }) => {
           src={bgImage}
           alt="Activities Hero"
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />

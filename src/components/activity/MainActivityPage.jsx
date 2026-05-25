@@ -1,8 +1,6 @@
 import { useEffect, useState, useMemo, memo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import Media from "../common/Media";
 import { fetchPageData, resolveImageUrl } from "../../services/api";
 import { PageSkeleton } from "../common/SkeletonLoader";
@@ -104,7 +102,7 @@ const MainActivityPage = memo(() => {
             src={heroImage}
             alt="Activities Hero"
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -200,12 +198,11 @@ const MainActivityPage = memo(() => {
                       {/* Card image */}
                       <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden  ">
                         {iconUrl ? (
-                          <LazyLoadImage
+                          <Media
                             src={iconUrl}
                             alt={card.title}
-                            effect="blur"
                             className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-                            wrapperClassName="w-full h-full"
+                            aspectRatio="4/3"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-[#0B2C4D] to-[#1a4a7a]" />
