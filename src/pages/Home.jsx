@@ -51,7 +51,7 @@ export default function Home({ initialServerState }) {
       })
       .catch((err) => {
         console.error("Failed to fetch home page data:", err);
-        setError("Failed to load page data.");
+        setError(`Failed to load page data. Details: ${err.message}`);
       })
       .finally(() => setLoading(false));
   }, [collegeSlug, hasInitialState]);

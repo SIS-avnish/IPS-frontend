@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Prevent infinite hangs during pre-rendering or SSR
 if (typeof window === "undefined") {
-    axios.defaults.timeout = 8000;
+    axios.defaults.timeout = 30000; // Increase server-side timeout to 30s to allow slow API to respond
 } else {
     axios.defaults.timeout = 30000; // 30 seconds for client-side to prevent slow network errors
 }
@@ -17,6 +17,25 @@ const pageCache = new Map();
 const api = axios.create({
     baseURL: API_BASE,
     headers: { accept: "application/json" },
+});
+
+// Add a retry interceptor for handling transient network errors (common in Safari)
+axios.interceptors.response.use(undefined, async (err) => {
+    const config = err.config;
+    if (!config) return Promise.reject(err);
+    
+    config.retryCount = config.retryCount || 0;
+    
+    // Retry up to 2 times
+    if (config.retryCount < 2) {
+        config.retryCount += 1;
+        console.log(`Retrying request (${config.retryCount}/2): ${config.url}`);
+        // Wait a short delay before retrying (1000ms * retryCount)
+        await new Promise(resolve => setTimeout(resolve, 1000 * config.retryCount));
+        return axios(config);
+    }
+    
+    return Promise.reject(err);
 });
 
 /**
