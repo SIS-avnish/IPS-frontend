@@ -1,7 +1,11 @@
 import axios from "axios";
 
 // Prevent infinite hangs during pre-rendering or SSR
-axios.defaults.timeout = 8000;
+if (typeof window === "undefined") {
+    axios.defaults.timeout = 8000;
+} else {
+    axios.defaults.timeout = 30000; // 30 seconds for client-side to prevent slow network errors
+}
 
 const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
 const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
