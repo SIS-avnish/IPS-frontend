@@ -5,6 +5,9 @@ if (typeof window === "undefined") {
     axios.defaults.timeout = 30000; // Increase server-side timeout to 30s to allow slow API to respond
 } else {
     axios.defaults.timeout = 30000; // 30 seconds for client-side to prevent slow network errors
+    // Use fetch adapter in the browser to prevent Safari's XMLHttpRequest Keep-Alive bugs
+    // which cause random 'Network Error' on intermittent loads.
+    axios.defaults.adapter = "fetch";
 }
 
 const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
@@ -20,19 +23,28 @@ const api = axios.create({
 });
 
 // Add a retry interceptor for handling transient network errors (common in Safari)
-axios.interceptors.response.use(undefined, async (err) => {
+axios.interceptors.response.use((response) => response, async (err) => {
     const config = err.config;
     if (!config) return Promise.reject(err);
     
     config.retryCount = config.retryCount || 0;
     
-    // Retry up to 2 times
-    if (config.retryCount < 2) {
+    // Retry up to 3 times for Safari
+    if (config.retryCount < 3) {
         config.retryCount += 1;
-        console.log(`Retrying request (${config.retryCount}/2): ${config.url}`);
+        console.log(`Retrying request (${config.retryCount}/3): ${config.url}`);
+        
         // Wait a short delay before retrying (1000ms * retryCount)
         await new Promise(resolve => setTimeout(resolve, 1000 * config.retryCount));
-        return axios(config);
+        
+        // Add cache-buster to prevent Safari from returning cached failure
+        if (config.params) {
+            config.params._retry = Date.now();
+        } else {
+            config.params = { _retry: Date.now() };
+        }
+        
+        return axios.request(config);
     }
     
     return Promise.reject(err);
