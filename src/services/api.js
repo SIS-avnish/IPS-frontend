@@ -11,11 +11,38 @@ if (typeof window === "undefined") {
 }
 
 const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
+// const SERVER_BASE = "http://localhost:7777/api"
 const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
 const MEDIA_BASE = "https://portal.ipsacademyindore.edu.in";
 
 // In-memory cache to avoid re-fetching on repeat navigation
 const pageCache = new Map();
+// Store in-flight promises to prevent duplicate simultaneous requests (Fixes Safari connection limit drops)
+const requestPromises = new Map();
+
+axios.defaults.withCredentials = false; // Explicitly tell Safari we don't want credentials to bypass strict CORS checks if possible
+
+function fetchWithCache(cacheKey, url, config = {}) {
+    if (pageCache.has(cacheKey)) return Promise.resolve(pageCache.get(cacheKey));
+    if (requestPromises.has(cacheKey)) return requestPromises.get(cacheKey);
+
+    // Force withCredentials false on every request
+    const finalConfig = { ...config, withCredentials: false };
+
+    const promise = axios.get(url, finalConfig)
+        .then(res => {
+            pageCache.set(cacheKey, res.data);
+            requestPromises.delete(cacheKey);
+            return res.data;
+        })
+        .catch(err => {
+            requestPromises.delete(cacheKey);
+            throw err;
+        });
+
+    requestPromises.set(cacheKey, promise);
+    return promise;
+}
 
 const api = axios.create({
     baseURL: API_BASE,
@@ -26,69 +53,60 @@ const api = axios.create({
 axios.interceptors.response.use((response) => response, async (err) => {
     const config = err.config;
     if (!config) return Promise.reject(err);
-    
+
     config.retryCount = config.retryCount || 0;
-    
+
     // Retry up to 3 times for Safari
     if (config.retryCount < 3) {
         config.retryCount += 1;
         console.log(`Retrying request (${config.retryCount}/3): ${config.url}`);
-        
+
         // Wait a short delay before retrying (1000ms * retryCount)
         await new Promise(resolve => setTimeout(resolve, 1000 * config.retryCount));
-        
+
         // Add cache-buster to prevent Safari from returning cached failure
         if (config.params) {
             config.params._retry = Date.now();
         } else {
             config.params = { _retry: Date.now() };
         }
-        
+
         return axios.request(config);
     }
-    
+
     return Promise.reject(err);
 });
 
 /**
  * Fetch page data by page name (e.g. "home", "about", etc.)
  */
-export async function fetchPageData(collegeSlug, pageName) {
+export function fetchPageData(collegeSlug, pageName) {
     const cacheKey = `${collegeSlug}/${pageName}`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/pages/${pageName}`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/${collegeSlug}/pages/${pageName}`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**
  * Fetch page data for a specific college by slug and page name.
  * e.g. fetchCollegePageData("ibmr", "home")
  */
-export async function fetchCollegePageData(collegeSlug, pageName) {
+export function fetchCollegePageData(collegeSlug, pageName) {
     const cacheKey = `${collegeSlug}/${pageName}`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/pages/${pageName}`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/${collegeSlug}/pages/${pageName}`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**
  * Fetch courses for a specific college by slug.
  * e.g. fetchCollegeCourses("ibmr")
  */
-export async function fetchCollegeCourses(collegeSlug) {
+export function fetchCollegeCourses(collegeSlug) {
     const cacheKey = `${collegeSlug}/courses`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/courses`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/${collegeSlug}/courses`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**
@@ -201,27 +219,21 @@ export async function fetchCollegeCourseNames(collegeSlug) {
  * Fetch info (name, logo, etc.) for a specific college by slug.
  * e.g. fetchCollegeInfo("coc")
  */
-export async function fetchCollegeInfo(collegeSlug) {
+export function fetchCollegeInfo(collegeSlug) {
     const cacheKey = `${collegeSlug}/info`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/info`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/${collegeSlug}/info`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**
  * Fetch all colleges.
  */
-export async function fetchColleges() {
+export function fetchColleges() {
     const cacheKey = "colleges";
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/colleges`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/colleges`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**
@@ -296,14 +308,11 @@ export async function fetchCollegeAlumniDetail(collegeSlug, alumniId) {
  * Fetch all colleges with their courses (public endpoint).
  * Used by the Footer for dynamic college/course listing.
  */
-export async function fetchCollegesWithCourses() {
+export function fetchCollegesWithCourses() {
     const cacheKey = "public/colleges-with-courses";
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
-    const { data } = await axios.get(`${SERVER_BASE}/public/colleges-with-courses`, {
-        headers: { accept: "application/json" },
+    return fetchWithCache(cacheKey, `${SERVER_BASE}/public/colleges-with-courses`, {
+        headers: { accept: "application/json" }
     });
-    pageCache.set(cacheKey, data);
-    return data;
 }
 
 /**

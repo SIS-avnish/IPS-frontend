@@ -122,17 +122,17 @@ const MainActivityPage = memo(() => {
             <h1 className="text-[#0066A6] text-xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-medium">
               {descParts.length > 0
                 ? descParts.map((part, i) => (
-                    <span key={i}>
-                      {part}
-                      {i < descParts.length - 1 && <br />}
-                    </span>
-                  ))
+                  <span key={i}>
+                    {part}
+                    {i < descParts.length - 1 && <br />}
+                  </span>
+                ))
                 : "A Calendar Full of Learning"}
             </h1>
 
             {hero.cta_text && (
               <Link
-              target="_blank"
+                target="_blank"
                 to={hero.cta_link || `/${slug}/activities/events`}
                 className="
                   mt-6 inline-flex items-center gap-3
@@ -186,10 +186,6 @@ const MainActivityPage = memo(() => {
                     whileInView="visible"
                     custom={idx}
                     viewport={{ once: true, amount: 0.1 }}
-                    className={[
-                      idx === cards.length - 1 && cards.length % 3 === 1 ? "lg:col-start-2" : "",
-                      idx === cards.length - 1 && cards.length % 2 === 1 ? "sm:col-start-2" : "",
-                    ].filter(Boolean).join(" ") || undefined}
                   >
                     <Link
                       to={`/${slug}/activities/${routeSlug}`}

@@ -25,6 +25,8 @@ const AlumniDetail = lazy(() => import("./pages/AlumniDetail"))
 const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
+const UnnayanJournal = lazy(() => import("./components/activity/UnnayanJournal"))
+const UnnayanVolumes = lazy(() => import("./components/activity/UnnayanVolumes"))
 const AdmissionPage = lazy(() => import("./pages/AdmissionPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
@@ -57,6 +59,8 @@ function MainLayout({ initialServerState }) {
           <Route path="/:collegeSlug/facilities" element={<FacilitiesPage />} />
           <Route path="/:collegeSlug/placements" element={<Placements />} />
           <Route path="/:collegeSlug/activities" element={<MainActivityPage />} />
+          <Route path="/:collegeSlug/activities/unnayan-journal" element={<UnnayanJournal />} />
+          <Route path="/:collegeSlug/activities/unnayan-volumes" element={<UnnayanVolumes />} />
           <Route path="/:collegeSlug/activities/:subSlug" element={<StudentLife />} />
           <Route path="/:collegeSlug/faculties" element={<AllFaculty />} />
           <Route path="/:collegeSlug" element={<CollegeTemp />} />
@@ -83,7 +87,8 @@ function App({ initialServerState }) {
   const location = useLocation()
   const isAdmissionPage = location.pathname.includes('ipsadmissions')
 
-  const hideNavbar = location.pathname === "/ipsa/ipsadmissions"
+  const isUnnayanJournal = location.pathname.includes('/unnayan-journal') || location.pathname.includes('/unnayan-volumes')
+  const hideNavbar = location.pathname === "/ipsa/ipsadmissions" || isUnnayanJournal
 
 
   return (
@@ -91,15 +96,17 @@ function App({ initialServerState }) {
       {!hideNavbar && <Navbar />}
       <MainLayout initialServerState={initialServerState} />
 
-      <Footer />
-      {!isAdmissionPage && <EnquiryModal />}
+      {!isUnnayanJournal && <Footer />}
+      {!isAdmissionPage && !isUnnayanJournal && <EnquiryModal />}
 
-       <button
-        onClick={() => window.scrollTo({ top: 10, behavior: "smooth" })}
-        className="fixed bottom-5 right-5 bg-[#0CC2FE] text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-300"
-      >
-        ↑
-      </button>
+      {!isUnnayanJournal && (
+        <button
+          onClick={() => window.scrollTo({ top: 10, behavior: "smooth" })}
+          className="fixed bottom-28 right-5 z-50 bg-[#0CC2FE] text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-300 hover:bg-[#0066A6]"
+        >
+          ↑
+        </button>
+      )}
     </>
   )
 }
