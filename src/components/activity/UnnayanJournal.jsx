@@ -243,7 +243,7 @@ const UnnayanJournal = () => {
     ])
       .then(([journalJson, volumesJson]) => {
         setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
-        setVolumes(Array.isArray(volumesJson) ? volumesJson : volumesJson?.data ?? volumesJson?.volumes ?? []);
+        setVolumes(volumesJson);
         setLoading(false);
       })
       .catch(err => {

@@ -25,8 +25,8 @@ const AlumniDetail = lazy(() => import("./pages/AlumniDetail"))
 const Hotel = lazy(() => import("./pages/Hotel"))
 const AllFaculty = lazy(() => import("./pages/AllFaculty"))
 const MainActivityPage = lazy(() => import("./components/activity/MainActivityPage"))
-// const UnnayanJournal = lazy(() => import("./components/activity/UnnayanJournal"))
-// const UnnayanVolumes = lazy(() => import("./components/activity/UnnayanVolumes"))
+const UnnayanJournal = lazy(() => import("./components/activity/UnnayanJournal"))
+const UnnayanVolumes = lazy(() => import("./components/activity/UnnayanVolumes"))
 const AdmissionPage = lazy(() => import("./pages/AdmissionPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
@@ -59,8 +59,8 @@ function MainLayout({ initialServerState }) {
           <Route path="/:collegeSlug/facilities" element={<FacilitiesPage />} />
           <Route path="/:collegeSlug/placements" element={<Placements />} />
           <Route path="/:collegeSlug/activities" element={<MainActivityPage />} />
-          {/* <Route path="/:collegeSlug/activities/unnayan-journal" element={<UnnayanJournal />} /> */}
-          {/* <Route path="/:collegeSlug/activities/unnayan-volumes" element={<UnnayanVolumes />} /> */}
+          <Route path="/:collegeSlug/activities/unnayan-journal" element={<UnnayanJournal />} />
+          <Route path="/:collegeSlug/activities/unnayan-volumes" element={<UnnayanVolumes />} />
           <Route path="/:collegeSlug/activities/:subSlug" element={<StudentLife />} />
           <Route path="/:collegeSlug/faculties" element={<AllFaculty />} />
           <Route path="/:collegeSlug" element={<CollegeTemp />} />
@@ -87,8 +87,7 @@ function App({ initialServerState }) {
   const location = useLocation()
   const isAdmissionPage = location.pathname.includes('ipsadmissions')
 
-  // const isUnnayanJournal = location.pathname.includes('/unnayan-journal') || location.pathname.includes('/unnayan-volumes')
-  const isUnnayanJournal = false
+  const isUnnayanJournal = location.pathname.includes('/unnayan-journal') || location.pathname.includes('/unnayan-volumes')
   const hideNavbar = location.pathname === "/ipsa/ipsadmissions" || isUnnayanJournal
 
 
