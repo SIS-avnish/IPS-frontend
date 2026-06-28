@@ -237,13 +237,19 @@ const UnnayanJournal = () => {
 
   useEffect(() => {
     setLoading(true);
+    const safeFetch = (url) =>
+      fetch(url).then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      });
+
     Promise.all([
-      fetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`).then(res => res.json()),
-      fetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=1`).then(res => res.json())
+      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`),
+      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=1`)
     ])
       .then(([journalJson, volumesJson]) => {
         setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
-        setVolumes(volumesJson);
+        setVolumes(Array.isArray(volumesJson) ? volumesJson : volumesJson?.data ?? volumesJson?.volumes ?? []);
         setLoading(false);
       })
       .catch(err => {
