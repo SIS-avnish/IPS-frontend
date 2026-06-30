@@ -238,8 +238,8 @@ const UnnayanVolumes = () => {
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      fetch('http://127.0.0.1:3000/api/ibmr/journals').then(res => res.json()),
-      fetch('http://127.0.0.1:3000/api/ibmr/journal-volumes?journal_id=1').then(res => res.json())
+      fetch('https://portal.ipsacademyindore.edu.in/api/ibmr/journals').then(res => res.json()),
+      fetch('https://portal.ipsacademyindore.edu.in/api/ibmr/journal-volumes?journal_id=2').then(res => res.json())
     ])
       .then(([journalJson, volumesJson]) => {
         setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
@@ -378,6 +378,7 @@ const UnnayanVolumes = () => {
                       <div className="text-center py-10">No volumes found</div>
                     ) : selectedVolume === null ? (
                       <div className="mb-12">
+                        <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
                         <ul className="list-disc pl-5">
                           {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">

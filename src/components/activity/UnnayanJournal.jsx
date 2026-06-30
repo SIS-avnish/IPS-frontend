@@ -245,7 +245,7 @@ const UnnayanJournal = () => {
 
     Promise.all([
       safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`),
-      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=1`)
+      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=2`)
     ])
       .then(([journalJson, volumesJson]) => {
         setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
@@ -383,6 +383,7 @@ const UnnayanJournal = () => {
                       <div className="text-center py-10">No volumes found</div>
                     ) : selectedVolume === null ? (
                       <div className="mb-12">
+                        <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
                         <ul className="list-disc pl-5">
                           {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">
