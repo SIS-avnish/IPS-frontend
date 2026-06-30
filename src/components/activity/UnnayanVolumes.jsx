@@ -172,14 +172,29 @@ const navItems = [
 ];
 
 const UnnayanVolumes = () => {
-  const { collegeSlug } = useParams();
+  const { collegeSlug, tab } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState(tab || "home");
   const [journalData, setJournalData] = useState(null);
   const [volumes, setVolumes] = useState([]);
   const [selectedVolume, setSelectedVolume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pdfUrlToView, setPdfUrlToView] = useState(null);
+
+  useEffect(() => {
+    if (tab && navItems.find(item => item.id === tab)) {
+      setActiveTab(tab);
+    } else if (!tab) {
+      setActiveTab("home");
+    }
+  }, [tab]);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setSelectedVolume(null);
+    navigate(`/${collegeSlug || 'ibmr'}/activities/unnayan-volumes/${tabId}`);
+  };
 
   // Helper to format bad HTML from the rich text editor
   const formatHTMLContent = (html) => {
@@ -209,14 +224,24 @@ const UnnayanVolumes = () => {
       
       const paragraphs = doc.querySelectorAll('p');
       paragraphs.forEach(p => {
+        // Strip <br> from start and end of paragraph content
+        let inner = p.innerHTML.trim();
+        inner = inner.replace(/^(?:<br\s*\/?>\s*)+/gi, '');
+        inner = inner.replace(/(?:<br\s*\/?>\s*)+$/gi, '');
+        p.innerHTML = inner;
+
         // If the paragraph has no text (even if it has <br>, <strong>, etc) and no images
-        if (!p.textContent.trim().replace(/\u200B/g, '') && !p.querySelector('img, iframe, table')) {
+        let text = p.textContent.trim().replace(/[\u200B\u00A0]/g, '');
+        if (!text && !p.querySelector('img, iframe, table')) {
           p.remove();
         }
       });
       
       cleanHtml = doc.body.innerHTML;
       
+      // Strip <br> tags that are adjacent to <p> tags
+      cleanHtml = cleanHtml.replace(/<\/p>\s*<br\s*\/?>/gi, '</p>');
+      cleanHtml = cleanHtml.replace(/<br\s*\/?>\s*<p>/gi, '<p>');
       // Also strip consecutive <br> tags outside of paragraphs just in case
       cleanHtml = cleanHtml.replace(/(<br\s*\/?>\s*){2,}/gi, '<br/>');
     } catch (e) {
@@ -226,9 +251,11 @@ const UnnayanVolumes = () => {
     return cleanHtml;
   };
 
-  // Helper to force Cloudinary raw documents (PDFs, DOCs) to open in a browser viewer instead of direct download
+  // Helper to force Cloudinary documents (PDFs, DOCs) to open in a browser viewer instead of direct download
   const getViewerUrl = (url) => {
     if (!url) return "#";
+    // Google Docs viewer often fails with Cloudinary PDFs ("No preview available"), so we just return the direct URL 
+    // which modern browsers will open in their built-in PDF viewer.
     if (url.includes('/raw/upload/') && !url.includes('docs.google.com')) {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
@@ -272,10 +299,10 @@ const UnnayanVolumes = () => {
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#399ae5] py-10 font-serif text-black flex flex-col items-center">
+    <div className="min-h-screen bg-[#399ae5] py-4 md:py-10 px-2 sm:px-4 font-serif text-black flex flex-col items-center">
       <style>{`
         .unnayan-content p {
-          padding: 11px 0px 10px;
+          padding: 0 0 10px 0;
           text-align: justify;
           line-height: 1.6;
           font-family: "Times New Roman", Times, serif;
@@ -309,22 +336,22 @@ const UnnayanVolumes = () => {
       {/* Container matching screenshot structure */}
       <div className="w-full max-w-[960px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden">
         
-        <div className="flex w-full flex-1">
+        <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="w-[180px] shrink-0 bg-[#00a2ed] pt-8">
-            <div className="p-0">
-              <ul className="w-full list-none p-0 m-0">
+          <div className="w-full md:w-[180px] shrink-0 bg-[#00a2ed] md:pt-8">
+            <div className="p-0 overflow-x-auto scrollbar-hide">
+              <ul className="w-full list-none p-0 m-0 flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
-                  <li key={idx} className="border-b border-white border-opacity-50">
+                  <li key={idx} className="border-r md:border-r-0 md:border-b border-white border-opacity-50 flex-none">
                     <button 
-                      onClick={() => { setActiveTab(item.id); setSelectedVolume(null); }}
-                      className={`w-full flex items-center px-4 py-2 text-left text-[12px] font-bold transition-colors ${
+                      onClick={() => handleTabChange(item.id)}
+                      className={`w-full flex justify-center md:justify-start items-center px-4 py-3 md:py-2 text-center md:text-left text-[12px] font-bold transition-colors ${
                         activeTab === item.id 
                           ? "bg-[#008bc9] text-white" 
                           : "text-black hover:bg-[#008bc9] hover:text-white"
                       }`}
                     >
-                      <span className="w-2 h-2 bg-white mr-3 inline-block shadow-sm shrink-0"></span>
+                      <span className="hidden md:inline-block w-2 h-2 bg-white mr-3 shadow-sm shrink-0"></span>
                       {item.name}
                     </button>
                   </li>
@@ -334,7 +361,7 @@ const UnnayanVolumes = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 px-8 py-8 bg-white">
+          <div className="flex-1 px-4 md:px-8 py-6 md:py-8 bg-white min-w-0">
             
             {/* Header Banner */}
             <div className="w-full mb-6 border-b border-black pb-4 flex justify-center items-center">
@@ -348,7 +375,7 @@ const UnnayanVolumes = () => {
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-[14px] px-10">
+            <div className="w-full mx-auto text-[14px] px-2 sm:px-4 md:px-10 overflow-hidden break-words">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -384,7 +411,7 @@ const UnnayanVolumes = () => {
                             <li key={volume.id} className="mb-4">
                               <button 
                                 onClick={() => setSelectedVolume(volume)}
-                                className="text-[#008bc9] font-bold text-[15px] hover:underline text-left"
+                                className="text-[#008bc9] font-bold text-[15px] underline hover:text-blue-800 text-left"
                               >
                                 {volume.volume_title}
                               </button>
@@ -403,14 +430,14 @@ const UnnayanVolumes = () => {
                         <h3 className="font-bold mb-6 text-[15px] text-black">{selectedVolume.volume_title}</h3>
                         
                         <p className="mb-6 leading-normal text-[14px] text-black">
-                          I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-blue-600">(Click here)</a><br/>
-                          II.Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-blue-600">(Click here)</a>
+                          I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a><br/>
+                          II.Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
                         </p>
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
                           <p key={index} className="mb-6 leading-normal text-left pr-4 text-black text-[14px]">
                             <strong>{index + 1}.</strong> {paper.title}{' '}
-                            <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-black hover:text-blue-600">
+                            <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
                               (Click here)
                             </a>
                             <br />
@@ -435,7 +462,7 @@ const UnnayanVolumes = () => {
               <React.Fragment key={item.name}>
                 {idx > 0 && <span className="w-2 h-2 bg-white inline-block shadow-sm"></span>}
                 <button 
-                  onClick={() => { setActiveTab(item.id); setSelectedVolume(null); }}
+                  onClick={() => handleTabChange(item.id)}
                   className={`text-[11px] font-bold hover:underline ${
                     activeTab === item.id ? "text-white" : "text-black"
                   }`}
@@ -447,6 +474,10 @@ const UnnayanVolumes = () => {
           </div>
         </div>
       </div>
+      {/* Modals and Overlays */}
+      {pdfUrlToView && (
+        <PdfViewerModal url={pdfUrlToView} onClose={() => setPdfUrlToView(null)} />
+      )}
     </div>
   );
 };

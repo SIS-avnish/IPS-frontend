@@ -32,6 +32,11 @@
     @apply bg-background text-foreground;
     font-family: 'Degular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
+
+  .npf_chatbots,
+  .npf_chatbots * {
+    all: revert;
+  }
 }
 
 @theme inline {

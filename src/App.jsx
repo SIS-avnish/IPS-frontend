@@ -59,8 +59,8 @@ function MainLayout({ initialServerState }) {
           <Route path="/:collegeSlug/facilities" element={<FacilitiesPage />} />
           <Route path="/:collegeSlug/placements" element={<Placements />} />
           <Route path="/:collegeSlug/activities" element={<MainActivityPage />} />
-          <Route path="/:collegeSlug/activities/unnayan-journal" element={<UnnayanJournal />} />
-          <Route path="/:collegeSlug/activities/unnayan-volumes" element={<UnnayanVolumes />} />
+          <Route path="/:collegeSlug/activities/unnayan-journal/:tab?" element={<UnnayanJournal />} />
+          <Route path="/:collegeSlug/activities/unnayan-volumes/:tab?" element={<UnnayanVolumes />} />
           <Route path="/:collegeSlug/activities/:subSlug" element={<StudentLife />} />
           <Route path="/:collegeSlug/faculties" element={<AllFaculty />} />
           <Route path="/:collegeSlug" element={<CollegeTemp />} />

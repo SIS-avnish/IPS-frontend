@@ -92,6 +92,16 @@ export default function useSEO(pageData) {
       createdNodes.current.push(schemaScript);
     }
 
+    // ── GTM Virtual Pageview ────────────────────────────────────
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "virtual_pageview",
+        page_path: window.location.pathname + window.location.search,
+        page_title: document.title,
+      });
+    }
+
     // ── cleanup on unmount / re-run ─────────────────────────────
     return () => {
       document.title = prevTitle || DEFAULT_TITLE;
