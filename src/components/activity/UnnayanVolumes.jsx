@@ -407,9 +407,9 @@ const UnnayanVolumes = () => {
                       <div className="mb-12">
                         <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
                         <ul className="list-disc pl-5">
-                          {volumes.map((volume) => (
+                          {[...volumes].reverse().map((volume) => (
                             <li key={volume.id} className="mb-4">
-                              <button 
+                              <button
                                 onClick={() => setSelectedVolume(volume)}
                                 className="text-[#008bc9] font-bold text-[15px] underline hover:text-blue-800 text-left"
                               >
