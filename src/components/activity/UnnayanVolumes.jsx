@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
 
 export const mockData = {
   title: "Jan 2026 Volume XVIII Issue 1",
@@ -174,6 +174,9 @@ const navItems = [
 const UnnayanVolumes = () => {
   const { collegeSlug, tab } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const volumeId = searchParams.get("volume");
+
   const [activeTab, setActiveTab] = useState(tab || "home");
   const [journalData, setJournalData] = useState(null);
   const [volumes, setVolumes] = useState([]);
@@ -181,6 +184,27 @@ const UnnayanVolumes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pdfUrlToView, setPdfUrlToView] = useState(null);
+
+  useEffect(() => {
+    if (activeTab === "volumes" && volumes.length > 0) {
+      if (volumeId) {
+        const found = volumes.find(v => 
+          slugify(v.volume_title) === volumeId || 
+          v.volume_title === volumeId || 
+          String(v.id) === String(volumeId)
+        );
+        if (found) {
+          setSelectedVolume(found);
+        } else {
+          setSelectedVolume(null);
+        }
+      } else {
+        setSelectedVolume(null);
+      }
+    } else {
+      setSelectedVolume(null);
+    }
+  }, [volumeId, volumes, activeTab]);
 
   useEffect(() => {
     if (tab && navItems.find(item => item.id === tab)) {
@@ -260,6 +284,18 @@ const UnnayanVolumes = () => {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
     return url;
+  };
+
+  // Helper to convert volume titles to URL-safe slugs with hyphens instead of spaces
+  const slugify = (text) => {
+    if (!text) return "";
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-");
   };
 
   useEffect(() => {
@@ -410,7 +446,7 @@ const UnnayanVolumes = () => {
                           {[...volumes].reverse().map((volume) => (
                             <li key={volume.id} className="mb-4">
                               <button
-                                onClick={() => setSelectedVolume(volume)}
+                                onClick={() => setSearchParams({ volume: slugify(volume.volume_title) })}
                                 className="text-[#008bc9] font-bold text-[15px] underline hover:text-blue-800 text-left"
                               >
                                 {volume.volume_title}
@@ -422,28 +458,49 @@ const UnnayanVolumes = () => {
                     ) : (
                       <div className="mb-12">
                         <button 
-                          onClick={() => setSelectedVolume(null)}
+                          onClick={() => setSearchParams({})}
                           className="mb-6 text-[#008bc9] font-bold text-[14px] hover:underline flex items-center"
                         >
                           &larr; Back to all volumes
                         </button>
                         <h3 className="font-bold mb-6 text-[15px] text-black">{selectedVolume.volume_title}</h3>
                         
-                        <p className="mb-6 leading-normal text-[14px] text-black">
-                          I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a><br/>
-                          II.Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
-                        </p>
+                        {(selectedVolume.editorial_link || selectedVolume.contents_link) && (
+                          <p className="mb-6 leading-normal text-[14px] text-black">
+                            {selectedVolume.editorial_link && (
+                              <>
+                                I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                                {selectedVolume.contents_link && <br/>}
+                              </>
+                            )}
+                            {selectedVolume.contents_link && (
+                              <>
+                                II. Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                              </>
+                            )}
+                          </p>
+                        )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
                           <p key={index} className="mb-6 leading-normal text-left pr-4 text-black text-[14px]">
                             <strong>{index + 1}.</strong> {paper.title}{' '}
-                            <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
-                              (Click here)
-                            </a>
-                            <br />
-                            <span className="italic">{paper.authors}</span>
-                            <br />
-                            <span className="italic">{paper.page_range}</span>
+                            {paper.pdf_link && (
+                              <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
+                                (Click here)
+                              </a>
+                            )}
+                            {paper.authors && (
+                              <>
+                                <br />
+                                <span className="italic">{paper.authors}</span>
+                              </>
+                            )}
+                            {paper.page_range && (
+                              <>
+                                <br />
+                                <span className="italic">{paper.page_range}</span>
+                              </>
+                            )}
                           </p>
                         ))}
                       </div>
