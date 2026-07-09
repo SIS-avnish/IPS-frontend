@@ -281,14 +281,14 @@ export default function Contact() {
                 </p>
               </div>
 
-               <div className="bg-[#f0eeef] shadow-md  hover:shadow-xl transition">
-                <h3 className="text-xl  bg-[#ffc73e] p-4  text-center text-black mb-1">
+               <div className="bg-[#F9F4E1] shadow-md  hover:shadow-xl transition">
+                <h3 className="text-xl  bg-[#F68C1F] p-4  text-center text-black mb-1">
                  Social Science
                 </h3>
-                <p className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
+                <p className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  border-b border-[#ddd] border-r border-[#ddd]" >
                   BA (Hist/Eco/Tou Mgmt), MSW, B.Lib .
                 </p>
-                <p  className="text-center text-black mb-1 bg-[#F0EEEF] px-4 py-4  " >
+                <p  className="text-center text-black mb-1 bg-[#F9F4E1] px-4 py-4  " >
                   Telephone Call: 0731-4014778 <br/>
                   Mobile Number: 8103115491
                 </p>

@@ -177,21 +177,20 @@ export default memo(function Footer() {
               <div className="flex gap-3 justify-center lg:justify-start">
                 <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faPhone} /></span>
                 <p className="text-left">
-                  +91 92294 98055<br />
-                  +91 99778 35161
+                  +91 97748 97748
                 </p>
               </div>
 
               <div className="flex flex-col  justify-center lg:items-baseline">
                 <div>
                   <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span>
-                  <a href="mailto:info@ipsacademy.org" className="hover:underline">
-                    info@ipsacademy.org
+                  <a href="mailto:info@ipsa.ac.in" className="hover:underline">
+                    info@ipsa.ac.in
                   </a>
                 </div>
                 <div>
-                  <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span> <a href="mailto:admission@ipsacademy.org" className="hover:underline">
-                    admission@ipsacademy.org
+                  <span className="text-[#ff7373] text-[20px]"><FontAwesomeIcon icon={faEnvelope} /></span> <a href="mailto:admission@ipsa.ac.in" className="hover:underline">
+                    admission@ipsa.ac.in
                   </a>
                 </div>
 
