@@ -79,7 +79,11 @@ export default function Home({ initialServerState }) {
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
-      <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', '360_video', 'courses']} />
+      {/* 
+        Temporarily commented out ScratchSections because the backend API 
+        is sending test/SSTI payloads that are displaying on the screen.
+      */}
+      {/* <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', '360_video', 'courses']} /> */}
     </div>
   );
 }
