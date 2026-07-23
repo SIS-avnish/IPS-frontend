@@ -1,6 +1,6 @@
 import { useEffect, useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import { fetchCollegePageData } from "../services/api";
+import { fetchCollegePageData, fetchCollegeAlumni } from "../services/api";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import Hero from "../components/colegeTemplate/Hero";
 import About from "../components/colegeTemplate/About";
@@ -125,6 +125,7 @@ export default function IbmrPage() {
   const [pageData, setPageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [alumniList, setAlumniList] = useState([]);
 
   useSEO(pageData);
 
@@ -147,6 +148,13 @@ export default function IbmrPage() {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
+
+    // Fetch alumni data for Testimonials section
+    fetchCollegeAlumni(collegeSlug)
+      .then((data) => {
+        if (!cancelled) setAlumniList(data || []);
+      })
+      .catch(() => { /* silently ignore alumni fetch errors */ });
 
     return () => {
       cancelled = true;
@@ -218,8 +226,28 @@ export default function IbmrPage() {
         ]}
       />
 
-      {sections.testimonials && (
-        <Testimonials data={sections.testimonials} />
+      {/* Alumni Testimonials - uses alumni API data, falls back to page testimonials section */}
+      {alumniList.length > 0 ? (
+        <Testimonials
+          data={{
+            title: (sections?.testimonials?.title || "Testimonials").replace("Student Testimonials", "Testimonials"),
+            items: alumniList.map((a) => ({
+              id: a.id,
+              name: a.name,
+              image: a.main_image || "",
+              designation: a.achievement || "",
+              story: a.testimony || a.description || "",
+              media: a.media || "",
+            })),
+          }}
+        />
+      ) : sections.testimonials && (
+        <Testimonials 
+          data={{
+            ...sections.testimonials,
+            title: (sections.testimonials.title || "Testimonials").replace("Student Testimonials", "Testimonials")
+          }} 
+        />
       )}
 
       {sections.success_stories && (

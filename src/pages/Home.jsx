@@ -7,6 +7,7 @@ import WhyIPSA from "../components/home/WhyIPSA";
 import StatsSection from "../components/home/StatsSection";
 import ExperienceSection from "../components/home/ExperienceSection";
 import CoursesAccordion from "../components/home/CoursesAccordion";
+import FacilitiesSection from "../components/home/FacilitiesSection";
 import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Home({ initialServerState }) {
@@ -76,9 +77,18 @@ export default function Home({ initialServerState }) {
         statsData={sections?.stats}
         excellenceData={sections?.excellence}
         startData={sections?.start_image}
+        facilitiesData={sections?.facilities}
       />
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
+
+      {/* Second Facilities Section from facilities_1 */}
+      {sections?.facilities_1 && (
+        <div className="mt-16 mb-10">
+          <FacilitiesSection data={sections.facilities_1} />
+        </div>
+      )}
+
       {/* 
         Temporarily commented out ScratchSections because the backend API 
         is sending test/SSTI payloads that are displaying on the screen.

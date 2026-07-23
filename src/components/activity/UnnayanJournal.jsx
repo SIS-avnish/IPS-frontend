@@ -183,6 +183,20 @@ const UnnayanJournal = () => {
   const [selectedVolume, setSelectedVolume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pdfUrlToView, setPdfUrlToView] = useState(null);
+
+  // Helper to parse date from volume title (e.g., "Jan 2026 Volume XVIII Issue 1")
+  const getVolumeScore = (title) => {
+    const str = (title || "").toLowerCase();
+    const yearMatch = str.match(/\b(19|20)\d{2}\b/);
+    const year = yearMatch ? parseInt(yearMatch[0], 10) : 0;
+    
+    const monthMatch = str.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\b/);
+    const monthMap = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+    const month = monthMatch ? monthMap[monthMatch[1]] : -1;
+    
+    return year * 100 + month;
+  };
 
   useEffect(() => {
     if (activeTab === "volumes" && volumes.length > 0) {
@@ -219,59 +233,34 @@ const UnnayanJournal = () => {
     navigate(`/${collegeSlug || 'ibmr'}/activities/unnayan-journal/${tabId}`);
   };
 
-  // Helper to format bad HTML from the rich text editor
+  // Helper to safely render HTML from the rich text editor exactly as it comes from the API
   const formatHTMLContent = (html) => {
     if (!html) return "<p>Content not available</p>";
-    let cleanHtml = html;
     
-    // Fix the mashed up research areas columns caused by copy-pasting from Word
-    const mashedRegex = /<p>EconomicsOperations\s*Management.*?Others.*?<\/p>/g;
-    if (mashedRegex.test(cleanHtml)) {
-      cleanHtml = cleanHtml.replace(mashedRegex, `
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 my-6 text-[14px]">
-          <div>Economics</div><div>Operations Management</div>
-          <div>Financial Management</div><div>Information System</div>
-          <div>Marketing Management</div><div>Corporate Governance</div>
-          <div>Human Resource</div><div>Quantitative Methods</div>
-          <div>Strategic Management</div><div>Social Issues</div>
-          <div>Business Communication</div><div>International Business</div>
-          <div>Others</div><div></div>
-        </div>
-      `);
-    }
-
-    // Use DOMParser to perfectly strip empty paragraphs (which Quill editor creates on double Enter)
     try {
       const parser = new DOMParser();
-      const doc = parser.parseFromString(cleanHtml, 'text/html');
+      const doc = parser.parseFromString(html, 'text/html');
       
-      const paragraphs = doc.querySelectorAll('p');
-      paragraphs.forEach(p => {
-        // Strip <br> from start and end of paragraph content
-        let inner = p.innerHTML.trim();
-        inner = inner.replace(/^(?:<br\s*\/?>\s*)+/gi, '');
-        inner = inner.replace(/(?:<br\s*\/?>\s*)+$/gi, '');
-        p.innerHTML = inner;
-
-        // If the paragraph has no text (even if it has <br>, <strong>, etc) and no images
-        let text = p.textContent.trim().replace(/[\u200B\u00A0]/g, '');
-        if (!text && !p.querySelector('img, iframe, table')) {
-          p.remove();
-        }
+      // Remove dangerous tags that break the global React/Tailwind layout
+      const dangerousTags = doc.querySelectorAll('link, meta, title');
+      dangerousTags.forEach(tag => tag.remove());
+      
+      // Gather and preserve all style tags (they are often placed in the head by rich text editors)
+      let styles = '';
+      const styleTags = doc.querySelectorAll('style');
+      styleTags.forEach(style => {
+        let cssText = style.innerHTML;
+        // simple regex to replace body selectors with .unnayan-content
+        cssText = cssText.replace(/\bbody\b/g, '.unnayan-content');
+        styles += `<style>${cssText}</style>`;
+        style.remove(); // Remove from DOM so it doesn't duplicate if it was in the body
       });
       
-      cleanHtml = doc.body.innerHTML;
-      
-      // Strip <br> tags that are adjacent to <p> tags
-      cleanHtml = cleanHtml.replace(/<\/p>\s*<br\s*\/?>/gi, '</p>');
-      cleanHtml = cleanHtml.replace(/<br\s*\/?>\s*<p>/gi, '<p>');
-      // Also strip consecutive <br> tags outside of paragraphs just in case
-      cleanHtml = cleanHtml.replace(/(<br\s*\/?>\s*){2,}/gi, '<br/>');
+      return styles + doc.body.innerHTML;
     } catch (e) {
-      console.error("Error parsing HTML for spaces:", e);
+      console.error('Error parsing HTML:', e);
+      return html;
     }
-    
-    return cleanHtml;
   };
 
   // Helper to force Cloudinary documents (PDFs, DOCs) to open in a browser viewer instead of direct download
@@ -305,13 +294,25 @@ const UnnayanJournal = () => {
         return res.json();
       });
 
-    Promise.all([
-      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`),
-      safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=2`)
-    ])
-      .then(([journalJson, volumesJson]) => {
-        setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
-        setVolumes(Array.isArray(volumesJson) ? volumesJson : volumesJson?.data ?? volumesJson?.volumes ?? []);
+    safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`)
+      .then(journalJson => {
+        const journal = Array.isArray(journalJson) ? journalJson[0] : journalJson;
+        setJournalData(journal);
+        
+        if (journal && journal.id) {
+          return safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=${journal.id}`);
+        } else {
+          setVolumes([]);
+          return null;
+        }
+      })
+      .then(volumesJson => {
+        if (volumesJson) {
+          let vols = Array.isArray(volumesJson) ? volumesJson : volumesJson?.data ?? volumesJson?.volumes ?? [];
+          // Sort volumes descending by extracted date
+          vols = vols.sort((a, b) => getVolumeScore(b.volume_title) - getVolumeScore(a.volume_title));
+          setVolumes(vols);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -339,59 +340,124 @@ const UnnayanJournal = () => {
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#399ae5] py-4 md:py-10 px-2 sm:px-4 font-serif text-black flex flex-col items-center">
+    <div className="min-h-screen bg-[#F7F5FC] py-4 md:py-10 px-2 sm:px-4 flex flex-col items-center" style={{ fontFamily: '"Open Sans", Arial, sans-serif' }}>
       <style>{`
-        .unnayan-content p {
-          padding: 0 0 10px 0;
+        :where(.unnayan-content) p {
+          padding: 0 0 16px 0;
           text-align: justify;
-          line-height: 1.6;
-          font-family: "Times New Roman", Times, serif;
-          font-size: 16px;
+          line-height: 1.8;
+          font-family: "Open Sans", Arial, sans-serif;
+          font-size: 14px;
+          color: #555555;
           margin-bottom: 0;
         }
-        .unnayan-content p:empty,
-        .unnayan-content p:has(> br:only-child) {
+        :where(.unnayan-content) p:empty,
+        :where(.unnayan-content) p:has(> br:only-child) {
           display: none;
         }
-        .unnayan-content h2, .unnayan-content h3 {
-          font-weight: bold;
-          margin-bottom: 1.5rem;
-          font-size: 1.1rem;
+        :where(.unnayan-content) h1, :where(.unnayan-content) h2, :where(.unnayan-content) h3, :where(.unnayan-content) h4, :where(.unnayan-content) h5, :where(.unnayan-content) h6 {
+          font-weight: 600;
+          margin-bottom: 1.2rem;
+          margin-top: 1rem;
+          color: #1C2D5A;
         }
-        .unnayan-content table {
+        :where(.unnayan-content) h1 { font-size: 24px; }
+        :where(.unnayan-content) h2 { font-size: 20px; }
+        :where(.unnayan-content) h3 { font-size: 18px; }
+        :where(.unnayan-content) ul {
+          list-style-type: disc;
+          padding-left: 2rem;
+          margin-bottom: 1rem;
+          color: #555555;
+        }
+        :where(.unnayan-content) ol {
+          list-style-type: decimal;
+          padding-left: 2rem;
+          margin-bottom: 1rem;
+          color: #555555;
+        }
+        :where(.unnayan-content) li {
+          margin-bottom: 0.5rem;
+        }
+        :where(.unnayan-content) strong, :where(.unnayan-content) b {
+          font-weight: 700;
+        }
+        :where(.unnayan-content) em, :where(.unnayan-content) i {
+          font-style: italic;
+        }
+        :where(.unnayan-content) u {
+          text-decoration: underline;
+        }
+        :where(.unnayan-content) img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
+        :where(.unnayan-content) .table-responsive {
+          width: 100%;
+          overflow-x: auto;
+          margin-bottom: 1.5rem;
+        }
+        :where(.unnayan-content) table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 1.5rem;
+          border: 1px solid #DDD;
+          min-width: 600px;
         }
-        .unnayan-content th, .unnayan-content td {
-          border: 1px solid #d1d5db;
-          padding: 0.5rem;
+        :where(.unnayan-content) th, :where(.unnayan-content) td {
+          border: 1px solid #DDD;
+          padding: 10px;
           text-align: left;
         }
-        .unnayan-content th {
-          background-color: #f3f4f6;
-          font-weight: bold;
+        :where(.unnayan-content) th {
+          background-color: #F3F6FD;
+          font-weight: 600;
+          color: #1C2D5A;
+        }
+        :where(.unnayan-content) a {
+          color: #2E5CB8;
+          text-decoration: none;
+        }
+        :where(.unnayan-content) a:hover {
+          text-decoration: underline;
+        }
+        /* Scratch Editor Block Fixes */
+        :where(.unnayan-content) .scratch-card-block {
+          max-width: 100% !important;
+          box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+          :where(.unnayan-content) .scratch-card-block {
+            flex-direction: column !important;
+          }
+          :where(.unnayan-content) .scratch-imgtext-block {
+            grid-template-columns: 1fr !important;
+          }
+          :where(.unnayan-content) .scratch-card-block > div:first-child {
+            min-height: 200px !important;
+            width: 100% !important;
+          }
         }
       `}</style>
       {/* Container matching screenshot structure */}
-      <div className="w-full max-w-[960px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden">
+      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col overflow-hidden">
         
         <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="w-full md:w-[180px] shrink-0 bg-[#00a2ed] md:pt-8">
+          <div className="w-full md:w-[220px] shrink-0 bg-[#FBF8F2] md:pt-8 border-r border-[#E6E6EF]">
             <div className="p-0 overflow-x-auto scrollbar-hide">
               <ul className="w-full list-none p-0 m-0 flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
-                  <li key={idx} className="border-r md:border-r-0 md:border-b border-white border-opacity-50 flex-none">
+                  <li key={idx} className="border-r md:border-r-0 md:border-b border-[#E6E6EF] flex-none">
                     <button 
                       onClick={() => handleTabChange(item.id)}
-                      className={`w-full flex justify-center md:justify-start items-center px-4 py-3 md:py-2 text-center md:text-left text-[12px] font-bold transition-colors ${
+                      className={`w-full flex justify-center md:justify-start items-center px-4 py-3 md:py-2 text-center md:text-left text-[13px] font-semibold uppercase transition-colors min-h-[40px] ${
                         activeTab === item.id 
-                          ? "bg-[#008bc9] text-white" 
-                          : "text-black hover:bg-[#008bc9] hover:text-white"
+                          ? "bg-[#E3DAFF] text-[#1D3F8B]" 
+                          : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
                       }`}
                     >
-                      <span className="hidden md:inline-block w-2 h-2 bg-white mr-3 shadow-sm shrink-0"></span>
+                      <span className="hidden md:inline-block w-2 h-2 bg-[#F39C12] rounded-full mr-3 shrink-0"></span>
                       {item.name}
                     </button>
                   </li>
@@ -401,21 +467,38 @@ const UnnayanJournal = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 px-4 md:px-8 py-6 md:py-8 bg-white min-w-0">
+          <div className="flex-1 px-4 md:px-[24px] py-6 md:py-8 bg-white min-w-0">
             
             {/* Header Banner */}
-            <div className="w-full mb-6 border-b border-black pb-4 flex justify-center items-center">
-              {journalData?.logo_url ? (
-                <img src={journalData.logo_url} alt={journalData?.name || "Journal Logo"} className="w-full h-auto object-contain" />
-              ) : (
-                <h1 className="text-3xl font-bold tracking-widest text-black">
-                  {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
-                </h1>
-              )}
+            <div className="w-full mb-[40px] border-b border-[#E6E6EF] pb-6 min-h-[50px]">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+                <div className="flex-1 flex justify-start">
+                  {journalData?.logo_url ? (
+                    <img src={journalData.logo_url} alt={journalData?.name || "Journal Logo"} className="w-auto h-auto max-h-[250px] object-contain" />
+                  ) : (
+                    <h1 className="text-[28px] font-bold text-[#1D3F8B]">
+                      {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
+                    </h1>
+                  )}
+                </div>
+                
+                <div className="flex flex-col text-[14px] md:text-[15px] font-bold text-[#1D3F8B] text-left md:text-right shrink-0 leading-relaxed">
+                  <span>(P) ISSN NO - 2349 - 6622</span>
+                  <span>(E) ISSN NO - 2349 - 7165</span>
+                </div>
+              </div>
+              
+              {/* Additional Indexed Logos Placeholder */}
+              <div className="flex items-center gap-6 mt-6 ml-2">
+                {/* 
+                  Note: Add your J-Gate and NDL library logo image paths here if they are not part of the main logo_url.
+                  For now, they are prepared as empty containers or you can supply the img tags if you have the assets. 
+                */}
+              </div>
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-[14px] px-2 sm:px-4 md:px-10 overflow-hidden break-words">
+            <div className="w-full mx-auto text-[14px] text-[#555555] overflow-hidden break-words">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -445,13 +528,13 @@ const UnnayanJournal = () => {
                       <div className="text-center py-10">No volumes found</div>
                     ) : selectedVolume === null ? (
                       <div className="mb-12">
-                        <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
+                        <h2 className="font-semibold mb-4 text-[20px] text-[#1C2D5A]">Volumes</h2>
                         <ul className="list-disc pl-5">
-                          {[...volumes].reverse().map((volume) => (
+                          {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">
                               <button
                                 onClick={() => setSearchParams({ volume: slugify(volume.volume_title) })}
-                                className="text-[#008bc9] font-bold text-[15px] underline hover:text-blue-800 text-left"
+                                className="text-[#2E5CB8] font-semibold text-[15px] hover:underline text-left"
                               >
                                 {volume.volume_title}
                               </button>
@@ -463,33 +546,33 @@ const UnnayanJournal = () => {
                       <div className="mb-12">
                         <button 
                           onClick={() => setSearchParams({})}
-                          className="mb-6 text-[#008bc9] font-bold text-[14px] hover:underline flex items-center"
+                          className="mb-6 text-[#2E5CB8] font-semibold text-[14px] hover:underline flex items-center"
                         >
                           &larr; Back to all volumes
                         </button>
-                        <h3 className="font-bold mb-6 text-[15px] text-black">{selectedVolume.volume_title}</h3>
+                        <h3 className="font-semibold mb-6 text-[20px] text-[#1C2D5A]">{selectedVolume.volume_title}</h3>
                         
                         {(selectedVolume.editorial_link || selectedVolume.contents_link) && (
-                          <p className="mb-6 leading-normal text-[14px] text-black">
+                          <p className="mb-6 leading-normal text-[14px] text-[#555555]">
                             {selectedVolume.editorial_link && (
                               <>
-                                I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                                I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">(Click here)</a>
                                 {selectedVolume.contents_link && <br/>}
                               </>
                             )}
                             {selectedVolume.contents_link && (
                               <>
-                                II. Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                                II. Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">(Click here)</a>
                               </>
                             )}
                           </p>
                         )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
-                          <p key={index} className="mb-6 leading-normal text-left pr-4 text-black text-[14px]">
-                            <strong>{index + 1}.</strong> {paper.title}{' '}
+                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#555555] text-[14px]">
+                            <strong className="text-[#1C2D5A]">{index + 1}.</strong> {paper.title}{' '}
                             {paper.pdf_link && (
-                              <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
+                              <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">
                                 (Click here)
                               </a>
                             )}
@@ -502,10 +585,13 @@ const UnnayanJournal = () => {
                             {paper.page_range && (
                               <>
                                 <br />
-                                <span className="italic">{paper.page_range}</span>
+                                <span className="italic">Page No. {paper.page_range}</span>
                               </>
                             )}
-                          </p>
+                            {paper.abstract_html && (
+                              <div className="mt-3 unnayan-content text-[13.5px] text-[#444]" dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
+                            )}
+                          </div>
                         ))}
                       </div>
                     )
@@ -517,15 +603,15 @@ const UnnayanJournal = () => {
         </div>
 
         {/* Footer inside the container */}
-        <div className="w-full bg-[#00a2ed] py-2 flex justify-center items-center">
-          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center">
+        <div className="w-full bg-[#ffffff] py-3 border-t border-[#ECECEC] flex justify-center items-center">
+          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center text-[12px] text-[#666]">
             {navItems.map((item, idx) => (
               <React.Fragment key={item.name}>
-                {idx > 0 && <span className="w-2 h-2 bg-white inline-block shadow-sm"></span>}
+                {idx > 0 && <span className="w-1 h-1 rounded-full bg-[#DDD] inline-block"></span>}
                 <button 
                   onClick={() => handleTabChange(item.id)}
-                  className={`text-[11px] font-bold hover:underline ${
-                    activeTab === item.id ? "text-white" : "text-black"
+                  className={`font-semibold hover:underline ${
+                    activeTab === item.id ? "text-[#1D3F8B]" : "text-[#2E5CB8]"
                   }`}
                 >
                   {item.name}

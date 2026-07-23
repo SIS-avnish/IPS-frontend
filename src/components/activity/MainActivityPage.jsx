@@ -2,10 +2,11 @@ import { useEffect, useState, useMemo, memo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
-import { fetchPageData, resolveImageUrl } from "../../services/api";
+import { fetchPageData, fetchActivities, resolveImageUrl } from "../../services/api";
 import { PageSkeleton } from "../common/SkeletonLoader";
 import useSEO from "../../hooks/useSEO";
 import activitiesFallback from "../../assets/Images/activities.jpg";
+import EventSlider from "./ActivitiesSlider";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -32,7 +33,13 @@ const TITLE_SLUG_MAP = {
   "student clubs": "clubs",
   "social activities": "social",
   "alumni testimonials": "alumni",
+  "testimonials": "alumni",
   "news & media": "news",
+};
+
+// Override display titles for specific cards (backend title → display label)
+const DISPLAY_TITLE_OVERRIDE = {
+  "alumni testimonials": "Testimonials",
 };
 
 function titleToSlug(title) {
@@ -43,6 +50,28 @@ function titleToSlug(title) {
   return lower.replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
 }
 
+/** Map a raw activity record from the /activities API to the shape EventSlider expects */
+function mapActivity(act) {
+  return {
+    ...act,
+    thumbnail_image: act.main_image || null,
+    _isActivity: true,
+  };
+}
+
+const SECTION_META = {
+  social: {
+    title: "Social Activities",
+    content:
+      "From community outreach to social drives, our students lead meaningful initiatives that create a positive impact beyond the campus.",
+  },
+  club: {
+    title: "Student Clubs",
+    content:
+      "Our vibrant student clubs provide a platform to explore interests, hone leadership skills, and collaborate on exciting projects throughout the year.",
+  },
+};
+
 const MainActivityPage = memo(() => {
   const { collegeSlug } = useParams();
   const slug = collegeSlug || "ipsa";
@@ -50,6 +79,10 @@ const MainActivityPage = memo(() => {
   const [pageData, setPageData] = useState(null);
   const [sections, setSections] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Social & Club activities fetched from the activities API
+  const [socialActivities, setSocialActivities] = useState([]);
+  const [clubActivities, setClubActivities] = useState([]);
 
   useSEO(pageData);
 
@@ -68,6 +101,25 @@ const MainActivityPage = memo(() => {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
+
+    return () => { cancelled = true; };
+  }, [slug]);
+
+  // Fetch social & club activities independently
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchActivities(slug, "social")
+      .then((data) => {
+        if (!cancelled) setSocialActivities((data || []).map(mapActivity));
+      })
+      .catch((err) => console.error("Failed to fetch social activities:", err));
+
+    fetchActivities(slug, "club")
+      .then((data) => {
+        if (!cancelled) setClubActivities((data || []).map(mapActivity));
+      })
+      .catch((err) => console.error("Failed to fetch club activities:", err));
 
     return () => { cancelled = true; };
   }, [slug]);
@@ -177,6 +229,7 @@ const MainActivityPage = memo(() => {
               {cards.map((card, idx) => {
                 const routeSlug = titleToSlug(card.title);
                 const iconUrl = card.icon ? resolveImageUrl(card.icon) : null;
+                const displayTitle = DISPLAY_TITLE_OVERRIDE[card.title?.trim().toLowerCase()] || card.title;
 
                 return (
                   <motion.div
@@ -208,7 +261,7 @@ const MainActivityPage = memo(() => {
                       {/* Solid dark title bar */}
                       <div className="bg-red-400 px-4 py-3 flex items-center justify-center min-h-[52px]">
                         <h3 className="text-white text-sm sm:text-base font-bold text-center leading-snug">
-                          {card.title}
+                          {displayTitle}
                         </h3>
                       </div>
                     </Link>
@@ -219,6 +272,30 @@ const MainActivityPage = memo(() => {
           )}
         </div>
       </section>
+
+      {/* ── SOCIAL ACTIVITIES ── */}
+      {socialActivities.length > 0 && (
+        <section className="bg-[#f9f4e1]">
+          <EventSlider
+            title={SECTION_META.social.title}
+            content={SECTION_META.social.content}
+            events={socialActivities}
+            collegeSlug={slug}
+          />
+        </section>
+      )}
+
+      {/* ── STUDENT CLUBS ── */}
+      {clubActivities.length > 0 && (
+        <section className="bg-white">
+          <EventSlider
+            title={SECTION_META.club.title}
+            content={SECTION_META.club.content}
+            events={clubActivities}
+            collegeSlug={slug}
+          />
+        </section>
+      )}
     </div>
   );
 });

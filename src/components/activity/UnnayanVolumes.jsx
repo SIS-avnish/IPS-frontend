@@ -185,6 +185,19 @@ const UnnayanVolumes = () => {
   const [error, setError] = useState(null);
   const [pdfUrlToView, setPdfUrlToView] = useState(null);
 
+  // Helper to parse date from volume title (e.g., "Jan 2026 Volume XVIII Issue 1")
+  const getVolumeScore = (title) => {
+    const str = (title || "").toLowerCase();
+    const yearMatch = str.match(/\b(19|20)\d{2}\b/);
+    const year = yearMatch ? parseInt(yearMatch[0], 10) : 0;
+    
+    const monthMatch = str.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\b/);
+    const monthMap = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+    const month = monthMatch ? monthMap[monthMatch[1]] : -1;
+    
+    return year * 100 + month;
+  };
+
   useEffect(() => {
     if (activeTab === "volumes" && volumes.length > 0) {
       if (volumeId) {
@@ -220,59 +233,34 @@ const UnnayanVolumes = () => {
     navigate(`/${collegeSlug || 'ibmr'}/activities/unnayan-volumes/${tabId}`);
   };
 
-  // Helper to format bad HTML from the rich text editor
+  // Helper to safely render HTML from the rich text editor exactly as it comes from the API
   const formatHTMLContent = (html) => {
     if (!html) return "<p>Content not available</p>";
-    let cleanHtml = html;
     
-    // Fix the mashed up research areas columns caused by copy-pasting from Word
-    const mashedRegex = /<p>EconomicsOperations\s*Management.*?Others.*?<\/p>/g;
-    if (mashedRegex.test(cleanHtml)) {
-      cleanHtml = cleanHtml.replace(mashedRegex, `
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 my-6 text-[14px]">
-          <div>Economics</div><div>Operations Management</div>
-          <div>Financial Management</div><div>Information System</div>
-          <div>Marketing Management</div><div>Corporate Governance</div>
-          <div>Human Resource</div><div>Quantitative Methods</div>
-          <div>Strategic Management</div><div>Social Issues</div>
-          <div>Business Communication</div><div>International Business</div>
-          <div>Others</div><div></div>
-        </div>
-      `);
-    }
-
-    // Use DOMParser to perfectly strip empty paragraphs (which Quill editor creates on double Enter)
     try {
       const parser = new DOMParser();
-      const doc = parser.parseFromString(cleanHtml, 'text/html');
+      const doc = parser.parseFromString(html, 'text/html');
       
-      const paragraphs = doc.querySelectorAll('p');
-      paragraphs.forEach(p => {
-        // Strip <br> from start and end of paragraph content
-        let inner = p.innerHTML.trim();
-        inner = inner.replace(/^(?:<br\s*\/?>\s*)+/gi, '');
-        inner = inner.replace(/(?:<br\s*\/?>\s*)+$/gi, '');
-        p.innerHTML = inner;
-
-        // If the paragraph has no text (even if it has <br>, <strong>, etc) and no images
-        let text = p.textContent.trim().replace(/[\u200B\u00A0]/g, '');
-        if (!text && !p.querySelector('img, iframe, table')) {
-          p.remove();
-        }
+      // Remove dangerous tags that break the global React/Tailwind layout
+      const dangerousTags = doc.querySelectorAll('link, meta, title');
+      dangerousTags.forEach(tag => tag.remove());
+      
+      // Gather and preserve all style tags (they are often placed in the head by rich text editors)
+      let styles = '';
+      const styleTags = doc.querySelectorAll('style');
+      styleTags.forEach(style => {
+        let cssText = style.innerHTML;
+        // simple regex to replace body selectors with .unnayan-content
+        cssText = cssText.replace(/\bbody\b/g, '.unnayan-content');
+        styles += `<style>${cssText}</style>`;
+        style.remove(); // Remove from DOM so it doesn't duplicate if it was in the body
       });
       
-      cleanHtml = doc.body.innerHTML;
-      
-      // Strip <br> tags that are adjacent to <p> tags
-      cleanHtml = cleanHtml.replace(/<\/p>\s*<br\s*\/?>/gi, '</p>');
-      cleanHtml = cleanHtml.replace(/<br\s*\/?>\s*<p>/gi, '<p>');
-      // Also strip consecutive <br> tags outside of paragraphs just in case
-      cleanHtml = cleanHtml.replace(/(<br\s*\/?>\s*){2,}/gi, '<br/>');
+      return styles + doc.body.innerHTML;
     } catch (e) {
-      console.error("Error parsing HTML for spaces:", e);
+      console.error('Error parsing HTML:', e);
+      return html;
     }
-    
-    return cleanHtml;
   };
 
   // Helper to force Cloudinary documents (PDFs, DOCs) to open in a browser viewer instead of direct download
@@ -300,13 +288,31 @@ const UnnayanVolumes = () => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([
-      fetch('https://portal.ipsacademyindore.edu.in/api/ibmr/journals').then(res => res.json()),
-      fetch('https://portal.ipsacademyindore.edu.in/api/ibmr/journal-volumes?journal_id=2').then(res => res.json())
-    ])
-      .then(([journalJson, volumesJson]) => {
-        setJournalData(Array.isArray(journalJson) ? journalJson[0] : journalJson);
-        setVolumes(volumesJson);
+    const safeFetch = (url) =>
+      fetch(url).then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      });
+
+    safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`)
+      .then(journalJson => {
+        const journal = Array.isArray(journalJson) ? journalJson[0] : journalJson;
+        setJournalData(journal);
+        
+        if (journal && journal.id) {
+          return safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=${journal.id}`);
+        } else {
+          setVolumes([]);
+          return null;
+        }
+      })
+      .then(volumesJson => {
+        if (volumesJson) {
+          let vols = Array.isArray(volumesJson) ? volumesJson : volumesJson?.data ?? volumesJson?.volumes ?? [];
+          // Sort volumes descending by extracted date
+          vols = vols.sort((a, b) => getVolumeScore(b.volume_title) - getVolumeScore(a.volume_title));
+          setVolumes(vols);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -337,7 +343,7 @@ const UnnayanVolumes = () => {
   return (
     <div className="min-h-screen bg-[#399ae5] py-4 md:py-10 px-2 sm:px-4 font-serif text-black flex flex-col items-center">
       <style>{`
-        .unnayan-content p {
+        :where(.unnayan-content) p {
           padding: 0 0 10px 0;
           text-align: justify;
           line-height: 1.6;
@@ -345,28 +351,81 @@ const UnnayanVolumes = () => {
           font-size: 16px;
           margin-bottom: 0;
         }
-        .unnayan-content p:empty,
-        .unnayan-content p:has(> br:only-child) {
+        :where(.unnayan-content) p:empty,
+        :where(.unnayan-content) p:has(> br:only-child) {
           display: none;
         }
-        .unnayan-content h2, .unnayan-content h3 {
+        :where(.unnayan-content) h1, :where(.unnayan-content) h2, :where(.unnayan-content) h3, :where(.unnayan-content) h4, :where(.unnayan-content) h5, :where(.unnayan-content) h6 {
           font-weight: bold;
-          margin-bottom: 1.5rem;
-          font-size: 1.1rem;
+          margin-bottom: 1.2rem;
+          margin-top: 1rem;
         }
-        .unnayan-content table {
+        :where(.unnayan-content) h1 { font-size: 1.5rem; }
+        :where(.unnayan-content) h2 { font-size: 1.25rem; }
+        :where(.unnayan-content) h3 { font-size: 1.1rem; }
+        :where(.unnayan-content) ul {
+          list-style-type: disc;
+          padding-left: 2rem;
+          margin-bottom: 1rem;
+        }
+        :where(.unnayan-content) ol {
+          list-style-type: decimal;
+          padding-left: 2rem;
+          margin-bottom: 1rem;
+        }
+        :where(.unnayan-content) li {
+          margin-bottom: 0.5rem;
+        }
+        :where(.unnayan-content) strong, :where(.unnayan-content) b {
+          font-weight: 700;
+        }
+        :where(.unnayan-content) em, :where(.unnayan-content) i {
+          font-style: italic;
+        }
+        :where(.unnayan-content) u {
+          text-decoration: underline;
+        }
+        :where(.unnayan-content) img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
+        :where(.unnayan-content) .table-responsive {
+          width: 100%;
+          overflow-x: auto;
+          margin-bottom: 1.5rem;
+        }
+        :where(.unnayan-content) table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 1.5rem;
+          border: 1px solid #d1d5db;
+          min-width: 600px;
         }
-        .unnayan-content th, .unnayan-content td {
+        :where(.unnayan-content) th, :where(.unnayan-content) td {
           border: 1px solid #d1d5db;
           padding: 0.5rem;
           text-align: left;
         }
-        .unnayan-content th {
+        :where(.unnayan-content) th {
           background-color: #f3f4f6;
           font-weight: bold;
+        }
+        /* Scratch Editor Block Fixes */
+        :where(.unnayan-content) .scratch-card-block {
+          max-width: 100% !important;
+          box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+          :where(.unnayan-content) .scratch-card-block {
+            flex-direction: column !important;
+          }
+          :where(.unnayan-content) .scratch-imgtext-block {
+            grid-template-columns: 1fr !important;
+          }
+          :where(.unnayan-content) .scratch-card-block > div:first-child {
+            min-height: 200px !important;
+            width: 100% !important;
+          }
         }
       `}</style>
       {/* Container matching screenshot structure */}
@@ -443,7 +502,7 @@ const UnnayanVolumes = () => {
                       <div className="mb-12">
                         <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
                         <ul className="list-disc pl-5">
-                          {[...volumes].reverse().map((volume) => (
+                          {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">
                               <button
                                 onClick={() => setSearchParams({ volume: slugify(volume.volume_title) })}
@@ -482,7 +541,7 @@ const UnnayanVolumes = () => {
                         )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
-                          <p key={index} className="mb-6 leading-normal text-left pr-4 text-black text-[14px]">
+                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-normal text-left pr-4 text-black text-[14px]">
                             <strong>{index + 1}.</strong> {paper.title}{' '}
                             {paper.pdf_link && (
                               <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
@@ -498,10 +557,13 @@ const UnnayanVolumes = () => {
                             {paper.page_range && (
                               <>
                                 <br />
-                                <span className="italic">{paper.page_range}</span>
+                                <span className="italic">Page No. {paper.page_range}</span>
                               </>
                             )}
-                          </p>
+                            {paper.abstract_html && (
+                              <div className="mt-3 unnayan-content text-[13.5px] text-[#444]" dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
+                            )}
+                          </div>
                         ))}
                       </div>
                     )

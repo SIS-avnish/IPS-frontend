@@ -24,7 +24,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
   const [index, setIndex] = useState(0);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
-
+ // new for this changes we need to convert this 
   const prev = () =>
     setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
@@ -36,6 +36,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
       prev === 0 ? gallery.length - 1 : prev - 1
     );
   }, [gallery.length]);
+  // now work on the first things we  need to changes particular for the changes firslty need work on connect with client for t 
 
   const nextGallery = useCallback(() => {
     setCurrentGalleryIndex((prev) =>
@@ -75,7 +76,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
     setCurrentGalleryIndex(galIndex);
     setIsGalleryOpen(true);
   };
-
+/// new changes from the client we need to work on that particular things 
   const closeGalleryModal = () => {
     setIsGalleryOpen(false);
   };

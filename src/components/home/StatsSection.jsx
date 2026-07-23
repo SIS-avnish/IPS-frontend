@@ -2,6 +2,7 @@ import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import Logo from "../../assets/Images/static.jpg";
 import nirf from "../../assets/Images/nirf-logo.png";
+import FacilitiesSection from "./FacilitiesSection";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -13,7 +14,7 @@ const slideLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
-export default memo(function StatsSection({ statsData, excellenceData, startData }) {
+export default memo(function StatsSection({ statsData, excellenceData, startData, facilitiesData }) {
   const stats = useMemo(() => statsData?.stats || [], [statsData]);
   const excellenceTitle =
     excellenceData?.title || "Rankings & Quality Accreditations";
@@ -36,7 +37,7 @@ export default memo(function StatsSection({ statsData, excellenceData, startData
     <section className="bg-[#0066A6] pb-[240px] max-[991px]:pb-[240px] max-[576px]:pb-10">
       {/* Hero Background */}
       <div
-        className="relative h-[568px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
+        className="relative h-[650px] bg-cover bg-top flex items-center ml-auto top-[-70px] max-w-[calc(100%-105.5px)]
         max-[991px]:max-w-full
         max-[576px]:h-auto max-[576px]:top-0 max-[576px]:py-10"
         style={{ backgroundImage: `url(${startData?.images[0]})` }}
@@ -47,7 +48,7 @@ export default memo(function StatsSection({ statsData, excellenceData, startData
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="absolute left-[3%] top-1/2 -translate-y-1/2 bg-[#F9F4E1] p-[50px] max-w-[503px] text-white grid grid-cols-2 gap-10
+          className="absolute left-[3%] top-1/2 -translate-y-1/2 bg-[#F9F4E1] p-[50px] max-w-[580px] text-white grid grid-cols-2 gap-10
           max-[576px]:relative max-[576px]:left-0 max-[576px]:top-0 max-[576px]:translate-y-0 
           max-[576px]:mx-auto max-[576px]:max-w-full max-[576px]:grid-cols-1 
           max-[576px]:gap-6 max-[576px]:p-[30px] max-[576px]:text-center"
@@ -72,8 +73,15 @@ export default memo(function StatsSection({ statsData, excellenceData, startData
         </motion.div>
       </div>
 
+      {/* Facilities Section Injected Here */}
+      {facilitiesData && (
+        <div className="pt-[100px]">
+          <FacilitiesSection data={facilitiesData} />
+        </div>
+      )}
+
       {/* Rankings & Accreditations */}
-      <div className="max-w-[1140px] mx-auto px-4 text-white">
+      <div className="max-w-[1140px] mx-auto px-4 text-white pt-[60px] max-[576px]:pt-[30px]">
         <motion.h2
           variants={fadeUp}
           initial="hidden"

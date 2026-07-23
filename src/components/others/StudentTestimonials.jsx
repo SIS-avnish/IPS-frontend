@@ -88,40 +88,39 @@ const StudentTestimonials = memo(({
                 key={i}
                 variants={card}
                 whileHover={{ scale: 1.03 }}
-                className="bg-white rounded-2xl shadow-md p-6 border"
+                className="bg-white rounded-2xl shadow-md p-6 border flex flex-col text-left"
               >
-                {t.image && (
-                  <div
-                    onClick={() => {
-                      document.querySelectorAll('video').forEach(v => v.pause());
-                      setSelectedMedia({
-                        url: t.image,
-                        type: getMediaType(t.image),
-                        youtubeId: extractYouTubeId(t.image),
-                      });
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <Media
-                      src={t.image}
-                      alt={t.name}
-                      className="w-full h-60 md:h-64 rounded-lg object-cover mx-auto mb-4"
-                    />
+                <div className="flex items-center gap-4 mb-4">
+                  {t.image && (
+                    <div
+                      onClick={() => {
+                        document.querySelectorAll('video').forEach(v => v.pause());
+                        setSelectedMedia({
+                          url: t.image,
+                          type: getMediaType(t.image),
+                          youtubeId: extractYouTubeId(t.image),
+                        });
+                      }}
+                      className="cursor-pointer w-20 h-20 md:w-24 md:h-24 flex-shrink-0"
+                    >
+                      <Media
+                        src={t.image}
+                        alt={t.name}
+                        className="w-full h-full rounded-full object-cover border border-gray-200"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="text-lg font-bold text-[#002147]">{t.name}</h3>
+                    {t.designation && (
+                      <p className="text-sm text-gray-500">{t.designation}</p>
+                    )}
                   </div>
-                )}
+                </div>
 
-                <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                <p className="text-gray-600 leading-relaxed text-sm md:text-base line-clamp-4">
                   {t.text}
                 </p>
-
-                <div className="mt-4 font-semibold text-[#002147]">
-                  — {t.name}
-                  {t.designation && (
-                    <span className="block text-sm font-normal text-gray-500">
-                      {t.designation}
-                    </span>
-                  )}
-                </div>
               </motion.div>
             ))}
           </motion.div>

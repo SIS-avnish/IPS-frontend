@@ -76,6 +76,12 @@ export default function AppRoutes() {
           {/* COLLEGE TEMPLATE ROUTES */}
           <Route path="/:collegeSlug" element={<CollegeTemp />} />
           <Route path="/:collegeSlug/hotel" element={<Hotel />} />
+          {/* COLLEGE ACTIVITIES ROUTES */}
+          <Route path="/:collegeSlug/activities" element={<MainActivityPage />} />
+          <Route path="/:collegeSlug/activities/clubs" element={<Student />} />
+          <Route path="/:collegeSlug/activities/social" element={<SocialAct />} />
+          <Route path="/:collegeSlug/activities/:activityType" element={<ActivityDetail />} />
+          <Route path="/:collegeSlug/activity/:activityId" element={<ActivityDetail />} />
         </Routes>
       </Suspense>
       <Footer />

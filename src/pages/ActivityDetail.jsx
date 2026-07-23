@@ -9,7 +9,9 @@ import useSEO from '../hooks/useSEO'
 import SafeHtml from '../components/common/SafeHtml'
 
 const ActivityDetail = () => {
-  const { collegeSlug, activityId } = useParams()
+  const { collegeSlug, activityId, activityType, slug } = useParams()
+  const identifier = activityId || activityType || slug;
+
   const [activity, setActivity] = useState(null)
   const [heroData, setHeroData] = useState({})
   const [seoData, setSeoData] = useState(null)
@@ -51,7 +53,7 @@ const prevImage = () => {
       try {
         setLoading(true)
         const [detail] = await Promise.all([
-          fetchActivityDetail(collegeSlug, activityId)
+          fetchActivityDetail(collegeSlug, identifier)
         ])
         const pageData = { sections: {} }
         setActivity(detail)
@@ -64,7 +66,7 @@ const prevImage = () => {
       }
     }
     load()
-  }, [collegeSlug, activityId])
+  }, [collegeSlug, identifier])
 
   if (loading) {
     return <PageSkeleton />

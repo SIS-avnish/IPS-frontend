@@ -74,7 +74,12 @@ const AlumniCards = memo(function AlumniCards({ alumni, collegeSlug }) {
                   {item.name}
                 </h3>
                 {item.achievement && (
-                  <p className="text-sm text-gray-600">{item.achievement}</p>
+                  <p className="text-sm text-gray-600 font-medium mb-2">{item.achievement}</p>
+                )}
+                {item.description && (
+                  <p className="text-sm text-gray-500 line-clamp-3">
+                    {item.description}
+                  </p>
                 )}
               </div>
             </motion.div>

@@ -75,15 +75,16 @@ export default function Navbar() {
      ${isActive ? "text-red-500" : "text-gray-800"}
      hover:bg-red-500 hover:text-white`;
 
-  /* const studentLinks = [
+  const studentLinks = [
     ["Cultural Activities","cultural"],
     ["Event Celebration","events"],
     ["Workshops","workshop"],
+    ["Club and Social","club-and-social"],
     ["Student Clubs","clubs"],
     ["Social Activities","social"],
     ["Alumni Testimonials","alumni"],
     ["News & Media","news"],
-  ]; */
+  ];
 
   const colleges = [
     ["MANAGEMENT", "ibmr"],

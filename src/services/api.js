@@ -11,8 +11,10 @@ if (typeof window === "undefined") {
 }
 
 const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
-// const SERVER_BASE = "http://localhost:7777/api"
+// const API_BASE = "http://localhost:7777/api/ipsa";
+// const SERVER_BASE = "http://localhost:7777/api";
 const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
+// const MEDIA_BASE = "http://localhost:7777";
 const MEDIA_BASE = "https://portal.ipsacademyindore.edu.in";
 
 // In-memory cache to avoid re-fetching on repeat navigation
