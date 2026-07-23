@@ -54,7 +54,7 @@ const AlumniDetail = () => {
         setLoading(true);
         const [detail, pageData] = await Promise.all([
           fetchCollegeAlumniDetail(collegeSlug, alumniId),
-          fetchPageData(collegeSlug, "activities/alumni"),
+          fetchPageData(collegeSlug, "activities/alumni").catch(() => null),
         ]);
         setAlumni(detail);
         setSeoData(pageData);

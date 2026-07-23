@@ -22,7 +22,7 @@ const AlumniPage = () => {
       try {
         setLoading(true)
         const [data, alumniData] = await Promise.all([
-          fetchPageData(collegeSlug, 'activities/alumni'),
+          fetchPageData(collegeSlug, 'activities/alumni').catch(() => ({})),
           fetchCollegeAlumni(collegeSlug).catch(() => []),
         ])
         setPageData(data)

@@ -72,7 +72,7 @@ const StudentTestimonials = memo(({
         <>
           <div className="max-w-6xl mx-auto text-center mb-6">
             <p className="text-lg font-semibold">
-              Student Testimonial
+              Testimonials
             </p>
           </div>
 
