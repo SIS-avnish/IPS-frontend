@@ -31,6 +31,7 @@ const StudentTestimonials = memo(({
   videos,
 }) => {
   const [selectedMedia, setSelectedMedia] = useState(null);
+  const [selectedTextTestimonial, setSelectedTextTestimonial] = useState(null);
 
   const textTestimonials = useMemo(() => (testimonials || []).map((item) => ({
     name: item.name,
@@ -88,12 +89,14 @@ const StudentTestimonials = memo(({
                 key={i}
                 variants={card}
                 whileHover={{ scale: 1.03 }}
-                className="bg-white rounded-2xl shadow-md p-6 border flex flex-col text-left"
+                onClick={() => setSelectedTextTestimonial(t)}
+                className="bg-white rounded-2xl shadow-md p-6 border flex flex-col text-left cursor-pointer"
               >
                 <div className="flex items-center gap-4 mb-4">
                   {t.image && (
                     <div
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         document.querySelectorAll('video').forEach(v => v.pause());
                         setSelectedMedia({
                           url: t.image,
@@ -190,6 +193,48 @@ const StudentTestimonials = memo(({
             ))}
           </motion.div>
         </>
+      )}
+
+      {/* ================= TEXT MODAL ================= */}
+      {selectedTextTestimonial && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setSelectedTextTestimonial(null)}
+        >
+          <div
+            className="bg-white rounded-xl w-full max-w-md sm:max-w-lg md:max-w-2xl relative overflow-hidden p-6 md:p-8 flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedTextTestimonial(null)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-black w-8 h-8 z-10 flex items-center justify-center text-xl font-bold"
+            >
+              ✕
+            </button>
+            <div className="flex items-center gap-4 mb-6 pr-8">
+              {selectedTextTestimonial.image && (
+                <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0">
+                  <Media
+                    src={selectedTextTestimonial.image}
+                    alt={selectedTextTestimonial.name}
+                    className="w-full h-full rounded-full object-cover border border-gray-200"
+                  />
+                </div>
+              )}
+              <div>
+                <h3 className="text-xl font-bold text-[#002147]">{selectedTextTestimonial.name}</h3>
+                {selectedTextTestimonial.designation && (
+                  <p className="text-sm text-gray-500">{selectedTextTestimonial.designation}</p>
+                )}
+              </div>
+            </div>
+            <div className="overflow-y-auto pr-2 custom-scrollbar">
+              <p className="text-gray-700 leading-relaxed text-sm md:text-base whitespace-pre-line">
+                {selectedTextTestimonial.text}
+              </p>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ================= RESPONSIVE MODAL ================= */}
