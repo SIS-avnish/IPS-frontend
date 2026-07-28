@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
-export const mockData = {
+const MOCK_DATA = {
   title: "Jan 2026 Volume XVIII Issue 1",
   editorialLink: "jan-26/0 Editorial Jan. 2026.pdf",
   contentsLink: "jan-26/0 INDEX Unnayan 2026 Jan..pdf",
@@ -182,8 +183,8 @@ const UnnayanJournal = () => {
   const [volumes, setVolumes] = useState([]);
   const [selectedVolume, setSelectedVolume] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [error, setError] = useState(null);
-  const [pdfUrlToView, setPdfUrlToView] = useState(null);
 
   // Helper to parse date from volume title (e.g., "Jan 2026 Volume XVIII Issue 1")
   const getVolumeScore = (title) => {
@@ -197,6 +198,18 @@ const UnnayanJournal = () => {
     
     return year * 100 + month;
   };
+
+  // Helper to convert volume titles to URL-safe slugs with hyphens instead of spaces
+  function slugify(text) {
+    if (!text) return "";
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "")
+      .replace(/-+/g, "-");
+  }
 
   useEffect(() => {
     if (activeTab === "volumes" && volumes.length > 0) {
@@ -230,6 +243,7 @@ const UnnayanJournal = () => {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     setSelectedVolume(null);
+    setMobileNavOpen(false);
     navigate(`/${collegeSlug || 'ibmr'}/activities/unnayan-journal/${tabId}`);
   };
 
@@ -245,14 +259,32 @@ const UnnayanJournal = () => {
       const dangerousTags = doc.querySelectorAll('link, meta, title');
       dangerousTags.forEach(tag => tag.remove());
       
+      // Neutralize CMS containers by removing the 'container' class so they don't apply weird widths/paddings
+      const containers = doc.querySelectorAll('.container');
+      containers.forEach(el => el.classList.remove('container'));
+
+      // Wrap raw tables so the mobile layout can scroll horizontally without breaking the page.
+      const tables = Array.from(doc.querySelectorAll('table'));
+      tables.forEach((table) => {
+        if (table.parentElement?.classList?.contains('table-responsive')) return;
+
+        const wrapper = doc.createElement('div');
+        wrapper.className = 'table-responsive';
+        table.parentNode?.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+      
       // Gather and preserve all style tags (they are often placed in the head by rich text editors)
       let styles = '';
       const styleTags = doc.querySelectorAll('style');
       styleTags.forEach(style => {
         let cssText = style.innerHTML;
-        // simple regex to replace body selectors with .unnayan-content
-        cssText = cssText.replace(/\bbody\b/g, '.unnayan-content');
-        styles += `<style>${cssText}</style>`;
+        // Strip out entire 'body', 'html', and '*' css rules so they don't apply weird background colors or wipe out Tailwind padding
+        cssText = cssText.replace(/(?:body|html|\*)\s*\{[^}]+\}/gi, '');
+        
+        // Wrap the injected styles in a CSS layer if possible to lower their specificity 
+        // against Tailwind utility classes on the rest of the page
+        styles += `<style>@layer unnayancms { ${cssText} }</style>`;
         style.remove(); // Remove from DOM so it doesn't duplicate if it was in the body
       });
       
@@ -272,18 +304,6 @@ const UnnayanJournal = () => {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
     return url;
-  };
-
-  // Helper to convert volume titles to URL-safe slugs with hyphens instead of spaces
-  const slugify = (text) => {
-    if (!text) return "";
-    return text
-      .toString()
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w\-]+/g, "")
-      .replace(/\-\-+/g, "-");
   };
 
   useEffect(() => {
@@ -340,8 +360,16 @@ const UnnayanJournal = () => {
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#F7F5FC] py-4 md:py-10 px-2 sm:px-4 flex flex-col items-center" style={{ fontFamily: '"Open Sans", Arial, sans-serif' }}>
+    <div className="min-h-screen bg-[#F7F5FC] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center" style={{ fontFamily: '"Open Sans", Arial, sans-serif' }}>
       <style>{`
+        /* Force flatten any outer cards/wrappers coming from the CMS */
+        :where(.unnayan-content) > div,
+        :where(.unnayan-content) > section,
+        :where(.unnayan-content) > main {
+          background: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
         :where(.unnayan-content) p {
           padding: 0 0 16px 0;
           text-align: justify;
@@ -358,12 +386,12 @@ const UnnayanJournal = () => {
         :where(.unnayan-content) h1, :where(.unnayan-content) h2, :where(.unnayan-content) h3, :where(.unnayan-content) h4, :where(.unnayan-content) h5, :where(.unnayan-content) h6 {
           font-weight: 600;
           margin-bottom: 1.2rem;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
           color: #1C2D5A;
         }
-        :where(.unnayan-content) h1 { font-size: 24px; }
-        :where(.unnayan-content) h2 { font-size: 20px; }
-        :where(.unnayan-content) h3 { font-size: 18px; }
+        :where(.unnayan-content) h1 { font-size: 22px; }
+        :where(.unnayan-content) h2 { font-size: 19px; }
+        :where(.unnayan-content) h3 { font-size: 17px; }
         :where(.unnayan-content) ul {
           list-style-type: disc;
           padding-left: 2rem;
@@ -440,24 +468,25 @@ const UnnayanJournal = () => {
         }
       `}</style>
       {/* Container matching screenshot structure */}
-      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col overflow-hidden">
-        
+      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col overflow-hidden pb-16 md:pb-0" >
+
         <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="w-full md:w-[220px] shrink-0 bg-[#FBF8F2] md:pt-8 border-r border-[#E6E6EF]">
+          <div className="hidden md:block w-full md:w-[220px] shrink-0 bg-[#FBF8F2] !pt-4 md:!pt-8 !border-r !border-[#E6E6EF] !m-0">
             <div className="p-0 overflow-x-auto scrollbar-hide">
-              <ul className="w-full list-none p-0 m-0 flex flex-row md:flex-col whitespace-nowrap">
+              <ul className="!w-full !list-none !p-0 !m-0 !flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
-                  <li key={idx} className="border-r md:border-r-0 md:border-b border-[#E6E6EF] flex-none">
+                  <li key={idx} className="!border-r md:!border-r-0 md:!border-b !border-[#E6E6EF] flex-none !list-none !p-0 !m-0 before:!hidden">
                     <button 
                       onClick={() => handleTabChange(item.id)}
-                      className={`w-full flex justify-center md:justify-start items-center px-4 py-3 md:py-2 text-center md:text-left text-[13px] font-semibold uppercase transition-colors min-h-[40px] ${
+                      className={`!w-full !flex !justify-center md:!justify-start !items-center !px-4 !py-3 md:!py-2 !text-center md:!text-left !text-[13px] !font-semibold !uppercase transition-colors !min-h-[40px] !bg-transparent !border-0 ${
                         activeTab === item.id 
-                          ? "bg-[#E3DAFF] text-[#1D3F8B]" 
-                          : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                          ? "!bg-[#E3DAFF] !text-[#1D3F8B]" 
+                          : "!text-[#555555] hover:!bg-[#EEE9FF] hover:!text-[#1D3F8B]"
                       }`}
+                      style={{ outline: "none", boxShadow: "none" }}
                     >
-                      <span className="hidden md:inline-block w-2 h-2 bg-[#F39C12] rounded-full mr-3 shrink-0"></span>
+                      <span className="hidden md:inline-block !w-2 !h-2 !bg-[#F39C12] !rounded-full !mr-3 shrink-0"></span>
                       {item.name}
                     </button>
                   </li>
@@ -467,10 +496,62 @@ const UnnayanJournal = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 px-4 md:px-[24px] py-6 md:py-8 bg-white min-w-0">
-            
+          <div className="flex-1 px-4 md:px-[24px] py-6 md:py-8 pb-20 md:pb-8 bg-white min-w-0 relative">
+            <div className="md:hidden mb-4 flex justify-start">
+              <button
+                type="button"
+                aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileNavOpen}
+                onClick={() => setMobileNavOpen((open) => !open)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1D3F8B] shadow-none"
+              >
+                {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+
+            {mobileNavOpen && (
+              <div className="fixed inset-0 z-50 md:hidden">
+                <button
+                  type="button"
+                  aria-label="Close menu overlay"
+                  className="absolute inset-0 bg-black/25"
+                  onClick={() => setMobileNavOpen(false)}
+                />
+                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#FBF8F2] shadow-2xl border-r border-[#E6E6EF]">
+                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#E6E6EF]">
+                    <button
+                      type="button"
+                      aria-label="Close menu"
+                      onClick={() => setMobileNavOpen(false)}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1D3F8B]"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+                  <div className="h-[calc(100%-57px)] overflow-y-auto">
+                    <ul className="!w-full !list-none !p-0 !m-0 flex flex-col">
+                      {navItems.map((item, idx) => (
+                        <li key={idx} className="border-b border-[#E6E6EF] last:border-b-0">
+                          <button
+                            onClick={() => handleTabChange(item.id)}
+                            className={`w-full flex items-center px-4 py-3 text-left text-[13px] font-semibold uppercase transition-colors ${
+                              activeTab === item.id
+                                ? "bg-[#E3DAFF] text-[#1D3F8B]"
+                                : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                            }`}
+                          >
+                            {item.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </aside>
+              </div>
+            )}
+
             {/* Header Banner */}
-            <div className="w-full mb-[40px] border-b border-[#E6E6EF] pb-6 min-h-[50px]">
+            <div className="w-full mb-10 border-b border-[#E6E6EF] pb-6 min-h-[50px]">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
                 <div className="flex-1 flex justify-start">
                   {journalData?.logo_url ? (
@@ -480,11 +561,6 @@ const UnnayanJournal = () => {
                       {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
                     </h1>
                   )}
-                </div>
-                
-                <div className="flex flex-col text-[14px] md:text-[15px] font-bold text-[#1D3F8B] text-left md:text-right shrink-0 leading-relaxed">
-                  <span>(P) ISSN NO - 2349 - 6622</span>
-                  <span>(E) ISSN NO - 2349 - 7165</span>
                 </div>
               </div>
               
@@ -498,7 +574,7 @@ const UnnayanJournal = () => {
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-[14px] text-[#555555] overflow-hidden break-words">
+            <div className="w-full mx-auto text-[14px] text-[#555555] overflow-hidden break-words mt-12">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -602,8 +678,29 @@ const UnnayanJournal = () => {
           </div>
         </div>
 
+        {/* Mobile Bottom Nav */}
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#E6E6EF] bg-white/95 backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max items-stretch">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleTabChange(item.id)}
+                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#E6E6EF] last:border-r-0 ${
+                    activeTab === item.id
+                      ? "bg-[#E3DAFF] text-[#1D3F8B]"
+                      : "bg-white text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                  }`}
+                >
+                  <span className="block whitespace-nowrap">{item.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Footer inside the container */}
-        <div className="w-full bg-[#ffffff] py-3 border-t border-[#ECECEC] flex justify-center items-center">
+        <div className="hidden md:flex w-full bg-[#ffffff] py-3 border-t border-[#ECECEC] justify-center items-center">
           <div className="flex items-center space-x-3 px-4 flex-wrap justify-center text-[12px] text-[#666]">
             {navItems.map((item, idx) => (
               <React.Fragment key={item.name}>

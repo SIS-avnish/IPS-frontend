@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
-export const mockData = {
+const MOCK_DATA = {
   title: "Jan 2026 Volume XVIII Issue 1",
   editorialLink: "jan-26/0 Editorial Jan. 2026.pdf",
   contentsLink: "jan-26/0 INDEX Unnayan 2026 Jan..pdf",
@@ -182,6 +183,7 @@ const UnnayanVolumes = () => {
   const [volumes, setVolumes] = useState([]);
   const [selectedVolume, setSelectedVolume] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [error, setError] = useState(null);
   const [pdfUrlToView, setPdfUrlToView] = useState(null);
 
@@ -197,6 +199,18 @@ const UnnayanVolumes = () => {
     
     return year * 100 + month;
   };
+
+  // Helper to convert volume titles to URL-safe slugs with hyphens instead of spaces
+  function slugify(text) {
+    if (!text) return "";
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "")
+      .replace(/-+/g, "-");
+  }
 
   useEffect(() => {
     if (activeTab === "volumes" && volumes.length > 0) {
@@ -230,6 +244,7 @@ const UnnayanVolumes = () => {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     setSelectedVolume(null);
+    setMobileNavOpen(false);
     navigate(`/${collegeSlug || 'ibmr'}/activities/unnayan-volumes/${tabId}`);
   };
 
@@ -244,6 +259,17 @@ const UnnayanVolumes = () => {
       // Remove dangerous tags that break the global React/Tailwind layout
       const dangerousTags = doc.querySelectorAll('link, meta, title');
       dangerousTags.forEach(tag => tag.remove());
+
+      // Wrap raw tables so the mobile layout can scroll horizontally without breaking the page.
+      const tables = Array.from(doc.querySelectorAll('table'));
+      tables.forEach((table) => {
+        if (table.parentElement?.classList?.contains('table-responsive')) return;
+
+        const wrapper = doc.createElement('div');
+        wrapper.className = 'table-responsive';
+        table.parentNode?.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
       
       // Gather and preserve all style tags (they are often placed in the head by rich text editors)
       let styles = '';
@@ -272,18 +298,6 @@ const UnnayanVolumes = () => {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
     return url;
-  };
-
-  // Helper to convert volume titles to URL-safe slugs with hyphens instead of spaces
-  const slugify = (text) => {
-    if (!text) return "";
-    return text
-      .toString()
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")
-      .replace(/[^\w\-]+/g, "")
-      .replace(/\-\-+/g, "-");
   };
 
   useEffect(() => {
@@ -429,11 +443,11 @@ const UnnayanVolumes = () => {
         }
       `}</style>
       {/* Container matching screenshot structure */}
-      <div className="w-full max-w-[960px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden">
-        
+      <div className="w-full max-w-[960px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden pb-16 md:pb-0" >
+
         <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="w-full md:w-[180px] shrink-0 bg-[#00a2ed] md:pt-8">
+          <div className="hidden md:block w-full md:w-[180px] shrink-0 bg-[#00a2ed] md:pt-8">
             <div className="p-0 overflow-x-auto scrollbar-hide">
               <ul className="w-full list-none p-0 m-0 flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
@@ -456,8 +470,60 @@ const UnnayanVolumes = () => {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 px-4 md:px-8 py-6 md:py-8 bg-white min-w-0">
-            
+          <div className="flex-1 px-4 md:px-[24px] py-6 md:py-8 pb-20 md:pb-8 bg-white min-w-0 relative">
+            <div className="md:hidden mb-4 flex justify-start">
+              <button
+                type="button"
+                aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileNavOpen}
+                onClick={() => setMobileNavOpen((open) => !open)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1D3F8B] shadow-none"
+              >
+                {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+
+            {mobileNavOpen && (
+              <div className="fixed inset-0 z-50 md:hidden">
+                <button
+                  type="button"
+                  aria-label="Close menu overlay"
+                  className="absolute inset-0 bg-black/25"
+                  onClick={() => setMobileNavOpen(false)}
+                />
+                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#FBF8F2] shadow-2xl border-r border-[#E6E6EF]">
+                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#E6E6EF]">
+                    <button
+                      type="button"
+                      aria-label="Close menu"
+                      onClick={() => setMobileNavOpen(false)}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1D3F8B]"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+                  <div className="h-[calc(100%-57px)] overflow-y-auto">
+                    <ul className="!w-full !list-none !p-0 !m-0 flex flex-col">
+                      {navItems.map((item, idx) => (
+                        <li key={idx} className="border-b border-[#E6E6EF] last:border-b-0">
+                          <button
+                            onClick={() => handleTabChange(item.id)}
+                            className={`w-full flex items-center px-4 py-3 text-left text-[13px] font-semibold uppercase transition-colors ${
+                              activeTab === item.id
+                                ? "bg-[#E3DAFF] text-[#1D3F8B]"
+                                : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                            }`}
+                          >
+                            {item.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </aside>
+              </div>
+            )}
+
             {/* Header Banner */}
             <div className="w-full mb-6 border-b border-black pb-4 flex justify-center items-center">
               {journalData?.logo_url ? (
@@ -574,8 +640,29 @@ const UnnayanVolumes = () => {
           </div>
         </div>
 
+        {/* Mobile Bottom Nav */}
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#E6E6EF] bg-white/95 backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max items-stretch">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleTabChange(item.id)}
+                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#E6E6EF] last:border-r-0 ${
+                    activeTab === item.id
+                      ? "bg-[#E3DAFF] text-[#1D3F8B]"
+                      : "bg-white text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                  }`}
+                >
+                  <span className="block whitespace-nowrap">{item.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Footer inside the container */}
-        <div className="w-full bg-[#00a2ed] py-2 flex justify-center items-center">
+        <div className="hidden md:flex w-full bg-[#00a2ed] py-2 justify-center items-center">
           <div className="flex items-center space-x-3 px-4 flex-wrap justify-center">
             {navItems.map((item, idx) => (
               <React.Fragment key={item.name}>

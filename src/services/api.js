@@ -50,6 +50,14 @@ const api = axios.create({
     baseURL: API_BASE,
     headers: { accept: "application/json" },
 });
+function normalizeActivityList(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.activities)) return data.activities;
+    if (Array.isArray(data?.results)) return data.results;
+    if (Array.isArray(data?.data)) return data.data;
+    return [];
+}
+
 
 // Add a retry interceptor for handling transient network errors (common in Safari)
 axios.interceptors.response.use((response) => response, async (err) => {
@@ -117,7 +125,7 @@ export function fetchCollegeCourses(collegeSlug) {
  */
 export async function fetchCollegeFaculties(collegeSlug) {
     const cacheKey = `${collegeSlug}/faculties`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    if (pageCache.has(cacheKey)) return normalizeActivityList(pageCache.get(cacheKey));
     const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/faculties`, {
         headers: { accept: "application/json" },
     });
@@ -244,14 +252,26 @@ export function fetchColleges() {
  */
 export async function fetchActivities(collegeSlug, activityType) {
     const cacheKey = `${collegeSlug}/activities/${activityType}`;
-    if (pageCache.has(cacheKey)) return pageCache.get(cacheKey);
+    if (pageCache.has(cacheKey)) {
+        const cachedActivities = normalizeActivityList(pageCache.get(cacheKey));
+        if (cachedActivities.length > 0) return cachedActivities;
+        pageCache.delete(cacheKey);
+    }
+
     const { data } = await axios.get(`${SERVER_BASE}/${collegeSlug}/activities`, {
         params: { activity_type: activityType },
         headers: { accept: "application/json" },
     });
-    pageCache.set(cacheKey, data);
-    return data;
+
+    const activities = normalizeActivityList(data);
+    // Avoid caching empty responses so newly published tiles are not hidden by a stale zero-state.
+    if (activities.length > 0) {
+        pageCache.set(cacheKey, activities);
+    }
+
+    return activities;
 }
+
 
 /**
  * Fetch a single activity detail by slug or id.

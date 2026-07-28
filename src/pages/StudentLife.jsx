@@ -1,11 +1,10 @@
-// src/components/Activities/Activities.jsx
-
 import { useEffect, useState } from "react";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { useParams } from "react-router-dom";
 import ActivitiesHero from "../components/activity/ActivitiesHero";
 import ActivitiesSlider from "../components/activity/ActivitiesSlider";
-import { fetchPageData, fetchCollegeEvents, fetchActivities } from "../services/api";
+import { fetchPageData, fetchActivities } from "../services/api";
+import { fetchIpsaActivityCards } from "../services/ipsaReuse";
 import { ScratchSections } from "../components/common/ScratchHtml";
 import useSEO from "../hooks/useSEO";
 
@@ -24,17 +23,29 @@ const StudentLife = () => {
         setLoading(true);
         const pageName = `activities/${subSlug || "events"}`;
         const activityType = subSlug || "events";
+        const useIpsaAggregate = collegeSlug === "ipsa" && ["cultural", "events", "workshop"].includes(activityType);
 
-        const [pageResult, activitiesList] = await Promise.all([
-          fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} })),
-          fetchActivities(collegeSlug, activityType).catch(() => []),
-        ]);
-
+        const pageResult = await fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} }));
         setPageData(pageResult);
         setSections(pageResult.sections || {});
 
-        // Map activities to the card shape the slider expects
-        const cards = (activitiesList || []).map((a) => ({
+        if (useIpsaAggregate) {
+          const cards = await fetchIpsaActivityCards(activityType, 2).catch(() => []);
+          setEvents(cards);
+          return;
+        }
+
+        const activitiesList = await fetchActivities(collegeSlug, activityType).catch(() => []);
+        const normalizedActivities = Array.isArray(activitiesList)
+          ? activitiesList
+          : Array.isArray(activitiesList?.activities)
+            ? activitiesList.activities
+            : Array.isArray(activitiesList?.results)
+              ? activitiesList.results
+              : Array.isArray(activitiesList?.data)
+                ? activitiesList.data
+                : [];
+        const cards = normalizedActivities.map((a) => ({
           id: a.slug || a.id,
           title: a.title,
           subtitle: a.short_description,
@@ -50,6 +61,7 @@ const StudentLife = () => {
         setLoading(false);
       }
     };
+
     load();
   }, [collegeSlug, subSlug]);
 
@@ -75,7 +87,6 @@ const StudentLife = () => {
         events={events}
         collegeSlug={collegeSlug}
         gallery={gallerySection.images || []}
-
       />
       <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of']} />
     </div>

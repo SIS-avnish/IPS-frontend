@@ -5,6 +5,7 @@ import Alumni from '../components/others/Alumni'
 import AlumniCards from '../components/others/AlumniCards'
 import Hero from '../components/others/Hero'
 import { fetchPageData, fetchCollegeAlumni } from '../services/api'
+import { fetchIpsaAlumniCards } from '../services/ipsaReuse'
 import { ScratchSections } from '../components/common/ScratchHtml'
 import useSEO from '../hooks/useSEO'
 
@@ -23,7 +24,7 @@ const AlumniPage = () => {
         setLoading(true)
         const [data, alumniData] = await Promise.all([
           fetchPageData(collegeSlug, 'activities/alumni').catch(() => ({})),
-          fetchCollegeAlumni(collegeSlug).catch(() => []),
+          collegeSlug === 'ipsa' ? fetchIpsaAlumniCards(2).catch(() => []) : fetchCollegeAlumni(collegeSlug).catch(() => []),
         ])
         setPageData(data)
         setSections(data.sections || {})

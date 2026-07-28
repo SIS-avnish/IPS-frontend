@@ -5,13 +5,16 @@ import StudentClub from '../components/others/StudentClub'
 import StudentTestimonials from '../components/others/StudentTestimonials'
 import Hero from '../components/others/Hero'
 import { fetchPageData } from '../services/api'
+import { fetchIpsaCollegePageCards } from '../services/ipsaReuse'
 import { ScratchSections } from '../components/common/ScratchHtml'
 import useSEO from '../hooks/useSEO'
+import CollegeTileGrid from '../components/common/CollegeTileGrid'
 
 const Student = () => {
   const { collegeSlug } = useParams()
   const [sections, setSections] = useState(null)
   const [pageData, setPageData] = useState(null)
+  const [highlightCards, setHighlightCards] = useState([])
   const [loading, setLoading] = useState(true)
 
   useSEO(pageData)
@@ -20,9 +23,16 @@ const Student = () => {
     const load = async () => {
       try {
         setLoading(true)
-        const data = await fetchPageData(collegeSlug || 'coc', 'activities/clubs')
+        const data = await fetchPageData(collegeSlug || 'coc', 'activities/clubs').catch(() => ({ sections: {} }))
         setPageData(data)
         setSections(data.sections || {})
+
+        if (collegeSlug === 'ipsa') {
+          const cards = await fetchIpsaCollegePageCards('activities/clubs', 1, 'View Clubs').catch(() => [])
+          setHighlightCards(cards)
+        } else {
+          setHighlightCards([])
+        }
       } catch (err) {
         console.error('Failed to fetch activities/clubs data:', err)
         setSections({})
@@ -50,6 +60,15 @@ const Student = () => {
         ctaText={hero?.cta_text}
         ctaLink={hero?.cta_link}
       />
+      {collegeSlug === 'ipsa' && highlightCards.length > 0 && (
+        <CollegeTileGrid
+          title="Student Clubs Across Colleges"
+          description="A quick view of student club pages from every college, reusing the existing data already published on each college page."
+          items={highlightCards}
+          hrefBuilder={(item) => `/${item.collegeSlug}/activities/clubs`}
+          ctaLabel="Open Clubs"
+        />
+      )}
       <StudentClub html={clubSection?.html} />
       <StudentTestimonials
         title={testimonialSection?.title}

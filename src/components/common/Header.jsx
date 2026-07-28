@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { NavLink, useLocation, Navigate, Link, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, Navigate, Link, useNavigate } from "react-router-dom";
 import { fetchCollegeInfo, resolveImageUrl } from "../../services/api";
 import logo from "../../assets/logos/logo.png";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [collegesOpen, setCollegesOpen] = useState(false);
-  const [studentOpen, setStudentOpen] = useState(false);
   const [otherCoursesOpen, setOtherCoursesOpen] = useState(false);
   const [collegeLogo, setCollegeLogo] = useState(null);
   const navigation = useNavigate();
@@ -34,9 +34,6 @@ export default function Navbar() {
       pathParts[2] === "faculties"   // ✅ ADD THIS
     );
 
-  const { collegeSlug } = useParams();
-
-
   useEffect(() => {
     if (activeCollege) {
       fetchCollegeInfo(activeCollege)
@@ -50,7 +47,6 @@ export default function Navbar() {
   const closeAll = () => {
     setMenuOpen(false);
     setCollegesOpen(false);
-    setStudentOpen(false);
     setOtherCoursesOpen(false);
   }
 
@@ -74,17 +70,6 @@ export default function Navbar() {
     `px-4 py-2 transition-colors
      ${isActive ? "text-red-500" : "text-gray-800"}
      hover:bg-red-500 hover:text-white`;
-
-  const studentLinks = [
-    ["Cultural Activities","cultural"],
-    ["Event Celebration","events"],
-    ["Workshops","workshop"],
-    ["Club and Social","club-and-social"],
-    ["Student Clubs","clubs"],
-    ["Social Activities","social"],
-    ["Alumni Testimonials","alumni"],
-    ["News & Media","news"],
-  ];
 
   const colleges = [
     ["MANAGEMENT", "ibmr"],
@@ -118,22 +103,23 @@ export default function Navbar() {
 
     <header className="bg-white sticky top-0 z-50 shadow-sm">
 
-      <div className="max-w-[1440px] mx-auto h-[96px] px-6 lg:px-14 flex items-center justify-between">
+      <div className="relative max-w-[1440px] mx-auto h-16 sm:h-20 lg:h-[96px] px-4 sm:px-6 lg:px-14 flex items-center justify-between gap-4">
 
         {/* LOGO */}
-        <div onClick={() => window.location.href = "https://ipsacademyindore.edu.in/"} className="flex-shrink-0 ml-2 sm:ml-0 lg:ml-[-36px]">
+        <div onClick={() => window.location.href = "https://ipsacademyindore.edu.in/"} className="flex-shrink-0 cursor-pointer">
 
-          <img src={collegeLogo || logo} className="h-20 sm:h-20 lg:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" alt="logo" />
+          <img src={collegeLogo || logo} className="h-12 sm:h-14 lg:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" alt="logo" />
         </div>
 
         {/* HAMBURGER */}
         <button
-          className="lg:hidden flex flex-col gap-1"
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          className="ml-auto shrink-0 lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 shadow-sm transition hover:bg-gray-100 relative z-50"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <span className="w-6 h-[2px] bg-gray-800" />
-          <span className="w-6 h-[2px] bg-gray-800" />
-          <span className="w-6 h-[2px] bg-gray-800" />
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
 
         {/* MENU */}
@@ -141,9 +127,10 @@ export default function Navbar() {
         bg-white lg:bg-transparent
         flex flex-col lg:flex-row
         lg:items-center gap-5 lg:gap-8
-        px-6 lg:px-0 py-6 lg:py-0
+        px-4 sm:px-6 lg:px-0 py-4 lg:py-0
         border-t lg:border-none
-        overflow-y-auto lg:overflow-visible max-h-[calc(100vh-96px)] lg:max-h-none
+        shadow-xl lg:shadow-none
+        overflow-y-auto lg:overflow-visible max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-5rem)] lg:max-h-none
         ${menuOpen ? "flex" : "hidden lg:flex"}`}>
 
           {activeCollege === "ipsa" ? (
@@ -185,7 +172,7 @@ export default function Navbar() {
                   setCollegesOpen(!collegesOpen);
                 }
               }}
-              className="py-2 font-medium text-gray-900 hover:text-red-500"
+              className="w-full lg:w-auto text-left py-2 font-medium text-gray-900 hover:text-red-500 flex items-center justify-between lg:justify-start gap-2"
             >
               {isCollegeHome ? collegeNameMap[activeCollege] : "Courses"} ▾
             </button>

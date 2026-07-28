@@ -4,6 +4,7 @@ import { PageSkeleton } from '../components/common/SkeletonLoader'
 import News from '../components/others/News'
 import Hero from '../components/others/Hero'
 import { fetchPageData, fetchCollegeNews } from '../services/api'
+import { fetchIpsaNewsCards } from '../services/ipsaReuse'
 import { ScratchSections } from '../components/common/ScratchHtml'
 import useSEO from '../hooks/useSEO'
 
@@ -21,8 +22,8 @@ const NewsPage = () => {
       try {
         setLoading(true)
         const [pageData, newsList] = await Promise.all([
-          fetchPageData(collegeSlug, 'activities/news'),
-          fetchCollegeNews(collegeSlug)
+          fetchPageData(collegeSlug, 'activities/news').catch(() => ({ sections: {} })),
+          collegeSlug === 'ipsa' ? fetchIpsaNewsCards(2).catch(() => []) : fetchCollegeNews(collegeSlug).catch(() => []),
         ])
         setSeoData(pageData)
         setSections(pageData.sections || {})
