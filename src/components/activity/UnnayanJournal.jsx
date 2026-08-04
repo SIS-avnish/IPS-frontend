@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
@@ -185,6 +186,7 @@ const UnnayanJournal = () => {
   const [loading, setLoading] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [pdfModalUrl, setPdfModalUrl] = useState(null);
 
   // Helper to parse date from volume title (e.g., "Jan 2026 Volume XVIII Issue 1")
   const getVolumeScore = (title) => {
@@ -263,6 +265,12 @@ const UnnayanJournal = () => {
       const containers = doc.querySelectorAll('.container');
       containers.forEach(el => el.classList.remove('container'));
 
+      // Remove inline font-family styles to ensure the global website font is always used
+      const styledElements = doc.querySelectorAll('[style]');
+      styledElements.forEach(el => {
+        el.style.removeProperty('font-family');
+      });
+
       // Wrap raw tables so the mobile layout can scroll horizontally without breaking the page.
       const tables = Array.from(doc.querySelectorAll('table'));
       tables.forEach((table) => {
@@ -276,12 +284,47 @@ const UnnayanJournal = () => {
       
       // Gather and preserve all style tags (they are often placed in the head by rich text editors)
       let styles = '';
+      const scopeCSS = (css, prefix) => {
+        // Strip font-family styling rules from style blocks
+        let cleanCss = css.replace(/font-family\s*:\s*[^;}\r\n]+;?/gi, '');
+        cleanCss = cleanCss.replace(/\/\*[\s\S]*?\*\//g, '');
+        return cleanCss.replace(/([^{]+)\{([^}]+)\}/g, (match, selector, declarations) => {
+          const trimmedSelector = selector.trim();
+          if (trimmedSelector.startsWith('@')) {
+            const innerScoped = declarations.replace(/([^{]+)\{([^}]+)\}/g, (innerMatch, innerSelector, innerDeclarations) => {
+              const scopedInnerSelector = innerSelector.split(',')
+                .map(s => {
+                  const cleanSel = s.trim();
+                  if (!cleanSel) return '';
+                  if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+                  return `${prefix} ${cleanSel}`;
+                })
+                .join(', ');
+              return `${scopedInnerSelector} {${innerDeclarations}}`;
+            });
+            return `${trimmedSelector} {${innerScoped}}`;
+          }
+          const scopedSelector = trimmedSelector.split(',')
+            .map(s => {
+              const cleanSel = s.trim();
+              if (!cleanSel) return '';
+              if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+              return `${prefix} ${cleanSel}`;
+            })
+            .join(', ');
+          return `${scopedSelector} {${declarations}}`;
+        });
+      };
+
       const styleTags = doc.querySelectorAll('style');
       styleTags.forEach(style => {
         let cssText = style.innerHTML;
         // Strip out entire 'body', 'html', and '*' css rules so they don't apply weird background colors or wipe out Tailwind padding
         cssText = cssText.replace(/(?:body|html|\*)\s*\{[^}]+\}/gi, '');
         
+        // Scope the css text to prevent it leaking out of the journal content container
+        cssText = scopeCSS(cssText, '.unnayan-content');
+
         // Wrap the injected styles in a CSS layer if possible to lower their specificity 
         // against Tailwind utility classes on the rest of the page
         styles += `<style>@layer unnayancms { ${cssText} }</style>`;
@@ -304,6 +347,57 @@ const UnnayanJournal = () => {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
     return url;
+  };
+
+  // Helper to convert Google Drive and raw document viewer URLs into embeddable iframe previews
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    if (url.includes("drive.google.com")) {
+      let embedUrl = url;
+      if (embedUrl.includes("/view")) {
+        embedUrl = embedUrl.split("/view")[0] + "/preview";
+      } else if (embedUrl.includes("open?id=")) {
+        embedUrl = embedUrl.replace("open?id=", "file/d/") + "/preview";
+      }
+      return embedUrl;
+    }
+    return url;
+  };
+
+  // Helper to extract the direct download link from a Google Drive or Cloudinary document URL
+  const getDownloadUrl = (url) => {
+    if (!url) return "#";
+    if (url.includes("drive.google.com")) {
+      let fileId = "";
+      if (url.includes("/file/d/")) {
+        fileId = url.split("/file/d/")[1].split("/")[0];
+      } else if (url.includes("id=")) {
+        const urlParams = new URLSearchParams(url.split("?")[1]);
+        fileId = urlParams.get("id") || "";
+      }
+      if (fileId) {
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+    }
+    if (url.includes("docs.google.com/viewer?url=")) {
+      const encodedUrl = url.split("url=")[1];
+      if (encodedUrl) {
+        return decodeURIComponent(encodedUrl.split("&")[0]);
+      }
+    }
+    return url;
+  };
+
+  // Intercept rich text HTML content links dynamically via event delegation
+  const handleUnnayanContentClick = (e) => {
+    const anchor = e.target.closest("a");
+    if (!anchor) return;
+
+    const href = anchor.getAttribute("href");
+    if (href && (href.includes("drive.google.com") || href.includes("/raw/upload/") || href.endsWith(".pdf") || href.includes("docs.google.com/viewer"))) {
+      e.preventDefault();
+      setPdfModalUrl(href);
+    }
   };
 
   useEffect(() => {
@@ -346,21 +440,36 @@ const UnnayanJournal = () => {
     const timer = setTimeout(() => {
       const contentLinks = document.querySelectorAll('.unnayan-content a');
       contentLinks.forEach(link => {
-        if (!link.hasAttribute('target')) {
-          link.setAttribute('target', '_blank');
-          link.setAttribute('rel', 'noopener noreferrer');
-        }
         const href = link.getAttribute('href');
-        if (href && href.includes('/raw/upload/') && !href.includes('docs.google.com')) {
-          link.setAttribute('href', `https://docs.google.com/viewer?url=${encodeURIComponent(href)}`);
+        
+        // Intercept PDF/Drive links to open inside popup modal
+        if (href && (href.includes("drive.google.com") || href.includes("/raw/upload/") || href.endsWith(".pdf") || href.includes("docs.google.com/viewer"))) {
+          link.removeAttribute("target");
+          
+          const handleLinkClick = (e) => {
+            e.preventDefault();
+            setPdfModalUrl(href);
+          };
+          
+          link.removeEventListener("click", link._clickHander);
+          link._clickHander = handleLinkClick;
+          link.addEventListener("click", handleLinkClick);
+        } else {
+          if (!link.hasAttribute('target')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+          }
+          if (href && href.includes('/raw/upload/') && !href.includes('docs.google.com')) {
+            link.setAttribute('href', `https://docs.google.com/viewer?url=${encodeURIComponent(href)}`);
+          }
         }
       });
-    }, 100);
+    }, 150);
     return () => clearTimeout(timer);
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#F7F5FC] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center" style={{ fontFamily: '"Open Sans", Arial, sans-serif' }}>
+    <div className="min-h-screen bg-[#F7F5FC] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center">
       <style>{`
         /* Force flatten any outer cards/wrappers coming from the CMS */
         :where(.unnayan-content) > div,
@@ -374,8 +483,7 @@ const UnnayanJournal = () => {
           padding: 0 0 16px 0;
           text-align: justify;
           line-height: 1.8;
-          font-family: "Open Sans", Arial, sans-serif;
-          font-size: 14px;
+          font-size: 16px;
           color: #555555;
           margin-bottom: 0;
         }
@@ -574,7 +682,7 @@ const UnnayanJournal = () => {
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-[14px] text-[#555555] overflow-hidden break-words mt-12">
+            <div className="w-full mx-auto text-base text-[#555555] overflow-hidden break-words mt-12">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -582,22 +690,22 @@ const UnnayanJournal = () => {
               ) : (
                 <>
                   {activeTab === "home" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.home_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.home_html) }} />
                   )}
                   {activeTab === "about" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.about_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.about_html) }} />
                   )}
                   {activeTab === "policies" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.policies_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.policies_html) }} />
                   )}
                   {activeTab === "callForPapers" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.call_for_papers_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.call_for_papers_html) }} />
                   )}
                   {activeTab === "authorsGuideline" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.author_guidelines_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.author_guidelines_html) }} />
                   )}
                   {activeTab === "contactUs" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.contact_us_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.contact_us_html) }} />
                   )}
                   {activeTab === "volumes" && (
                     volumes.length === 0 ? (
@@ -632,25 +740,40 @@ const UnnayanJournal = () => {
                           <p className="mb-6 leading-normal text-[14px] text-[#555555]">
                             {selectedVolume.editorial_link && (
                               <>
-                                I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">(Click here)</a>
+                                I. Editorial{' '}
+                                <button
+                                  onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.editorial_link))}
+                                  className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                >
+                                  (Click here)
+                                </button>
                                 {selectedVolume.contents_link && <br/>}
                               </>
                             )}
                             {selectedVolume.contents_link && (
                               <>
-                                II. Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">(Click here)</a>
+                                II. Contents{' '}
+                                <button
+                                  onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.contents_link))}
+                                  className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                >
+                                  (Click here)
+                                </button>
                               </>
                             )}
                           </p>
                         )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
-                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#555555] text-[14px]">
+                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#555555] text-base">
                             <strong className="text-[#1C2D5A]">{index + 1}.</strong> {paper.title}{' '}
                             {paper.pdf_link && (
-                              <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="text-[#2E5CB8] hover:underline font-semibold">
+                              <button
+                                onClick={() => setPdfModalUrl(getViewerUrl(paper.pdf_link))}
+                                className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left ml-1"
+                              >
                                 (Click here)
-                              </a>
+                              </button>
                             )}
                             {paper.authors && (
                               <>
@@ -665,7 +788,7 @@ const UnnayanJournal = () => {
                               </>
                             )}
                             {paper.abstract_html && (
-                              <div className="mt-3 unnayan-content text-[13.5px] text-[#444]" dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
+                              <div className="mt-3 unnayan-content text-sm text-[#444]" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
                             )}
                           </div>
                         ))}
@@ -718,6 +841,58 @@ const UnnayanJournal = () => {
           </div>
         </div>
       </div>
+
+      {/* Document/PDF Viewer Popup Modal */}
+      {pdfModalUrl && createPortal(
+        <div 
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-80 p-4 transition-all"
+          onClick={() => setPdfModalUrl(null)}
+        >
+          <div 
+            className="bg-white rounded-xl w-full max-w-5xl h-[90vh] relative flex flex-col overflow-hidden shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#1D3F8B] px-6 py-4 flex items-center justify-between shrink-0">
+              <h3 className="font-bold text-white tracking-wide text-lg md:text-xl uppercase">
+                Document Viewer
+              </h3>
+              <div className="flex items-center gap-4">
+                <a 
+                  href={getDownloadUrl(pdfModalUrl)} 
+                  download 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-[#F39C12] hover:bg-[#D6840B] text-black hover:text-black font-semibold text-xs md:text-sm px-4 py-2 rounded transition-all cursor-pointer inline-flex items-center gap-2 border-0 shadow-sm"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 inline-block">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                  <span>Download</span>
+                </a>
+                <button 
+                  className="text-white text-3xl font-bold hover:opacity-75 transition-opacity cursor-pointer border-0 bg-transparent leading-none"
+                  onClick={() => setPdfModalUrl(null)}
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+            
+            {/* Modal Content (Iframe) */}
+            <div className="flex-grow w-full h-full bg-[#f4f4f4] relative">
+              <iframe 
+                src={getEmbedUrl(pdfModalUrl)} 
+                title="Document Viewer" 
+                className="w-full h-full border-0"
+                allow="autoplay"
+              />
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };

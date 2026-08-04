@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import { useParams } from "react-router-dom";
 import ActivitiesHero from "../components/activity/ActivitiesHero";
@@ -6,10 +7,12 @@ import ActivitiesSlider from "../components/activity/ActivitiesSlider";
 import { fetchPageData, fetchActivities } from "../services/api";
 import { fetchIpsaActivityCards } from "../services/ipsaReuse";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import StudentTestimonials from "../components/others/StudentTestimonials";
 import useSEO from "../hooks/useSEO";
 
 const StudentLife = () => {
   const { collegeSlug, subSlug } = useParams();
+  const location = useLocation();
   const [sections, setSections] = useState(null);
   const [pageData, setPageData] = useState(null);
   const [events, setEvents] = useState([]);
@@ -21,8 +24,9 @@ const StudentLife = () => {
     const load = async () => {
       try {
         setLoading(true);
-        const pageName = `activities/${subSlug || "events"}`;
-        const activityType = subSlug || "events";
+        const isUpcoming = location.pathname.includes("upcoming-activities");
+        const activityType = isUpcoming ? "upcoming-activities" : (subSlug || "events");
+        const pageName = `activities/${activityType}`;
         const useIpsaAggregate = collegeSlug === "ipsa" && ["cultural", "events", "workshop"].includes(activityType);
 
         const pageResult = await fetchPageData(collegeSlug, pageName).catch(() => ({ sections: {} }));
@@ -70,7 +74,7 @@ const StudentLife = () => {
   }
 
   const hero = sections?.hero || {};
-  const calendarSection = sections?.a_calendar_full_of || {};
+  const calendarSection = sections?.a_calendar_full_of || sections?.a_calender_full_of || {};
   const gallerySection = sections?.cultural_gallery || {};
 
   return (
@@ -88,7 +92,13 @@ const StudentLife = () => {
         collegeSlug={collegeSlug}
         gallery={gallerySection.images || []}
       />
-      <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of']} />
+      {sections?.testimonials && (
+        <StudentTestimonials
+          title={sections.testimonials.title}
+          testimonials={sections.testimonials.items}
+        />
+      )}
+      <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of', 'a_calender_full_of', 'testimonials']} />
     </div>
   );
 };

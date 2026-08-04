@@ -1,7 +1,14 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media, { isVideoUrl } from "../common/Media";
+
+const hasOverflow = (text) => {
+  if (!text) return false;
+  const cleanText = text.replace(/(<([^>]+)>)/gi, "");
+  return cleanText.length > 150 || (cleanText.match(/\r?\n/g) || []).length >= 4;
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -20,6 +27,7 @@ export default memo(function Facilities({ data }) {
   const subtitle = data?.subtitle || "";
   const description = data?.description || "";
   const facilityItems = data?.facilities || [];
+  const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <section id="facilities" className="bg-[#F9F4E1] py-12 sm:py-14 md:py-16 text-white">
@@ -73,8 +81,18 @@ export default memo(function Facilities({ data }) {
                 aspectRatio="4/3"
               />
 
-              <div className="p-4 text-xs sm:text-sm font-medium text-center">
-                {f.description}
+              <div className="p-4 text-xs sm:text-sm font-medium text-center flex flex-col items-center gap-2 flex-grow text-black" style={{ color: '#1a1a1a' }}>
+                <div className="line-clamp-4 text-ellipsis overflow-hidden">
+                  {f.description}
+                </div>
+                {hasOverflow(f.description) && (
+                  <button 
+                    onClick={() => setSelectedItem(f)}
+                    className="text-xs font-bold text-yellow-600 hover:text-[#0066A6] mt-2 transition-colors focus:outline-none cursor-pointer"
+                  >
+                    Read More &rarr;
+                  </button>
+                )}
               </div>
 
             </motion.div>
@@ -84,6 +102,56 @@ export default memo(function Facilities({ data }) {
 
       </div>
 
+      {/* Detail Popup Modal */}
+      {selectedItem && createPortal(
+        <div 
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-80 p-4 transition-all"
+          onClick={() => setSelectedItem(null)}
+        >
+          <div 
+            className="bg-white rounded-xl max-w-2xl max-h-[90vh] w-full relative flex flex-col overflow-hidden shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-yellow-600 p-4 text-center relative shrink-0">
+              <h3 
+                className="font-bold text-white tracking-wide text-lg md:text-xl uppercase pr-8"
+                style={{ color: '#ffffff' }}
+              >
+                {selectedItem.name}
+              </h3>
+              <button 
+                className="absolute top-1/2 -translate-y-1/2 right-4 text-white text-2xl font-bold hover:opacity-75 transition-opacity cursor-pointer"
+                onClick={() => setSelectedItem(null)}
+                style={{ color: '#ffffff' }}
+              >
+                &times;
+              </button>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto flex-grow flex flex-col items-center gap-6 custom-scrollbar text-black" style={{ backgroundColor: '#ffffff' }}>
+              {selectedItem.image && (
+                <div className="w-full flex justify-center shrink-0">
+                  <img 
+                    src={resolveImageUrl(selectedItem.image)} 
+                    alt={selectedItem.name} 
+                    className="max-w-full max-h-[450px] object-contain rounded-lg shadow-sm"
+                  />
+                </div>
+              )}
+              
+              <div 
+                className="text-sm md:text-base leading-relaxed text-left w-full whitespace-pre-line"
+                style={{ color: '#1a1a1a' }}
+              >
+                {selectedItem.description}
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 })

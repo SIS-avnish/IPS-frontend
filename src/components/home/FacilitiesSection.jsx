@@ -2,9 +2,16 @@ import { memo, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { resolveImageUrl } from "../../services/api";
 
+const hasOverflow = (text) => {
+  if (!text) return false;
+  const cleanText = text.replace(/(<([^>]+)>)/gi, "");
+  return cleanText.length > 150 || (cleanText.match(/\r?\n/g) || []).length >= 4;
+};
+
 const FacilitiesSection = memo(function FacilitiesSection({ data }) {
   const items = useMemo(() => data?.facilities || [], [data]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   if (!items.length) return null;
 
@@ -80,11 +87,20 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
               </div>
               
               {/* Description */}
-              <div className="bg-[#E9EEF4] p-6 flex-grow flex items-center justify-center text-center">
-                <p 
-                  className="text-gray-800 text-sm leading-relaxed"
+              <div className="bg-[#E9EEF4] p-6 flex-grow flex flex-col items-center justify-center text-center">
+                <div 
+                  className="text-gray-800 text-sm leading-relaxed line-clamp-4 text-ellipsis overflow-hidden mb-3"
+                  style={{ color: '#1a1a1a' }}
                   dangerouslySetInnerHTML={{ __html: item.description || item.story || "" }}
                 />
+                {hasOverflow(item.description || item.story) && (
+                  <button 
+                    onClick={() => setSelectedItem(item)}
+                    className="text-xs font-bold text-[#D89324] hover:text-[#0066A6] transition-colors focus:outline-none cursor-pointer"
+                  >
+                    Read More &rarr;
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -111,6 +127,56 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
               alt="Popup Enlarged" 
               className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             />
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Detail Popup Modal */}
+      {selectedItem && createPortal(
+        <div 
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-80 p-4 transition-all"
+          onClick={() => setSelectedItem(null)}
+        >
+          <div 
+            className="bg-white rounded-xl max-w-2xl max-h-[90vh] w-full relative flex flex-col overflow-hidden shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#D89324] p-4 text-center relative shrink-0">
+              <h3 
+                className="font-bold text-black tracking-wide text-lg md:text-xl uppercase pr-8"
+                style={{ color: '#000000' }}
+              >
+                {selectedItem.name}
+              </h3>
+              <button 
+                className="absolute top-1/2 -translate-y-1/2 right-4 text-black text-2xl font-bold hover:opacity-75 transition-opacity cursor-pointer"
+                onClick={() => setSelectedItem(null)}
+                style={{ color: '#000000' }}
+              >
+                &times;
+              </button>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto flex-grow flex flex-col items-center gap-6 custom-scrollbar text-black" style={{ backgroundColor: '#ffffff' }}>
+              {selectedItem.image && (
+                <div className="w-full flex justify-center shrink-0">
+                  <img 
+                    src={resolveImageUrl(selectedItem.image)} 
+                    alt={selectedItem.name} 
+                    className="max-w-full max-h-[450px] object-contain rounded-lg shadow-sm"
+                  />
+                </div>
+              )}
+              
+              <div 
+                className="text-sm md:text-base leading-relaxed text-left w-full whitespace-pre-line"
+                style={{ color: '#1a1a1a' }}
+                dangerouslySetInnerHTML={{ __html: selectedItem.description || selectedItem.story || "" }}
+              />
+            </div>
           </div>
         </div>,
         document.body

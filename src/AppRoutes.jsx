@@ -68,6 +68,7 @@ export default function AppRoutes() {
           <Route path="/alumni/:slug" element={<AlumniDetail />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
+          <Route path="/activities/upcoming-activities" element={<StudentLife />} />
           <Route path="/activities" element={<MainActivityPage />} />
           <Route path="/activities/:slug" element={<ActivityDetail />} />
           <Route path="/events/:slug" element={<EventDetail />} />
@@ -78,6 +79,7 @@ export default function AppRoutes() {
           <Route path="/:collegeSlug/hotel" element={<Hotel />} />
           {/* COLLEGE ACTIVITIES ROUTES */}
           <Route path="/:collegeSlug/activities" element={<MainActivityPage />} />
+          <Route path="/:collegeSlug/activities/upcoming-activities" element={<StudentLife />} />
           <Route path="/:collegeSlug/activities/clubs" element={<Student />} />
           <Route path="/:collegeSlug/activities/social" element={<SocialAct />} />
           <Route path="/:collegeSlug/activities/:activityType" element={<ActivityDetail />} />

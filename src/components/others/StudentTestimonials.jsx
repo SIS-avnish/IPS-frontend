@@ -29,6 +29,8 @@ const StudentTestimonials = memo(({
   testimonials,
   videoTitle,
   videos,
+  hideSubtitle = false,
+  isSocialActivities = false,
 }) => {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [selectedTextTestimonial, setSelectedTextTestimonial] = useState(null);
@@ -71,11 +73,13 @@ const StudentTestimonials = memo(({
       {/* ================= TEXT SECTION ================= */}
       {textTestimonials.length > 0 && (
         <>
-          <div className="max-w-6xl mx-auto text-center mb-6">
-            <p className="text-lg font-semibold">
-              Testimonials
-            </p>
-          </div>
+          {!hideSubtitle && (
+            <div className="max-w-6xl mx-auto text-center mb-6">
+              <p className="text-lg font-semibold">
+                Testimonials
+              </p>
+            </div>
+          )}
 
           <motion.div
             variants={container}
@@ -104,12 +108,18 @@ const StudentTestimonials = memo(({
                           youtubeId: extractYouTubeId(t.image),
                         });
                       }}
-                      className="cursor-pointer w-20 h-20 md:w-24 md:h-24 flex-shrink-0"
+                      className={isSocialActivities 
+                        ? "cursor-pointer w-24 h-16 md:w-32 md:h-20 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200" 
+                        : "cursor-pointer w-20 h-20 md:w-24 md:h-24 flex-shrink-0"
+                      }
                     >
                       <Media
                         src={t.image}
                         alt={t.name}
-                        className="w-full h-full rounded-full object-cover border border-gray-200"
+                        className={isSocialActivities 
+                          ? "w-full h-full object-cover" 
+                          : "w-full h-full rounded-full object-cover border border-gray-200"
+                        }
                       />
                     </div>
                   )}
@@ -213,11 +223,17 @@ const StudentTestimonials = memo(({
             </button>
             <div className="flex items-center gap-4 mb-6 pr-8">
               {selectedTextTestimonial.image && (
-                <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0">
+                <div className={isSocialActivities 
+                  ? "w-28 h-20 md:w-36 md:h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200" 
+                  : "w-16 h-16 md:w-20 md:h-20 flex-shrink-0"
+                }>
                   <Media
                     src={selectedTextTestimonial.image}
                     alt={selectedTextTestimonial.name}
-                    className="w-full h-full rounded-full object-cover border border-gray-200"
+                    className={isSocialActivities 
+                      ? "w-full h-full object-cover" 
+                      : "w-full h-full rounded-full object-cover border border-gray-200"
+                    }
                   />
                 </div>
               )}

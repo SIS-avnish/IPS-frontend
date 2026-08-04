@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import SafeHtml from "../components/common/SafeHtml";
 import useSEO from "../hooks/useSEO";
 import { ScratchSections } from "../components/common/ScratchHtml";
+import StudentTestimonials from "../components/others/StudentTestimonials";
 
 export default function Placements() {
   const [data, setData] = useState(null);
@@ -59,6 +60,13 @@ export default function Placements() {
         stats={sections.orientation_and_awareness}
       />
       <Team data={sections.the_placement_team} />
+      {/* Placement Student Testimonials */}
+      <StudentTestimonials
+        title={sections?.placement_student_testimonial?.title}
+        testimonials={sections?.placement_student_testimonial?.items}
+        videoTitle={sections?.placement_student_testimonial?.video_title}
+        videos={sections?.placement_student_testimonial?.videos || []}
+      />
       
 
       {/* PLACED STUDENTS */}

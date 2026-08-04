@@ -9,6 +9,7 @@ import Hero from '../components/others/Hero'
 import ScratchHtml from '../components/common/ScratchHtml'
 import Media from '../components/common/Media'
 import useSEO from '../hooks/useSEO'
+import StudentTestimonials from '../components/others/StudentTestimonials'
 
 const PAGE_BASE = 'https://portal.ipsacademyindore.edu.in/api'
 
@@ -140,6 +141,17 @@ function renderSection(key, section) {
       return <AwardandAchievement achievementsHtml={section?.html} />
     case 'co_curricular':
       return <AwardandAchievement coCurricularHtml={section?.html} />
+    case 'placement_student_testimonial':
+      return (
+        <StudentTestimonials
+          title={section?.title || "Social Activities"}
+          testimonials={section?.items}
+          videoTitle={section?.video_title}
+          videos={section?.videos || []}
+          hideSubtitle={true}
+          isSocialActivities={true}
+        />
+      )
     default:
       break
   }
