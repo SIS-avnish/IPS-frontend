@@ -85,13 +85,6 @@ const StudentLife = () => {
         ctaText={hero.cta_text}
         ctaLink={hero.cta_link}
       />
-      <ActivitiesSlider
-        title={calendarSection.title}
-        content={calendarSection.content}
-        events={events}
-        collegeSlug={collegeSlug}
-        gallery={gallerySection.images || []}
-      />
       {sections?.testimonials && (
         <StudentTestimonials
           title={sections.testimonials.title}
@@ -99,6 +92,13 @@ const StudentLife = () => {
         />
       )}
       <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of', 'a_calender_full_of', 'testimonials']} />
+      <ActivitiesSlider
+        title={calendarSection.title}
+        content={calendarSection.content}
+        events={events}
+        collegeSlug={collegeSlug}
+        gallery={gallerySection.images || []}
+      />
     </div>
   );
 };

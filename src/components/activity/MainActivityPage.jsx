@@ -80,8 +80,7 @@ const MainActivityPage = memo(() => {
   const [sections, setSections] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Social & Club activities fetched from the activities API
-  const [socialActivities, setSocialActivities] = useState([]);
+  // Club activities fetched from the activities API
   const [clubActivities, setClubActivities] = useState([]);
 
   useSEO(pageData);
@@ -105,15 +104,9 @@ const MainActivityPage = memo(() => {
     return () => { cancelled = true; };
   }, [slug]);
 
-  // Fetch social & club activities independently
+  // Fetch club activities independently
   useEffect(() => {
     let cancelled = false;
-
-    fetchActivities(slug, "social")
-      .then((data) => {
-        if (!cancelled) setSocialActivities((data || []).map(mapActivity));
-      })
-      .catch((err) => console.error("Failed to fetch social activities:", err));
 
     fetchActivities(slug, "club")
       .then((data) => {
@@ -273,17 +266,7 @@ const MainActivityPage = memo(() => {
         </div>
       </section>
 
-      {/* ── SOCIAL ACTIVITIES ── */}
-      {socialActivities.length > 0 && (
-        <section className="bg-[#f9f4e1]">
-          <EventSlider
-            title={SECTION_META.social.title}
-            content={SECTION_META.social.content}
-            events={socialActivities}
-            collegeSlug={slug}
-          />
-        </section>
-      )}
+
 
       {/* ── STUDENT CLUBS ── */}
       {clubActivities.length > 0 && (

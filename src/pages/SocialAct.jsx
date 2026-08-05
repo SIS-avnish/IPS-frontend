@@ -10,6 +10,8 @@ import ScratchHtml from '../components/common/ScratchHtml'
 import Media from '../components/common/Media'
 import useSEO from '../hooks/useSEO'
 import StudentTestimonials from '../components/others/StudentTestimonials'
+import { fetchActivities } from '../services/api'
+import ActivitiesSlider from '../components/activity/ActivitiesSlider'
 
 const PAGE_BASE = 'https://portal.ipsacademyindore.edu.in/api'
 
@@ -211,6 +213,7 @@ const SocialAct = () => {
   const [sections, setSections] = useState(null)
   const [pageData, setPageData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [events, setEvents] = useState([])
 
   useSEO(pageData)
 
@@ -232,6 +235,27 @@ const SocialAct = () => {
         const data = await response.json()
         setPageData(data)
         setSections(data.sections || {})
+
+        // Fetch social activities list
+        const activitiesList = await fetchActivities(slug, "social").catch(() => [])
+        const normalizedActivities = Array.isArray(activitiesList)
+          ? activitiesList
+          : Array.isArray(activitiesList?.activities)
+            ? activitiesList.activities
+            : Array.isArray(activitiesList?.results)
+              ? activitiesList.results
+              : Array.isArray(activitiesList?.data)
+                ? activitiesList.data
+                : [];
+        const cards = normalizedActivities.map((a) => ({
+          id: a.slug || a.id,
+          title: a.title,
+          subtitle: a.short_description,
+          thumbnail_image: a.main_image,
+          start_date: a.start_date,
+          _isActivity: true,
+        }));
+        setEvents(cards)
       } catch (err) {
         console.error('Failed to fetch activities/social data:', err)
         setSections({})
@@ -264,6 +288,14 @@ const SocialAct = () => {
 
         return <Fragment key={key}>{rendered}</Fragment>
       })}
+      {events.length > 0 && (
+        <ActivitiesSlider
+          title="Social Activities"
+          content="From community outreach to social drives, our students lead meaningful initiatives that create a positive impact beyond the campus."
+          events={events}
+          collegeSlug={collegeSlug}
+        />
+      )}
     </div>
   )
 }

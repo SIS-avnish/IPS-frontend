@@ -61,7 +61,7 @@ export default function AppRoutes() {
           <Route path="/ipsa/contact" element={<Contact />} />
           <Route path="/ipsa/facilities" element={<FacilitiesPage />} />
           <Route path="/ipsa/student-life" element={<StudentLife />} />
-          <Route path="/ipsa/placement" element={<Placements />} />
+          <Route path="/placement" element={<Placements />} />
           <Route path="/student-council" element={<Student />} />
           <Route path="/social-activities" element={<SocialAct />} />
           <Route path="/alumni" element={<AlumniPage />} />
