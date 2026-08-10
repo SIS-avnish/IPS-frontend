@@ -282,12 +282,6 @@ const SocialAct = () => {
         ctaText={hero?.cta_text}
         ctaLink={hero?.cta_link}
       />
-      {orderedSections.map(([key, section]) => {
-        const rendered = renderSection(key, section)
-        if (!rendered) return null
-
-        return <Fragment key={key}>{rendered}</Fragment>
-      })}
       {events.length > 0 && (
         <ActivitiesSlider
           title="Social Activities"
@@ -296,6 +290,12 @@ const SocialAct = () => {
           collegeSlug={collegeSlug}
         />
       )}
+      {orderedSections.map(([key, section]) => {
+        const rendered = renderSection(key, section)
+        if (!rendered) return null
+
+        return <Fragment key={key}>{rendered}</Fragment>
+      })}
     </div>
   )
 }
