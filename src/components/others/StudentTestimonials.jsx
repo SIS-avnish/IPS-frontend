@@ -2,6 +2,7 @@ import { useState, useMemo, memo } from "react";
 import { motion } from "framer-motion";
 import Media, { isVideoUrl } from "../common/Media";
 import { YouTubeThumbnail } from "../common/LazyIframe";
+import { Download } from "lucide-react";
 
 /**
  * Extract YouTube video ID
@@ -34,6 +35,30 @@ const StudentTestimonials = memo(({
 }) => {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [selectedTextTestimonial, setSelectedTextTestimonial] = useState(null);
+
+  const handleDownload = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download image via fetch:', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   const textTestimonials = useMemo(() => (testimonials || []).map((item) => ({
     name: item.name,
@@ -279,6 +304,15 @@ const StudentTestimonials = memo(({
             >
               ✕
             </button>
+            {selectedMedia && selectedMedia.type === "image" && (
+              <button
+                onClick={() => handleDownload(selectedMedia.url, 'activity-image.jpg')}
+                className="absolute top-3 right-13 bg-black text-white rounded-full w-8 h-8 z-10 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
+                title="Download Image"
+              >
+                <Download className="w-4 h-4" />
+              </button>
+            )}
 
             {selectedMedia.type === "youtube" && (
               <div className="relative w-full pt-[56.25%]">

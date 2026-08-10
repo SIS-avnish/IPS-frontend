@@ -7,6 +7,7 @@ import { fetchActivityDetail, fetchPageData } from '../services/api'
 import Media from '../components/common/Media'
 import useSEO from '../hooks/useSEO'
 import SafeHtml from '../components/common/SafeHtml'
+import { Download } from 'lucide-react'
 
 const ActivityDetail = () => {
   const { collegeSlug, activityId, activityType, slug } = useParams()
@@ -17,7 +18,31 @@ const ActivityDetail = () => {
   const [seoData, setSeoData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null);
-const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleDownload = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download image via fetch:', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
 // Helper function to check if the URL is a video
 const isVideo = (url) => {
@@ -183,10 +208,20 @@ const prevImage = () => {
 
     <button
       onClick={() => setSelectedImage(null)}
-      className="absolute top-5 right-5 text-white text-3xl"
+      className="absolute top-5 right-5 text-white text-3xl z-10"
     >
       ✕
     </button>
+
+    {!isVideo(selectedImage) && (
+      <button
+        onClick={() => handleDownload(selectedImage, 'activity-image.jpg')}
+        className="absolute top-5 right-20 text-white bg-black/40 hover:bg-black/60 p-2 rounded-full transition-colors flex items-center justify-center cursor-pointer z-10"
+        title="Download Image"
+      >
+        <Download className="w-6 h-6" />
+      </button>
+    )}
 
     <button
       onClick={prevImage}

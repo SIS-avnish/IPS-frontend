@@ -1,10 +1,34 @@
 import { useState, useEffect, useMemo, memo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, ZoomIn, Download } from "lucide-react";
 import Media, { isVideoUrl } from "../common/Media";
 
 const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = [] }) => {
   const chunkSize = 6;
+
+  const handleDownload = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download image via fetch:', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   const slides = useMemo(() => {
     const result = [];
@@ -198,6 +222,14 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
               aria-label="Close gallery"
               >
               <X className="w-5 h-5" aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => handleDownload(gallery[currentGalleryIndex], `gallery-${currentGalleryIndex}.jpg`)}
+              className="absolute top-1 right-52 bg-black text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors z-10 hover:bg-gray-800 cursor-pointer"
+              aria-label="Download image"
+              title="Download Image"
+            >
+              <Download className="w-5 h-5" />
             </button>
 
             <div className="relative w-full flex justify-center">

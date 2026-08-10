@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { resolveImageUrl } from "../../services/api";
 import Media, { isVideoUrl } from "../common/Media";
+import { Download } from "lucide-react";
 
 const hasOverflow = (text) => {
   if (!text) return false;
@@ -28,6 +29,30 @@ export default memo(function Facilities({ data }) {
   const description = data?.description || "";
   const facilityItems = data?.facilities || [];
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleDownload = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download image via fetch:', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return (
     <section id="facilities" className="bg-[#F9F4E1] py-12 sm:py-14 md:py-16 text-white">
@@ -115,18 +140,29 @@ export default memo(function Facilities({ data }) {
             {/* Modal Header */}
             <div className="bg-yellow-600 p-4 text-center relative shrink-0">
               <h3 
-                className="font-bold text-white tracking-wide text-lg md:text-xl uppercase pr-8"
+                className="font-bold text-white tracking-wide text-lg md:text-xl uppercase pr-16"
                 style={{ color: '#ffffff' }}
               >
                 {selectedItem.name}
               </h3>
-              <button 
-                className="absolute top-1/2 -translate-y-1/2 right-4 text-white text-2xl font-bold hover:opacity-75 transition-opacity cursor-pointer"
-                onClick={() => setSelectedItem(null)}
-                style={{ color: '#ffffff' }}
-              >
-                &times;
-              </button>
+              <div className="flex items-center gap-3 absolute right-4 top-1/2 -translate-y-1/2">
+                {selectedItem.image && (
+                  <button
+                    onClick={() => handleDownload(resolveImageUrl(selectedItem.image), `${selectedItem.name}.jpg`)}
+                    className="text-white hover:text-gray-200 transition-opacity cursor-pointer flex items-center justify-center"
+                    title="Download Image"
+                  >
+                    <Download className="w-5 h-5" />
+                  </button>
+                )}
+                <button 
+                  className="text-white text-2xl font-bold hover:opacity-75 transition-opacity cursor-pointer"
+                  onClick={() => setSelectedItem(null)}
+                  style={{ color: '#ffffff' }}
+                >
+                  &times;
+                </button>
+              </div>
             </div>
             
             {/* Modal Content */}

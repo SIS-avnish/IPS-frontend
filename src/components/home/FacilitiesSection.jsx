@@ -1,6 +1,7 @@
 import { memo, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { resolveImageUrl } from "../../services/api";
+import { Download } from "lucide-react";
 
 const hasOverflow = (text) => {
   if (!text) return false;
@@ -12,6 +13,30 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
   const items = useMemo(() => data?.facilities || [], [data]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleDownload = async (imageUrl, fileName) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download image via fetch:', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = fileName || 'downloaded-image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   if (!items.length) return null;
 
@@ -121,6 +146,14 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
               onClick={() => setSelectedImage(null)}
             >
               &times;
+            </button>
+            <button 
+              className="absolute -top-12 right-12 text-white hover:text-gray-300 transition-colors flex items-center gap-1.5 text-sm bg-black/40 px-3 py-1.5 rounded-md border border-white/20 hover:bg-black/60 cursor-pointer"
+              onClick={() => handleDownload(selectedImage, 'event-flyer.jpg')}
+              title="Download Image"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download</span>
             </button>
             <img 
               src={selectedImage} 
