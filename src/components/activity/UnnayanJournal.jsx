@@ -469,7 +469,7 @@ const UnnayanJournal = () => {
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#F7F5FC] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center">
+    <div className="min-h-screen bg-[#DDE6F5] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center">
       <style>{`
         /* Force flatten any outer cards/wrappers coming from the CMS */
         :where(.unnayan-content) > div,
@@ -484,7 +484,7 @@ const UnnayanJournal = () => {
           text-align: justify;
           line-height: 1.8;
           font-size: 16px;
-          color: #555555;
+          color: #5A6475;
           margin-bottom: 0;
         }
         :where(.unnayan-content) p:empty,
@@ -495,7 +495,7 @@ const UnnayanJournal = () => {
           font-weight: 600;
           margin-bottom: 1.2rem;
           margin-top: 1.5rem;
-          color: #1C2D5A;
+          color: #1A2D5A;
         }
         :where(.unnayan-content) h1 { font-size: 22px; }
         :where(.unnayan-content) h2 { font-size: 19px; }
@@ -504,13 +504,13 @@ const UnnayanJournal = () => {
           list-style-type: disc;
           padding-left: 2rem;
           margin-bottom: 1rem;
-          color: #555555;
+          color: #5A6475;
         }
         :where(.unnayan-content) ol {
           list-style-type: decimal;
           padding-left: 2rem;
           margin-bottom: 1rem;
-          color: #555555;
+          color: #5A6475;
         }
         :where(.unnayan-content) li {
           margin-bottom: 0.5rem;
@@ -537,24 +537,25 @@ const UnnayanJournal = () => {
         :where(.unnayan-content) table {
           width: 100%;
           border-collapse: collapse;
-          border: 1px solid #DDD;
+          border: 1px solid #C9D6EA;
           min-width: 600px;
         }
         :where(.unnayan-content) th, :where(.unnayan-content) td {
-          border: 1px solid #DDD;
+          border: 1px solid #C9D6EA;
           padding: 10px;
           text-align: left;
         }
         :where(.unnayan-content) th {
-          background-color: #F3F6FD;
+          background-color: #E3ECF9;
           font-weight: 600;
-          color: #1C2D5A;
+          color: #1A2D5A;
         }
         :where(.unnayan-content) a {
-          color: #2E5CB8;
+          color: #233872;
           text-decoration: none;
         }
         :where(.unnayan-content) a:hover {
+          color: #2F4F8F;
           text-decoration: underline;
         }
         /* Scratch Editor Block Fixes */
@@ -576,25 +577,25 @@ const UnnayanJournal = () => {
         }
       `}</style>
       {/* Container matching screenshot structure */}
-      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col overflow-hidden pb-16 md:pb-0" >
+      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-[#C9D6EA] flex flex-col overflow-hidden pb-16 md:pb-0" >
 
         <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="hidden md:block w-full md:w-[220px] shrink-0 bg-[#FBF8F2] !pt-4 md:!pt-8 !border-r !border-[#E6E6EF] !m-0">
+          <div className="hidden md:block w-full md:w-[220px] shrink-0 bg-[#DDE6F5] !pt-4 md:!pt-8 !border-r !border-[#C9D6EA] !m-0">
             <div className="p-0 overflow-x-auto scrollbar-hide">
               <ul className="!w-full !list-none !p-0 !m-0 !flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
-                  <li key={idx} className="!border-r md:!border-r-0 md:!border-b !border-[#E6E6EF] flex-none !list-none !p-0 !m-0 before:!hidden">
+                  <li key={idx} className="!border-r md:!border-r-0 md:!border-b !border-[#C9D6EA] flex-none !list-none !p-0 !m-0 before:!hidden">
                     <button 
                       onClick={() => handleTabChange(item.id)}
-                      className={`!w-full !flex !justify-center md:!justify-start !items-center !px-4 !py-3 md:!py-2 !text-center md:!text-left !text-[13px] !font-semibold !uppercase transition-colors !min-h-[40px] !bg-transparent !border-0 ${
+                      className={`!w-full !flex !justify-center md:!justify-start !items-center !px-4 !py-3 md:!py-2 !text-center md:!text-left !text-[13px] !font-semibold !uppercase transition-colors !min-h-[40px] !bg-transparent !border-x-0 !border-t-0 ${
                         activeTab === item.id 
-                          ? "!bg-[#E3DAFF] !text-[#1D3F8B]" 
-                          : "!text-[#555555] hover:!bg-[#EEE9FF] hover:!text-[#1D3F8B]"
+                          ? "!bg-[#FFFFFF] !text-[#1A2D5A] md:!border-l-[4px] md:!border-b-0 !border-b-[4px] !border-[#1A2D5A]" 
+                          : "!text-[#233872] hover:!bg-[#E3ECF9] hover:!text-[#1A2D5A] md:!border-l-[4px] md:!border-b-0 !border-b-[4px] !border-transparent"
                       }`}
                       style={{ outline: "none", boxShadow: "none" }}
                     >
-                      <span className="hidden md:inline-block !w-2 !h-2 !bg-[#F39C12] !rounded-full !mr-3 shrink-0"></span>
+                      <span className={`hidden md:inline-block !w-2 !h-2 !rounded-full !mr-3 shrink-0 transition-colors ${activeTab === item.id ? "!bg-[#1A2D5A]" : "!bg-[#233872]"}`}></span>
                       {item.name}
                     </button>
                   </li>
@@ -611,7 +612,7 @@ const UnnayanJournal = () => {
                 aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileNavOpen}
                 onClick={() => setMobileNavOpen((open) => !open)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1D3F8B] shadow-none"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1A2D5A] shadow-none"
               >
                 {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -625,13 +626,13 @@ const UnnayanJournal = () => {
                   className="absolute inset-0 bg-black/25"
                   onClick={() => setMobileNavOpen(false)}
                 />
-                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#FBF8F2] shadow-2xl border-r border-[#E6E6EF]">
-                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#E6E6EF]">
+                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#DDE6F5] shadow-2xl border-r border-[#C9D6EA]">
+                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#C9D6EA]">
                     <button
                       type="button"
                       aria-label="Close menu"
                       onClick={() => setMobileNavOpen(false)}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1D3F8B]"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1A2D5A]"
                     >
                       <X className="h-5 w-5" />
                     </button>
@@ -639,13 +640,13 @@ const UnnayanJournal = () => {
                   <div className="h-[calc(100%-57px)] overflow-y-auto">
                     <ul className="!w-full !list-none !p-0 !m-0 flex flex-col">
                       {navItems.map((item, idx) => (
-                        <li key={idx} className="border-b border-[#E6E6EF] last:border-b-0">
+                        <li key={idx} className="border-b border-[#C9D6EA] last:border-b-0">
                           <button
                             onClick={() => handleTabChange(item.id)}
                             className={`w-full flex items-center px-4 py-3 text-left text-[13px] font-semibold uppercase transition-colors ${
                               activeTab === item.id
-                                ? "bg-[#E3DAFF] text-[#1D3F8B]"
-                                : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                                ? "bg-[#FFFFFF] text-[#1A2D5A] border-l-[4px] border-[#1A2D5A]"
+                                : "text-[#233872] hover:bg-[#E3ECF9] hover:text-[#1A2D5A] border-l-[4px] border-transparent"
                             }`}
                           >
                             {item.name}
@@ -659,13 +660,13 @@ const UnnayanJournal = () => {
             )}
 
             {/* Header Banner */}
-            <div className="w-full mb-10 border-b border-[#E6E6EF] pb-6 min-h-[50px]">
+            <div className="w-full mb-10 border-b border-[#C9D6EA] pb-6 min-h-[50px]">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
                 <div className="flex-1 flex justify-start">
                   {journalData?.logo_url ? (
                     <img src={journalData.logo_url} alt={journalData?.name || "Journal Logo"} className="w-auto h-auto max-h-[250px] object-contain" />
                   ) : (
-                    <h1 className="text-[28px] font-bold text-[#1D3F8B]">
+                    <h1 className="text-[28px] font-bold text-[#1A2D5A]">
                       {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
                     </h1>
                   )}
@@ -682,7 +683,7 @@ const UnnayanJournal = () => {
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-base text-[#555555] overflow-hidden break-words mt-12">
+            <div className="w-full mx-auto text-base text-[#5A6475] overflow-hidden break-words mt-12">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -712,13 +713,13 @@ const UnnayanJournal = () => {
                       <div className="text-center py-10">No volumes found</div>
                     ) : selectedVolume === null ? (
                       <div className="mb-12">
-                        <h2 className="font-semibold mb-4 text-[20px] text-[#1C2D5A]">Volumes</h2>
+                        <h2 className="font-semibold mb-4 text-[20px] text-[#1A2D5A]">Volumes</h2>
                         <ul className="list-disc pl-5">
                           {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">
                               <button
                                 onClick={() => setSearchParams({ volume: slugify(volume.volume_title) })}
-                                className="text-[#2E5CB8] font-semibold text-[15px] hover:underline text-left"
+                                className="text-[#233872] font-semibold text-[15px] hover:text-[#2F4F8F] hover:underline text-left"
                               >
                                 {volume.volume_title}
                               </button>
@@ -730,20 +731,20 @@ const UnnayanJournal = () => {
                       <div className="mb-12">
                         <button 
                           onClick={() => setSearchParams({})}
-                          className="mb-6 text-[#2E5CB8] font-semibold text-[14px] hover:underline flex items-center"
+                          className="mb-6 text-[#233872] font-semibold text-[14px] hover:text-[#2F4F8F] hover:underline flex items-center"
                         >
                           &larr; Back to all volumes
                         </button>
-                        <h3 className="font-semibold mb-6 text-[20px] text-[#1C2D5A]">{selectedVolume.volume_title}</h3>
+                        <h3 className="font-semibold mb-6 text-[20px] text-[#1A2D5A]">{selectedVolume.volume_title}</h3>
                         
                         {(selectedVolume.editorial_link || selectedVolume.contents_link) && (
-                          <p className="mb-6 leading-normal text-[14px] text-[#555555]">
+                          <p className="mb-6 leading-normal text-[14px] text-[#5A6475]">
                             {selectedVolume.editorial_link && (
                               <>
                                 I. Editorial{' '}
                                 <button
                                   onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.editorial_link))}
-                                  className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                  className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
                                 >
                                   (Click here)
                                 </button>
@@ -755,7 +756,7 @@ const UnnayanJournal = () => {
                                 II. Contents{' '}
                                 <button
                                   onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.contents_link))}
-                                  className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                  className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
                                 >
                                   (Click here)
                                 </button>
@@ -765,12 +766,12 @@ const UnnayanJournal = () => {
                         )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
-                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#555555] text-base">
-                            <strong className="text-[#1C2D5A]">{index + 1}.</strong> {paper.title}{' '}
+                          <div key={index} className="mb-8 border-b border-[#C9D6EA] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#5A6475] text-base">
+                            <strong className="text-[#1A2D5A]">{index + 1}.</strong> {paper.title}{' '}
                             {paper.pdf_link && (
                               <button
                                 onClick={() => setPdfModalUrl(getViewerUrl(paper.pdf_link))}
-                                className="text-[#2E5CB8] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left ml-1"
+                                className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left ml-1"
                               >
                                 (Click here)
                               </button>
@@ -788,7 +789,7 @@ const UnnayanJournal = () => {
                               </>
                             )}
                             {paper.abstract_html && (
-                              <div className="mt-3 unnayan-content text-sm text-[#444]" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
+                              <div className="mt-3 unnayan-content text-sm text-[#5A6475]" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
                             )}
                           </div>
                         ))}
@@ -802,17 +803,17 @@ const UnnayanJournal = () => {
         </div>
 
         {/* Mobile Bottom Nav */}
-        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#E6E6EF] bg-white/95 backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#C9D6EA] bg-[#1A2D5A] backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
           <div className="overflow-x-auto">
             <div className="flex min-w-max items-stretch">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
-                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#E6E6EF] last:border-r-0 ${
+                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#C9D6EA] last:border-r-0 ${
                     activeTab === item.id
-                      ? "bg-[#E3DAFF] text-[#1D3F8B]"
-                      : "bg-white text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                      ? "bg-[#233872] text-[#FFFFFF]"
+                      : "bg-[#1A2D5A] text-[#E3ECF9] hover:bg-[#233872] hover:text-[#FFFFFF]"
                   }`}
                 >
                   <span className="block whitespace-nowrap">{item.name}</span>
@@ -823,15 +824,15 @@ const UnnayanJournal = () => {
         </div>
 
         {/* Footer inside the container */}
-        <div className="hidden md:flex w-full bg-[#ffffff] py-3 border-t border-[#ECECEC] justify-center items-center">
-          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center text-[12px] text-[#666]">
+        <div className="hidden md:flex w-full bg-[#1A2D5A] py-3 border-t border-[#C9D6EA] justify-center items-center">
+          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center text-[12px] text-[#FFFFFF]">
             {navItems.map((item, idx) => (
               <React.Fragment key={item.name}>
-                {idx > 0 && <span className="w-1 h-1 rounded-full bg-[#DDD] inline-block"></span>}
+                {idx > 0 && <span className="w-1 h-1 rounded-full bg-[#FFFFFF] inline-block"></span>}
                 <button 
                   onClick={() => handleTabChange(item.id)}
                   className={`font-semibold hover:underline ${
-                    activeTab === item.id ? "text-[#1D3F8B]" : "text-[#2E5CB8]"
+                    activeTab === item.id ? "text-[#E3ECF9] underline" : "text-[#FFFFFF] hover:text-[#E3ECF9]"
                   }`}
                 >
                   {item.name}
@@ -853,7 +854,7 @@ const UnnayanJournal = () => {
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="bg-[#1D3F8B] px-6 py-4 flex items-center justify-between shrink-0">
+            <div className="bg-[#1A2D5A] px-6 py-4 flex items-center justify-between shrink-0">
               <h3 className="font-bold text-white tracking-wide text-lg md:text-xl uppercase">
                 Document Viewer
               </h3>
@@ -863,7 +864,7 @@ const UnnayanJournal = () => {
                   download 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="bg-[#F39C12] hover:bg-[#D6840B] text-black hover:text-black font-semibold text-xs md:text-sm px-4 py-2 rounded transition-all cursor-pointer inline-flex items-center gap-2 border-0 shadow-sm"
+                  className="bg-[#233872] hover:bg-[#2F4F8F] text-white hover:text-white font-semibold text-xs md:text-sm px-4 py-2 rounded transition-all cursor-pointer inline-flex items-center gap-2 border-0 shadow-sm"
                   style={{ textDecoration: 'none' }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 inline-block">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const MOCK_DATA = {
@@ -185,7 +186,7 @@ const UnnayanVolumes = () => {
   const [loading, setLoading] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [error, setError] = useState(null);
-  const [pdfUrlToView, setPdfUrlToView] = useState(null);
+  const [pdfModalUrl, setPdfModalUrl] = useState(null);
 
   // Helper to parse date from volume title (e.g., "Jan 2026 Volume XVIII Issue 1")
   const getVolumeScore = (title) => {
@@ -259,6 +260,16 @@ const UnnayanVolumes = () => {
       // Remove dangerous tags that break the global React/Tailwind layout
       const dangerousTags = doc.querySelectorAll('link, meta, title');
       dangerousTags.forEach(tag => tag.remove());
+      
+      // Neutralize CMS containers by removing the 'container' class so they don't apply weird widths/paddings
+      const containers = doc.querySelectorAll('.container');
+      containers.forEach(el => el.classList.remove('container'));
+
+      // Remove inline font-family styles to ensure the global website font is always used
+      const styledElements = doc.querySelectorAll('[style]');
+      styledElements.forEach(el => {
+        el.style.removeProperty('font-family');
+      });
 
       // Wrap raw tables so the mobile layout can scroll horizontally without breaking the page.
       const tables = Array.from(doc.querySelectorAll('table'));
@@ -273,12 +284,50 @@ const UnnayanVolumes = () => {
       
       // Gather and preserve all style tags (they are often placed in the head by rich text editors)
       let styles = '';
+      const scopeCSS = (css, prefix) => {
+        // Strip font-family styling rules from style blocks
+        let cleanCss = css.replace(/font-family\s*:\s*[^;}\r\n]+;?/gi, '');
+        cleanCss = cleanCss.replace(/\/\*[\s\S]*?\*\//g, '');
+        return cleanCss.replace(/([^{]+)\{([^}]+)\}/g, (match, selector, declarations) => {
+          const trimmedSelector = selector.trim();
+          if (trimmedSelector.startsWith('@')) {
+            const innerScoped = declarations.replace(/([^{]+)\{([^}]+)\}/g, (innerMatch, innerSelector, innerDeclarations) => {
+              const scopedInnerSelector = innerSelector.split(',')
+                .map(s => {
+                  const cleanSel = s.trim();
+                  if (!cleanSel) return '';
+                  if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+                  return `${prefix} ${cleanSel}`;
+                })
+                .join(', ');
+              return `${scopedInnerSelector} {${innerDeclarations}}`;
+            });
+            return `${trimmedSelector} {${innerScoped}}`;
+          }
+          const scopedSelector = trimmedSelector.split(',')
+            .map(s => {
+              const cleanSel = s.trim();
+              if (!cleanSel) return '';
+              if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+              return `${prefix} ${cleanSel}`;
+            })
+            .join(', ');
+          return `${scopedSelector} {${declarations}}`;
+        });
+      };
+
       const styleTags = doc.querySelectorAll('style');
       styleTags.forEach(style => {
         let cssText = style.innerHTML;
-        // simple regex to replace body selectors with .unnayan-content
-        cssText = cssText.replace(/\bbody\b/g, '.unnayan-content');
-        styles += `<style>${cssText}</style>`;
+        // Strip out entire 'body', 'html', and '*' css rules so they don't apply weird background colors or wipe out Tailwind padding
+        cssText = cssText.replace(/(?:body|html|\*)\s*\{[^}]+\}/gi, '');
+        
+        // Scope the css text to prevent it leaking out of the journal content container
+        cssText = scopeCSS(cssText, '.unnayan-content');
+
+        // Wrap the injected styles in a CSS layer if possible to lower their specificity 
+        // against Tailwind utility classes on the rest of the page
+        styles += `<style>@layer unnayancms { ${cssText} }</style>`;
         style.remove(); // Remove from DOM so it doesn't duplicate if it was in the body
       });
       
@@ -298,6 +347,57 @@ const UnnayanVolumes = () => {
       return `https://docs.google.com/viewer?url=${encodeURIComponent(url)}`;
     }
     return url;
+  };
+
+  // Helper to convert Google Drive and raw document viewer URLs into embeddable iframe previews
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    if (url.includes("drive.google.com")) {
+      let embedUrl = url;
+      if (embedUrl.includes("/view")) {
+        embedUrl = embedUrl.split("/view")[0] + "/preview";
+      } else if (embedUrl.includes("open?id=")) {
+        embedUrl = embedUrl.replace("open?id=", "file/d/") + "/preview";
+      }
+      return embedUrl;
+    }
+    return url;
+  };
+
+  // Helper to extract the direct download link from a Google Drive or Cloudinary document URL
+  const getDownloadUrl = (url) => {
+    if (!url) return "#";
+    if (url.includes("drive.google.com")) {
+      let fileId = "";
+      if (url.includes("/file/d/")) {
+        fileId = url.split("/file/d/")[1].split("/")[0];
+      } else if (url.includes("id=")) {
+        const urlParams = new URLSearchParams(url.split("?")[1]);
+        fileId = urlParams.get("id") || "";
+      }
+      if (fileId) {
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      }
+    }
+    if (url.includes("docs.google.com/viewer?url=")) {
+      const encodedUrl = url.split("url=")[1];
+      if (encodedUrl) {
+        return decodeURIComponent(encodedUrl.split("&")[0]);
+      }
+    }
+    return url;
+  };
+
+  // Intercept rich text HTML content links dynamically via event delegation
+  const handleUnnayanContentClick = (e) => {
+    const anchor = e.target.closest("a");
+    if (!anchor) return;
+
+    const href = anchor.getAttribute("href");
+    if (href && (href.includes("drive.google.com") || href.includes("/raw/upload/") || href.endsWith(".pdf") || href.includes("docs.google.com/viewer"))) {
+      e.preventDefault();
+      setPdfModalUrl(href);
+    }
   };
 
   useEffect(() => {
@@ -336,33 +436,55 @@ const UnnayanVolumes = () => {
       });
   }, [collegeSlug]);
 
-  // Intercept links in the injected HTML to ensure they open in new tabs and use the viewer for raw docs
   useEffect(() => {
     const timer = setTimeout(() => {
       const contentLinks = document.querySelectorAll('.unnayan-content a');
       contentLinks.forEach(link => {
-        if (!link.hasAttribute('target')) {
-          link.setAttribute('target', '_blank');
-          link.setAttribute('rel', 'noopener noreferrer');
-        }
         const href = link.getAttribute('href');
-        if (href && href.includes('/raw/upload/') && !href.includes('docs.google.com')) {
-          link.setAttribute('href', `https://docs.google.com/viewer?url=${encodeURIComponent(href)}`);
+        
+        // Intercept PDF/Drive links to open inside popup modal
+        if (href && (href.includes("drive.google.com") || href.includes("/raw/upload/") || href.endsWith(".pdf") || href.includes("docs.google.com/viewer"))) {
+          link.removeAttribute("target");
+          
+          const handleLinkClick = (e) => {
+            e.preventDefault();
+            setPdfModalUrl(href);
+          };
+          
+          link.removeEventListener("click", link._clickHander);
+          link._clickHander = handleLinkClick;
+          link.addEventListener("click", handleLinkClick);
+        } else {
+          if (!link.hasAttribute('target')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+          }
+          if (href && href.includes('/raw/upload/') && !href.includes('docs.google.com')) {
+            link.setAttribute('href', `https://docs.google.com/viewer?url=${encodeURIComponent(href)}`);
+          }
         }
       });
-    }, 100);
+    }, 150);
     return () => clearTimeout(timer);
   }, [activeTab, journalData]);
 
   return (
-    <div className="min-h-screen bg-[#399ae5] py-4 md:py-10 px-2 sm:px-4 font-serif text-black flex flex-col items-center">
+    <div className="min-h-screen bg-[#DDE6F5] pt-24 md:pt-32 pb-10 px-2 sm:px-4 flex flex-col items-center">
       <style>{`
+        /* Force flatten any outer cards/wrappers coming from the CMS */
+        :where(.unnayan-content) > div,
+        :where(.unnayan-content) > section,
+        :where(.unnayan-content) > main {
+          background: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
         :where(.unnayan-content) p {
-          padding: 0 0 10px 0;
+          padding: 0 0 16px 0;
           text-align: justify;
-          line-height: 1.6;
-          font-family: "Times New Roman", Times, serif;
+          line-height: 1.8;
           font-size: 16px;
+          color: #5A6475;
           margin-bottom: 0;
         }
         :where(.unnayan-content) p:empty,
@@ -370,22 +492,25 @@ const UnnayanVolumes = () => {
           display: none;
         }
         :where(.unnayan-content) h1, :where(.unnayan-content) h2, :where(.unnayan-content) h3, :where(.unnayan-content) h4, :where(.unnayan-content) h5, :where(.unnayan-content) h6 {
-          font-weight: bold;
+          font-weight: 600;
           margin-bottom: 1.2rem;
-          margin-top: 1rem;
+          margin-top: 1.5rem;
+          color: #1A2D5A;
         }
-        :where(.unnayan-content) h1 { font-size: 1.5rem; }
-        :where(.unnayan-content) h2 { font-size: 1.25rem; }
-        :where(.unnayan-content) h3 { font-size: 1.1rem; }
+        :where(.unnayan-content) h1 { font-size: 22px; }
+        :where(.unnayan-content) h2 { font-size: 19px; }
+        :where(.unnayan-content) h3 { font-size: 17px; }
         :where(.unnayan-content) ul {
           list-style-type: disc;
           padding-left: 2rem;
           margin-bottom: 1rem;
+          color: #5A6475;
         }
         :where(.unnayan-content) ol {
           list-style-type: decimal;
           padding-left: 2rem;
           margin-bottom: 1rem;
+          color: #5A6475;
         }
         :where(.unnayan-content) li {
           margin-bottom: 0.5rem;
@@ -412,17 +537,26 @@ const UnnayanVolumes = () => {
         :where(.unnayan-content) table {
           width: 100%;
           border-collapse: collapse;
-          border: 1px solid #d1d5db;
+          border: 1px solid #C9D6EA;
           min-width: 600px;
         }
         :where(.unnayan-content) th, :where(.unnayan-content) td {
-          border: 1px solid #d1d5db;
-          padding: 0.5rem;
+          border: 1px solid #C9D6EA;
+          padding: 10px;
           text-align: left;
         }
         :where(.unnayan-content) th {
-          background-color: #f3f4f6;
-          font-weight: bold;
+          background-color: #E3ECF9;
+          font-weight: 600;
+          color: #1A2D5A;
+        }
+        :where(.unnayan-content) a {
+          color: #233872;
+          text-decoration: none;
+        }
+        :where(.unnayan-content) a:hover {
+          color: #2F4F8F;
+          text-decoration: underline;
         }
         /* Scratch Editor Block Fixes */
         :where(.unnayan-content) .scratch-card-block {
@@ -443,24 +577,25 @@ const UnnayanVolumes = () => {
         }
       `}</style>
       {/* Container matching screenshot structure */}
-      <div className="w-full max-w-[960px] bg-white rounded-lg shadow-2xl flex flex-col overflow-hidden pb-16 md:pb-0" >
+      <div className="w-full max-w-[1200px] bg-white rounded-[10px] shadow-[0_2px_12px_rgba(0,0,0,0.06)] border border-[#C9D6EA] flex flex-col overflow-hidden pb-16 md:pb-0" >
 
         <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
           {/* Left Sidebar */}
-          <div className="hidden md:block w-full md:w-[180px] shrink-0 bg-[#00a2ed] md:pt-8">
+          <div className="hidden md:block w-full md:w-[220px] shrink-0 bg-[#DDE6F5] !pt-4 md:!pt-8 !border-r !border-[#C9D6EA] !m-0">
             <div className="p-0 overflow-x-auto scrollbar-hide">
-              <ul className="w-full list-none p-0 m-0 flex flex-row md:flex-col whitespace-nowrap">
+              <ul className="!w-full !list-none !p-0 !m-0 !flex flex-row md:flex-col whitespace-nowrap">
                 {navItems.map((item, idx) => (
-                  <li key={idx} className="border-r md:border-r-0 md:border-b border-white border-opacity-50 flex-none">
+                  <li key={idx} className="!border-r md:!border-r-0 md:!border-b !border-[#C9D6EA] flex-none !list-none !p-0 !m-0 before:!hidden">
                     <button 
                       onClick={() => handleTabChange(item.id)}
-                      className={`w-full flex justify-center md:justify-start items-center px-4 py-3 md:py-2 text-center md:text-left text-[12px] font-bold transition-colors ${
+                      className={`!w-full !flex !justify-center md:!justify-start !items-center !px-4 !py-3 md:!py-2 !text-center md:!text-left !text-[13px] !font-semibold !uppercase transition-colors !min-h-[40px] !bg-transparent !border-x-0 !border-t-0 ${
                         activeTab === item.id 
-                          ? "bg-[#008bc9] text-white" 
-                          : "text-black hover:bg-[#008bc9] hover:text-white"
+                          ? "!bg-[#FFFFFF] !text-[#1A2D5A] md:!border-l-[4px] md:!border-b-0 !border-b-[4px] !border-[#1A2D5A]" 
+                          : "!text-[#233872] hover:!bg-[#E3ECF9] hover:!text-[#1A2D5A] md:!border-l-[4px] md:!border-b-0 !border-b-[4px] !border-transparent"
                       }`}
+                      style={{ outline: "none", boxShadow: "none" }}
                     >
-                      <span className="hidden md:inline-block w-2 h-2 bg-white mr-3 shadow-sm shrink-0"></span>
+                      <span className={`hidden md:inline-block !w-2 !h-2 !rounded-full !mr-3 shrink-0 transition-colors ${activeTab === item.id ? "!bg-[#1A2D5A]" : "!bg-[#233872]"}`}></span>
                       {item.name}
                     </button>
                   </li>
@@ -477,7 +612,7 @@ const UnnayanVolumes = () => {
                 aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={mobileNavOpen}
                 onClick={() => setMobileNavOpen((open) => !open)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1D3F8B] shadow-none"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-transparent text-[#1A2D5A] shadow-none"
               >
                 {mobileNavOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -491,13 +626,13 @@ const UnnayanVolumes = () => {
                   className="absolute inset-0 bg-black/25"
                   onClick={() => setMobileNavOpen(false)}
                 />
-                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#FBF8F2] shadow-2xl border-r border-[#E6E6EF]">
-                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#E6E6EF]">
+                <aside className="absolute left-0 top-0 h-full w-[290px] max-w-[85vw] bg-[#DDE6F5] shadow-2xl border-r border-[#C9D6EA]">
+                  <div className="flex items-center justify-between px-4 py-4 border-b border-[#C9D6EA]">
                     <button
                       type="button"
                       aria-label="Close menu"
                       onClick={() => setMobileNavOpen(false)}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1D3F8B]"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#1A2D5A]"
                     >
                       <X className="h-5 w-5" />
                     </button>
@@ -505,13 +640,13 @@ const UnnayanVolumes = () => {
                   <div className="h-[calc(100%-57px)] overflow-y-auto">
                     <ul className="!w-full !list-none !p-0 !m-0 flex flex-col">
                       {navItems.map((item, idx) => (
-                        <li key={idx} className="border-b border-[#E6E6EF] last:border-b-0">
+                        <li key={idx} className="border-b border-[#C9D6EA] last:border-b-0">
                           <button
                             onClick={() => handleTabChange(item.id)}
                             className={`w-full flex items-center px-4 py-3 text-left text-[13px] font-semibold uppercase transition-colors ${
                               activeTab === item.id
-                                ? "bg-[#E3DAFF] text-[#1D3F8B]"
-                                : "text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                                ? "bg-[#FFFFFF] text-[#1A2D5A] border-l-[4px] border-[#1A2D5A]"
+                                : "text-[#233872] hover:bg-[#E3ECF9] hover:text-[#1A2D5A] border-l-[4px] border-transparent"
                             }`}
                           >
                             {item.name}
@@ -525,18 +660,30 @@ const UnnayanVolumes = () => {
             )}
 
             {/* Header Banner */}
-            <div className="w-full mb-6 border-b border-black pb-4 flex justify-center items-center">
-              {journalData?.logo_url ? (
-                <img src={journalData.logo_url} alt={journalData?.name || "Journal Logo"} className="w-full h-auto object-contain" />
-              ) : (
-                <h1 className="text-3xl font-bold tracking-widest text-black">
-                  {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
-                </h1>
-              )}
+            <div className="w-full mb-10 border-b border-[#C9D6EA] pb-6 min-h-[50px]">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
+                <div className="flex-1 flex justify-start">
+                  {journalData?.logo_url ? (
+                    <img src={journalData.logo_url} alt={journalData?.name || "Journal Logo"} className="w-auto h-auto max-h-[250px] object-contain" />
+                  ) : (
+                    <h1 className="text-[28px] font-bold text-[#1A2D5A]">
+                      {journalData?.name ? journalData.name.toUpperCase() : "UNNAYAN"}
+                    </h1>
+                  )}
+                </div>
+              </div>
+              
+              {/* Additional Indexed Logos Placeholder */}
+              <div className="flex items-center gap-6 mt-6 ml-2">
+                {/* 
+                  Note: Add your J-Gate and NDL library logo image paths here if they are not part of the main logo_url.
+                  For now, they are prepared as empty containers or you can supply the img tags if you have the assets. 
+                */}
+              </div>
             </div>
             
             {/* Main Journal Text */}
-            <div className="w-full mx-auto text-[14px] px-2 sm:px-4 md:px-10 overflow-hidden break-words">
+            <div className="w-full mx-auto text-base text-[#5A6475] overflow-hidden break-words mt-12">
               {loading ? (
                 <div className="text-center py-10">Loading...</div>
               ) : error ? (
@@ -544,35 +691,35 @@ const UnnayanVolumes = () => {
               ) : (
                 <>
                   {activeTab === "home" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.home_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.home_html) }} />
                   )}
                   {activeTab === "about" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.about_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.about_html) }} />
                   )}
                   {activeTab === "policies" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.policies_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.policies_html) }} />
                   )}
                   {activeTab === "callForPapers" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.call_for_papers_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.call_for_papers_html) }} />
                   )}
                   {activeTab === "authorsGuideline" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.author_guidelines_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.author_guidelines_html) }} />
                   )}
                   {activeTab === "contactUs" && (
-                    <div className="unnayan-content" dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.contact_us_html) }} />
+                    <div className="unnayan-content" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(journalData?.contact_us_html) }} />
                   )}
                   {activeTab === "volumes" && (
                     volumes.length === 0 ? (
                       <div className="text-center py-10">No volumes found</div>
                     ) : selectedVolume === null ? (
                       <div className="mb-12">
-                        <h2 className="font-bold mb-4 text-[18px] text-black">Volumes</h2>
+                        <h2 className="font-semibold mb-4 text-[20px] text-[#1A2D5A]">Volumes</h2>
                         <ul className="list-disc pl-5">
                           {volumes.map((volume) => (
                             <li key={volume.id} className="mb-4">
                               <button
                                 onClick={() => setSearchParams({ volume: slugify(volume.volume_title) })}
-                                className="text-[#008bc9] font-bold text-[15px] underline hover:text-blue-800 text-left"
+                                className="text-[#233872] font-semibold text-[15px] hover:text-[#2F4F8F] hover:underline text-left"
                               >
                                 {volume.volume_title}
                               </button>
@@ -584,35 +731,50 @@ const UnnayanVolumes = () => {
                       <div className="mb-12">
                         <button 
                           onClick={() => setSearchParams({})}
-                          className="mb-6 text-[#008bc9] font-bold text-[14px] hover:underline flex items-center"
+                          className="mb-6 text-[#233872] font-semibold text-[14px] hover:text-[#2F4F8F] hover:underline flex items-center"
                         >
                           &larr; Back to all volumes
                         </button>
-                        <h3 className="font-bold mb-6 text-[15px] text-black">{selectedVolume.volume_title}</h3>
+                        <h3 className="font-semibold mb-6 text-[20px] text-[#1A2D5A]">{selectedVolume.volume_title}</h3>
                         
                         {(selectedVolume.editorial_link || selectedVolume.contents_link) && (
-                          <p className="mb-6 leading-normal text-[14px] text-black">
+                          <p className="mb-6 leading-normal text-[14px] text-[#5A6475]">
                             {selectedVolume.editorial_link && (
                               <>
-                                I. Editorial <a href={getViewerUrl(selectedVolume.editorial_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                                I. Editorial{' '}
+                                <button
+                                  onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.editorial_link))}
+                                  className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                >
+                                  (Click here)
+                                </button>
                                 {selectedVolume.contents_link && <br/>}
                               </>
                             )}
                             {selectedVolume.contents_link && (
                               <>
-                                II. Contents <a href={getViewerUrl(selectedVolume.contents_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">(Click here)</a>
+                                II. Contents{' '}
+                                <button
+                                  onClick={() => setPdfModalUrl(getViewerUrl(selectedVolume.contents_link))}
+                                  className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left"
+                                >
+                                  (Click here)
+                                </button>
                               </>
                             )}
                           </p>
                         )}
 
                         {selectedVolume.papers && selectedVolume.papers.map((paper, index) => (
-                          <div key={index} className="mb-8 border-b border-[#ECECEC] pb-6 last:border-0 leading-normal text-left pr-4 text-black text-[14px]">
-                            <strong>{index + 1}.</strong> {paper.title}{' '}
+                          <div key={index} className="mb-8 border-b border-[#C9D6EA] pb-6 last:border-0 leading-[1.8] text-left pr-4 text-[#5A6475] text-base">
+                            <strong className="text-[#1A2D5A]">{index + 1}.</strong> {paper.title}{' '}
                             {paper.pdf_link && (
-                              <a href={getViewerUrl(paper.pdf_link)} target="_blank" rel="noopener noreferrer" className="underline text-[#008bc9] hover:text-blue-800 font-medium">
+                              <button
+                                onClick={() => setPdfModalUrl(getViewerUrl(paper.pdf_link))}
+                                className="text-[#233872] hover:text-[#2F4F8F] hover:underline font-semibold bg-transparent border-0 p-0 cursor-pointer inline text-left ml-1"
+                              >
                                 (Click here)
-                              </a>
+                              </button>
                             )}
                             {paper.authors && (
                               <>
@@ -627,7 +789,7 @@ const UnnayanVolumes = () => {
                               </>
                             )}
                             {paper.abstract_html && (
-                              <div className="mt-3 unnayan-content text-[13.5px] text-[#444]" dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
+                              <div className="mt-3 unnayan-content text-sm text-[#5A6475]" onClick={handleUnnayanContentClick} dangerouslySetInnerHTML={{ __html: formatHTMLContent(paper.abstract_html) }} />
                             )}
                           </div>
                         ))}
@@ -641,17 +803,17 @@ const UnnayanVolumes = () => {
         </div>
 
         {/* Mobile Bottom Nav */}
-        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#E6E6EF] bg-white/95 backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[#C9D6EA] bg-[#1A2D5A] backdrop-blur-sm shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
           <div className="overflow-x-auto">
             <div className="flex min-w-max items-stretch">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleTabChange(item.id)}
-                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#E6E6EF] last:border-r-0 ${
+                  className={`flex-1 min-w-[96px] px-3 py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors border-r border-[#C9D6EA] last:border-r-0 ${
                     activeTab === item.id
-                      ? "bg-[#E3DAFF] text-[#1D3F8B]"
-                      : "bg-white text-[#555555] hover:bg-[#EEE9FF] hover:text-[#1D3F8B]"
+                      ? "bg-[#233872] text-[#FFFFFF]"
+                      : "bg-[#1A2D5A] text-[#E3ECF9] hover:bg-[#233872] hover:text-[#FFFFFF]"
                   }`}
                 >
                   <span className="block whitespace-nowrap">{item.name}</span>
@@ -662,15 +824,15 @@ const UnnayanVolumes = () => {
         </div>
 
         {/* Footer inside the container */}
-        <div className="hidden md:flex w-full bg-[#00a2ed] py-2 justify-center items-center">
-          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center">
+        <div className="hidden md:flex w-full bg-[#1A2D5A] py-3 border-t border-[#C9D6EA] justify-center items-center">
+          <div className="flex items-center space-x-3 px-4 flex-wrap justify-center text-[12px] text-[#FFFFFF]">
             {navItems.map((item, idx) => (
               <React.Fragment key={item.name}>
-                {idx > 0 && <span className="w-2 h-2 bg-white inline-block shadow-sm"></span>}
+                {idx > 0 && <span className="w-1 h-1 rounded-full bg-[#FFFFFF] inline-block"></span>}
                 <button 
                   onClick={() => handleTabChange(item.id)}
-                  className={`text-[11px] font-bold hover:underline ${
-                    activeTab === item.id ? "text-white" : "text-black"
+                  className={`font-semibold hover:underline ${
+                    activeTab === item.id ? "text-[#E3ECF9] underline" : "text-[#FFFFFF] hover:text-[#E3ECF9]"
                   }`}
                 >
                   {item.name}
@@ -680,9 +842,57 @@ const UnnayanVolumes = () => {
           </div>
         </div>
       </div>
-      {/* Modals and Overlays */}
-      {pdfUrlToView && (
-        <PdfViewerModal url={pdfUrlToView} onClose={() => setPdfUrlToView(null)} />
+
+      {/* Document/PDF Viewer Popup Modal */}
+      {pdfModalUrl && createPortal(
+        <div 
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-80 p-4 transition-all"
+          onClick={() => setPdfModalUrl(null)}
+        >
+          <div 
+            className="bg-white rounded-xl w-full max-w-5xl h-[90vh] relative flex flex-col overflow-hidden shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-[#1A2D5A] px-6 py-4 flex items-center justify-between shrink-0">
+              <h3 className="font-bold text-white tracking-wide text-lg md:text-xl uppercase">
+                Document Viewer
+              </h3>
+              <div className="flex items-center gap-4">
+                <a 
+                  href={getDownloadUrl(pdfModalUrl)} 
+                  download 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-[#233872] hover:bg-[#2F4F8F] text-white hover:text-white font-semibold text-xs md:text-sm px-4 py-2 rounded transition-all cursor-pointer inline-flex items-center gap-2 border-0 shadow-sm"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 inline-block">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                  <span>Download</span>
+                </a>
+                <button 
+                  className="text-white text-3xl font-bold hover:opacity-75 transition-opacity cursor-pointer border-0 bg-transparent leading-none"
+                  onClick={() => setPdfModalUrl(null)}
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+            
+            {/* Modal Content (Iframe) */}
+            <div className="flex-grow w-full h-full bg-[#f4f4f4] relative">
+              <iframe 
+                src={getEmbedUrl(pdfModalUrl)} 
+                title="Document Viewer" 
+                className="w-full h-full border-0"
+                allow="autoplay"
+              />
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );
