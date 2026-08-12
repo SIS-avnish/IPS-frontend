@@ -4,11 +4,12 @@ import { PageSkeleton } from '../components/common/SkeletonLoader'
 import StudentClub from '../components/others/StudentClub'
 import StudentTestimonials from '../components/others/StudentTestimonials'
 import Hero from '../components/others/Hero'
-import { fetchPageData } from '../services/api'
+import { fetchPageData, fetchActivities } from '../services/api'
 import { fetchIpsaCollegePageCards } from '../services/ipsaReuse'
 import { ScratchSections } from '../components/common/ScratchHtml'
 import useSEO from '../hooks/useSEO'
 import CollegeTileGrid from '../components/common/CollegeTileGrid'
+import ActivitiesSlider from '../components/activity/ActivitiesSlider'
 
 const Student = () => {
   const { collegeSlug } = useParams()
@@ -16,6 +17,7 @@ const Student = () => {
   const [pageData, setPageData] = useState(null)
   const [highlightCards, setHighlightCards] = useState([])
   const [loading, setLoading] = useState(true)
+  const [events, setEvents] = useState([])
 
   useSEO(pageData)
 
@@ -33,6 +35,27 @@ const Student = () => {
         } else {
           setHighlightCards([])
         }
+
+        // Fetch club activities list
+        const activitiesList = await fetchActivities(collegeSlug || 'coc', "club").catch(() => [])
+        const normalizedActivities = Array.isArray(activitiesList)
+          ? activitiesList
+          : Array.isArray(activitiesList?.activities)
+            ? activitiesList.activities
+            : Array.isArray(activitiesList?.results)
+              ? activitiesList.results
+              : Array.isArray(activitiesList?.data)
+                ? activitiesList.data
+                : [];
+        const cards = normalizedActivities.map((a) => ({
+          id: a.slug || a.id,
+          title: a.title,
+          subtitle: a.short_description,
+          thumbnail_image: a.main_image,
+          start_date: a.start_date,
+          _isActivity: true,
+        }));
+        setEvents(cards)
       } catch (err) {
         console.error('Failed to fetch activities/clubs data:', err)
         setSections({})
@@ -69,12 +92,21 @@ const Student = () => {
           ctaLabel="Open Clubs"
         />
       )}
+      {events.length > 0 && (
+        <ActivitiesSlider
+          title="Club Activities"
+          content="Our student clubs organize workshops, competitions, and interactive sessions that bring students together to share ideas, learn new skills, and build a vibrant campus community."
+          events={events}
+          collegeSlug={collegeSlug}
+        />
+      )}
       <StudentClub html={clubSection?.html} />
       <StudentTestimonials
         title={testimonialSection?.title}
         testimonials={testimonialSection?.items}
         videoTitle={videoSection?.title}
         videos={videoSection?.images}
+        hideSubtitle={true}
       />
       <ScratchSections sections={sections} exclude={['hero', 'students_activity_club', 'placement_student_testimonial', 'alumni_video_testimonials']} />
     </div>

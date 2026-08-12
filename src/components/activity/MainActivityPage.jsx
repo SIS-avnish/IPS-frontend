@@ -2,11 +2,10 @@ import { useEffect, useState, useMemo, memo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import Media from "../common/Media";
-import { fetchPageData, fetchActivities, resolveImageUrl } from "../../services/api";
+import { fetchPageData, resolveImageUrl } from "../../services/api";
 import { PageSkeleton } from "../common/SkeletonLoader";
 import useSEO from "../../hooks/useSEO";
 import activitiesFallback from "../../assets/Images/activities.jpg";
-import EventSlider from "./ActivitiesSlider";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -80,9 +79,6 @@ const MainActivityPage = memo(() => {
   const [sections, setSections] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Club activities fetched from the activities API
-  const [clubActivities, setClubActivities] = useState([]);
-
   useSEO(pageData);
 
   useEffect(() => {
@@ -100,19 +96,6 @@ const MainActivityPage = memo(() => {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
-
-    return () => { cancelled = true; };
-  }, [slug]);
-
-  // Fetch club activities independently
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchActivities(slug, "club")
-      .then((data) => {
-        if (!cancelled) setClubActivities((data || []).map(mapActivity));
-      })
-      .catch((err) => console.error("Failed to fetch club activities:", err));
 
     return () => { cancelled = true; };
   }, [slug]);
@@ -265,20 +248,6 @@ const MainActivityPage = memo(() => {
           )}
         </div>
       </section>
-
-
-
-      {/* ── STUDENT CLUBS ── */}
-      {clubActivities.length > 0 && (
-        <section className="bg-white">
-          <EventSlider
-            title={SECTION_META.club.title}
-            content={SECTION_META.club.content}
-            events={clubActivities}
-            collegeSlug={slug}
-          />
-        </section>
-      )}
     </div>
   );
 });
