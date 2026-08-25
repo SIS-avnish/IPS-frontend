@@ -408,13 +408,15 @@ const UnnayanVolumes = () => {
         return res.json();
       });
 
-    safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`)
+    // safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journals`)
+    safeFetch(`https://portal.ipsa.ac.in/api/${collegeSlug || 'ibmr'}/journals`)
       .then(journalJson => {
         const journal = Array.isArray(journalJson) ? journalJson[0] : journalJson;
         setJournalData(journal);
         
         if (journal && journal.id) {
-          return safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=${journal.id}`);
+          // return safeFetch(`https://portal.ipsacademyindore.edu.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=${journal.id}`);
+          return safeFetch(`https://portal.ipsa.ac.in/api/${collegeSlug || 'ibmr'}/journal-volumes?journal_id=${journal.id}`);
         } else {
           setVolumes([]);
           return null;

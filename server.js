@@ -20,7 +20,8 @@ async function prefetchPageState(urlPath) {
   if (cleanPath === '/' || cleanPath === '/ipsa/home' || cleanPath === '/ipsa') {
     const collegeSlug = 'ipsa';
     const pageName = 'home';
-    const serverBase = 'https://portal.ipsacademyindore.edu.in/api';
+    // const serverBase = 'https://portal.ipsacademyindore.edu.in/api';
+    const serverBase = 'https://portal.ipsa.ac.in/api';
 
     try {
       console.log(`\n[SSR Fetch] Pre-fetching database data for ${collegeSlug}/${pageName} on server...`);

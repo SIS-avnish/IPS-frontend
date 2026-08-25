@@ -13,7 +13,8 @@ import StudentTestimonials from '../components/others/StudentTestimonials'
 import { fetchActivities } from '../services/api'
 import ActivitiesSlider from '../components/activity/ActivitiesSlider'
 
-const PAGE_BASE = 'https://portal.ipsacademyindore.edu.in/api'
+// const PAGE_BASE = 'https://portal.ipsacademyindore.edu.in/api'
+const PAGE_BASE = 'https://portal.ipsa.ac.in/api'
 
 function getSectionEntries(sections) {
   if (!sections || typeof sections !== 'object') return []

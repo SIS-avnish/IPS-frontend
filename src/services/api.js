@@ -10,12 +10,15 @@ if (typeof window === "undefined") {
     axios.defaults.adapter = "fetch";
 }
 
-const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
+// const API_BASE = "https://portal.ipsacademyindore.edu.in/api/ipsa";
+const API_BASE = "https://portal.ipsa.ac.in/api/ipsa";
 // const API_BASE = "http://localhost:7777/api/ipsa";
 // const SERVER_BASE = "http://localhost:7777/api";
-const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
+// const SERVER_BASE = "https://portal.ipsacademyindore.edu.in/api";
+const SERVER_BASE = "https://portal.ipsa.ac.in/api";
 // const MEDIA_BASE = "http://localhost:7777";
-const MEDIA_BASE = "https://portal.ipsacademyindore.edu.in";
+// const MEDIA_BASE = "https://portal.ipsacademyindore.edu.in";
+const MEDIA_BASE = "https://portal.ipsa.ac.in";
 
 // In-memory cache to avoid re-fetching on repeat navigation
 const pageCache = new Map();
