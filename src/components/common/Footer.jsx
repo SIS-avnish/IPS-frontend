@@ -88,20 +88,22 @@ export default memo(function Footer() {
           {sections.map((sec, i) => (
             <div key={i}>
               <h6 className="text-[#00BFFF] font-medium mb-3">
-                <Link to={`/${sec.slug}`} target="_blank" className="text-xl text-[#00A7C4] hover:text-white transition">
+                <a href={`https://${sec.slug}.ipsa.ac.in/${sec.slug}`} target="_blank" rel="noopener noreferrer" className="text-xl text-[#00A7C4] hover:text-white transition">
                   {sec.title}
-                </Link>
+                </a>
               </h6>
 
               <ul className="space-y-4">
                 {sec.links.map((l, idx) => (
                   <li key={idx} className="leading-tight" title={l}>
-                    <Link
-                      to={`/${sec.slug}#courses`} target="blank"
+                    <a
+                      href={`https://${sec.slug}.ipsa.ac.in/${sec.slug}#courses`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-[#00BFFF] transition block truncate"
                     >
                       {l}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

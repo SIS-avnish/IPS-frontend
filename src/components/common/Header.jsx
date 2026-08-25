@@ -200,15 +200,16 @@ export default function Navbar() {
                       <div className={`lg:absolute lg:left-full lg:top-0 lg:hidden lg:group-hover:flex flex-col bg-white shadow-md border lg:min-w-[180px] ${otherCoursesOpen ? "flex" : "hidden"}`}>
 
                         {colleges.map(([collegeName, slug]) => (
-                          <NavLink
+                          <a
                             key={slug}
-                            to={`https://ipsa.ac.in/${slug}`}
+                            href={`https://${slug}.ipsa.ac.in/${slug}`}
                             target="_blank"
+                            rel="noopener noreferrer"
                             onClick={closeAll}
                             className={dropdownLink}
                           >
                             {collegeName}
-                          </NavLink>
+                          </a>
                         ))}
 
                       </div>
@@ -225,15 +226,16 @@ export default function Navbar() {
                   )
                 )
                 : colleges.map(([name, slug]) => (
-                  <NavLink
+                  <a
                     key={slug}
-                    to={`https://ipsa.ac.in/${slug}`}
+                    href={`https://${slug}.ipsa.ac.in/${slug}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     onClick={closeAll}
                     className={dropdownLink}
                   >
                     {name}
-                  </NavLink>
+                  </a>
                 ))
               }
 
