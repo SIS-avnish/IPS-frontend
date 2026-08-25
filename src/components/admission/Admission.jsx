@@ -274,7 +274,7 @@ export default memo(function Admission() {
                 Courses
               </a>
               <a
-                href="https://ipsacademyindore.edu.in/"
+                href="https://ipsa.ac.in/"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[#222] text-[14px] font-semibold px-5 py-[10px] rounded-[4px] bg-[#ffd400] transition-opacity hover:opacity-85 max-[600px]:flex-1 max-[600px]:min-w-[95px] max-[600px]:text-[12px] max-[600px]:px-[8px] max-[600px]:py-[9px]"

@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "react-snap",
     "dev:ssr": "node server.js",
     "build:ssr": "vite build && cross-env SSR=true vite build",
     "start:ssr": "cross-env NODE_ENV=production node server.js",

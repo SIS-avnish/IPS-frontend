@@ -106,7 +106,7 @@ export default function Navbar() {
       <div className="relative max-w-[1440px] mx-auto h-16 sm:h-20 lg:h-[96px] px-4 sm:px-6 lg:px-14 flex items-center justify-between gap-4">
 
         {/* LOGO */}
-        <div onClick={() => window.location.href = "https://ipsacademyindore.edu.in/"} className="flex-shrink-0 cursor-pointer">
+        <div onClick={() => window.location.href = "https://ipsa.ac.in/"} className="flex-shrink-0 cursor-pointer">
 
           <img src={collegeLogo || logo} className="h-12 sm:h-14 lg:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" alt="logo" />
         </div>
@@ -135,7 +135,7 @@ export default function Navbar() {
 
           {activeCollege === "ipsa" ? (
             <NavLink
-              to="https://ipsacademyindore.edu.in/"
+              to="https://ipsa.ac.in/"
               end
               className={linkClass}
               onClick={closeAll}
@@ -144,7 +144,7 @@ export default function Navbar() {
             </NavLink>
           ) : (
             <NavLink
-              to={`https://ipsacademyindore.edu.in/`}
+              to={`https://ipsa.ac.in/`}
               end
               className={linkClass}
               onClick={closeAll}
@@ -202,7 +202,7 @@ export default function Navbar() {
                         {colleges.map(([collegeName, slug]) => (
                           <NavLink
                             key={slug}
-                            to={`https://ipsacademyindore.edu.in/${slug}`}
+                            to={`https://ipsa.ac.in/${slug}`}
                             target="_blank"
                             onClick={closeAll}
                             className={dropdownLink}
@@ -227,7 +227,7 @@ export default function Navbar() {
                 : colleges.map(([name, slug]) => (
                   <NavLink
                     key={slug}
-                    to={`https://ipsacademyindore.edu.in/${slug}`}
+                    to={`https://ipsa.ac.in/${slug}`}
                     target="_blank"
                     onClick={closeAll}
                     className={dropdownLink}

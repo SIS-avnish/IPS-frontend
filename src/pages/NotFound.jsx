@@ -8,7 +8,7 @@ export default function NotFound() {
   useSEO({
     meta_title: "Page Not Found | IPS Academy Indore",
     meta_description: "The page you are looking for does not exist. Return to the IPS Academy Indore home page to explore our programs and campus.",
-    canonical_url: "https://ipsacademyindore.edu.in/404"
+    canonical_url: "https://ipsa.ac.in/404"
   });
 
   return (

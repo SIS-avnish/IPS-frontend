@@ -33,7 +33,7 @@ const getCollegeSlugFromSubdomain = () => {
   const hostname = window.location.hostname
   const parts = hostname.split('.')
 
-  // If it's a subdomain (e.g., ibmr.ipsacademyindore.edu.in)
+  // If it's a subdomain (e.g., ibmr.ipsa.ac.in)
   if (parts.length > 2) {
     return parts[0] // Return the subdomain (ibmr, isr, coc, etc.)
   }
@@ -56,7 +56,7 @@ export default function AppRoutes() {
           <Route path="/" element={<Navigate to={`/${collegeSlug}`} replace />} />
 
           {/* COLLEGE ROUTES */}
-          <Route path="https://ipsacademyindore.edu.in/ipsa/home" element={<Home />} />
+          <Route path="https://ipsa.ac.in/ipsa/home" element={<Home />} />
           <Route path="/ipsa/about" element={<AboutPage />} />
           <Route path="/ipsa/contact" element={<Contact />} />
           <Route path="/ipsa/facilities" element={<FacilitiesPage />} />

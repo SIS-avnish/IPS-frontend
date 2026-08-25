@@ -62,7 +62,7 @@ function injectSEOMetadata(template, pageData) {
   const title = pageData.meta_title || "IPS Academy Indore | Admissions, Programs, Campus Life";
   const desc = pageData.meta_description || "IPS Academy Indore offers career-focused programs, experienced faculty, and a vibrant campus. Explore admissions, courses, and campus life.";
   const keywords = pageData.meta_keywords || "";
-  const canonical = pageData.canonical_url || "https://ipsacademyindore.edu.in/ipsa/home";
+  const canonical = pageData.canonical_url || "https://ipsa.ac.in/ipsa/home";
   const ogImage = pageData.og_image || "https://res.cloudinary.com/didgvvg7n/image/upload/v1777276879/college_logos/smqartzltotnp9shalrn.png";
 
   let headContent = `
