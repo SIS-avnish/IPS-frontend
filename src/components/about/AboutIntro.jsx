@@ -35,7 +35,7 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
   // Use ecosystem items from the API, or fallback to defaults
   const features = ecosystemData?.cards
     ? ecosystemData.cards.map((item, i) => ({
-      icon: item.icon ,
+      icon: item.icon ? resolveImageUrl(item.icon) : "",
       title: item.title,
       text: item.description
     }))
@@ -44,7 +44,9 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
   // Growth image from the API gallery section
   const growthImg = growthImage?.images?.[0]
     ? resolveImageUrl(growthImage.images[0])
-    : studentFallback;
+    : (growthImage?.image ? resolveImageUrl(growthImage.image) : "");
+
+  const aboutImg = aboutData?.image ? resolveImageUrl(aboutData.image) : "";
 
   return (
     <section className="py-[50px] sm:py-[120px]">
@@ -61,13 +63,29 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
         >
           <div>
             <h2 className="text-[60px] font-medium text-[#0066A6] text-center sm:text-left" >{title}</h2>
-          <div class="h-[3px] w-50 bg-[#F68C1F] mx-auto sm:mx-0"></div>
+          <div className="h-[3px] w-50 bg-[#F68C1F] mx-auto sm:mx-0"></div>
           </div>
 
           <p className="text-gray-700 text-center sm:text-left">
             {content}
           </p>
         </motion.div>
+        
+        {aboutImg && (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="w-full mt-6 mb-12"
+          >
+            <Media
+              src={aboutImg}
+              alt="About IPS"
+              className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md"
+            />
+          </motion.div>
+        )}
 
         {/* feature section */}
         <div className="grid md:grid-cols-2 gap-14 mt-10 items-start">

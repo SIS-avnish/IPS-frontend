@@ -1,5 +1,5 @@
 
-import { lazy, Suspense } from "react"
+import React, { lazy, Suspense } from "react"
 import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import Footer from "./components/common/Footer"
 import Navbar from "./components/common/Header"

@@ -37,15 +37,67 @@ export default memo(function Footer() {
   const [socialLinks, setSocialLinks] = useState([]);
   const [colleges, setColleges] = useState([]);
 
+  const customSocialLinks = {
+    ipsa: [
+      { platform: "instagram", url: "https://www.instagram.com/ipsa_indore_india?igsi=OW8wODdiZWhhZTJq" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1duEQ6JGos/" }
+    ],
+    ibmr: [
+      { platform: "instagram", url: "https://www.instagram.com/ibmr_ipsacademy?igsi=MjRyN3JtamQ2em5h" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1C3ExXRD6g/" }
+    ],
+    isr: [ // Science and Research
+      { platform: "instagram", url: "https://www.instagram.com/dsr_ips_academy?igsi=MXYybW56c2x3dGdveQ==" },
+      { platform: "facebook", url: "https://www.facebook.com/share/19bKao3GJg/" }
+    ],
+    doss: [ // Social science
+      { platform: "instagram", url: "https://www.instagram.com/deptofsocial_sciences?igsi=azlrZ3N6YmRoYTU5" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1LwXDkvdcN/" }
+    ],
+    iohm: [
+      { platform: "instagram", url: "https://www.instagram.com/iohm_ipsacademy?igsi=MXFuYWlkZTZzZGpncA==" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1BPvX1H2jr/" }
+    ],
+    col: [ // College of Law
+      { platform: "instagram", url: "https://www.instagram.com/collegeoflaw_ipsa?igsi=MWZweGc5cmJucWgwNw==" },
+      { platform: "facebook", url: "https://www.facebook.com/share/19XShfH2je/" }
+    ],
+    soc: [ // School of Computer
+      { platform: "instagram", url: "https://www.instagram.com/soc_ipsa?igsi=c21pZHA3aW51a3I0" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1EFUju3vws/" }
+    ],
+    coc: [ // Commerce
+      { platform: "instagram", url: "https://www.instagram.com/departmentofcommerce_ipsa?igsi=MnBlcTUwMHZxdXVt" },
+      { platform: "facebook", url: "https://www.facebook.com/share/18dgqJbr5L/" }
+    ],
+    ift: [ // Fashion
+      { platform: "instagram", url: "https://www.instagram.com/ift_ips_academy?igsi=MW0wdDgyMzB1NW5jdA==" },
+      { platform: "facebook", url: "https://www.facebook.com/share/1DPf9AyQh3/" }
+    ]
+  };
+
   useEffect(() => {
     fetchCollegeInfo(activeCollege)
       .then((info) => {
         setCollegeLogo(info?.footer_logo || info?.logo || null);
-        setSocialLinks(info?.social_media_links || []);
+        
+        // Use custom links for the active college, or fallback to API links. 
+        // If neither exists, fallback to main IPSA links.
+        let linksToUse = customSocialLinks[activeCollege] || info?.social_media_links;
+        if (!linksToUse || linksToUse.length === 0) {
+          linksToUse = customSocialLinks["ipsa"];
+        }
+        
+        // Always include YouTube link globally
+        const finalLinks = [...linksToUse, { platform: "youtube", url: "https://www.youtube.com/@IPSAIndoreIndia" }];
+        
+        setSocialLinks(finalLinks);
       })
       .catch(() => {
         setCollegeLogo(null);
-        setSocialLinks([]);
+        let fallbackLinks = customSocialLinks[activeCollege] || customSocialLinks["ipsa"];
+        const finalLinks = [...fallbackLinks, { platform: "youtube", url: "https://www.youtube.com/@IPSAIndoreIndia" }];
+        setSocialLinks(finalLinks);
       });
   }, [activeCollege]);
 

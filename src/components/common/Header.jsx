@@ -134,23 +134,21 @@ export default function Navbar() {
         ${menuOpen ? "flex" : "hidden lg:flex"}`}>
 
           {activeCollege === "ipsa" ? (
-            <NavLink
-              to="https://ipsa.ac.in/"
-              end
-              className={linkClass}
+            <a
+              href="https://ipsa.ac.in/"
+              className={linkClass({ isActive: location.pathname === "/" || location.pathname === "/ipsa" || location.pathname === "/ipsa/home" })}
               onClick={closeAll}
             >
               Home
-            </NavLink>
+            </a>
           ) : (
-            <NavLink
-              to={`https://ipsa.ac.in/`}
-              end
-              className={linkClass}
+            <a
+              href="https://ipsa.ac.in/"
+              className={linkClass({ isActive: false })}
               onClick={closeAll}
             >
               Home
-            </NavLink>
+            </a>
           )}
 
           {/* ABOUT */}
@@ -165,16 +163,10 @@ export default function Navbar() {
             onMouseLeave={() => setCollegesOpen(false)}
           >
             <button
-              onClick={() => {
-                if (isCollegeHome) {
-                  navigation(`/${activeCollege}`);
-                } else {
-                  setCollegesOpen(!collegesOpen);
-                }
-              }}
+              onClick={() => setCollegesOpen(!collegesOpen)}
               className="w-full lg:w-auto text-left py-2 font-medium text-gray-900 hover:text-red-500 flex items-center justify-between lg:justify-start gap-2"
             >
-              {isCollegeHome ? collegeNameMap[activeCollege] : "Courses"} ▾
+              {isCollegeHome ? collegeNameMap[activeCollege] || "Menu" : "Courses"} ▾
             </button>
 
             <div className={`lg:absolute lg:top-full lg:left-0
@@ -206,7 +198,7 @@ export default function Navbar() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={closeAll}
-                            className={dropdownLink}
+                            className={dropdownLink({ isActive: false })}
                           >
                             {collegeName}
                           </a>
@@ -232,7 +224,7 @@ export default function Navbar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={closeAll}
-                    className={dropdownLink}
+                    className={dropdownLink({ isActive: false })}
                   >
                     {name}
                   </a>

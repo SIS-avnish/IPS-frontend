@@ -11,7 +11,7 @@ export default memo(function Hero({ data }) {
 
   const heroImage = data?.images?.[0]
     ? resolveImageUrl(data.images[0])
-    : aboutFallback;
+    : (data?.image ? resolveImageUrl(data.image) : aboutFallback);
   const description = data?.description || "Welcome to Central India's Premier Institute";
   const ctaText = data?.cta_text || "Explore Now";
   const ctaLink = data?.cta_link || "#";
