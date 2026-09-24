@@ -1,6 +1,27 @@
 import { memo } from "react";
 
 const VIDEO_EXTENSIONS = [".mp4", ".webm", ".ogg", ".mov", ".avi", ".mkv", ".m4v"];
+const MEDIA_BASE = "https://portal.ipsa.ac.in";
+
+function normalizeMediaUrl(src) {
+  if (!src || typeof src !== "string") return src;
+  if (/^(https?:|data:|blob:)/i.test(src)) return src;
+  if (/^\/(uploads|media|storage)\//i.test(src)) return MEDIA_BASE + src;
+  return src;
+}
+
+function normalizeSrcSet(srcSet) {
+  if (!srcSet || typeof srcSet !== "string") return srcSet;
+
+  return srcSet
+    .split(",")
+    .map((candidate) => {
+      const [url, descriptor] = candidate.trim().split(/\s+/, 2);
+      return [normalizeMediaUrl(url), descriptor].filter(Boolean).join(" ");
+    })
+    .filter(Boolean)
+    .join(", ");
+}
 
 /**
  * Checks if a given URL is a video asset.
@@ -69,15 +90,20 @@ export default memo(function Media({
   height,
   priority = false, // Set to true for hero / LCP images (disables lazy loading, sets fetchpriority to high)
   aspectRatio,      // Useful for reserving space to prevent CLS (e.g., "16/9")
+  srcSet: providedSrcSet,
   sizes = "(max-width: 768px) 100vw, 1200px",
+  fallbackSrc = "/logo.png",
+  onError,
   ...rest
 }) {
-  if (!src) return null;
+  const normalizedSrc = normalizeMediaUrl(src);
 
-  if (isVideoUrl(src)) {
+  if (!normalizedSrc) return null;
+
+  if (isVideoUrl(normalizedSrc)) {
     return (
       <video
-        src={src}
+        src={normalizedSrc}
         className={className}
         style={{ objectFit: "cover", ...(aspectRatio ? { aspectRatio } : {}), ...style }}
         muted
@@ -89,25 +115,26 @@ export default memo(function Media({
         width={width}
         height={height}
         {...rest}
+
       />
     );
   }
 
-  const isCloudinary = src.includes('res.cloudinary.com');
+  const isCloudinary = normalizedSrc.includes('res.cloudinary.com');
   const loadingMode = priority ? "eager" : "lazy";
-  const fetchPriority = priority ? "high" : "low";
+  const fetchPriority = priority ? "high" : "auto";
 
   const imgStyle = {
     ...(aspectRatio ? { aspectRatio } : {}),
     ...style,
   };
 
-  let srcSet = undefined;
-  let optimizedSrc = src;
+  let srcSet = normalizeSrcSet(providedSrcSet);
+  let optimizedSrc = normalizedSrc;
 
-  if (isCloudinary) {
+  if (!srcSet && isCloudinary) {
     // Generate base optimized URL using specified or fallback width
-    optimizedSrc = getOptimizedCloudinaryUrl(src, {
+    optimizedSrc = getOptimizedCloudinaryUrl(normalizedSrc, {
       width: width || 1200,
       height: height,
       crop: width && height ? 'fill' : 'limit'
@@ -116,7 +143,7 @@ export default memo(function Media({
     // Generate srcSet for responsive breakpoints
     const srcSetWidths = [360, 540, 720, 960, 1200, 1600];
     srcSet = srcSetWidths
-      .map(w => `${getOptimizedCloudinaryUrl(src, { width: w, crop: 'limit' })} ${w}w`)
+      .map(w => `${getOptimizedCloudinaryUrl(normalizedSrc, { width: w, crop: 'limit' })} ${w}w`)
       .join(', ');
   }
 
@@ -134,6 +161,13 @@ export default memo(function Media({
       decoding="async"
       fetchPriority={fetchPriority}
       {...rest}
+      onError={(event) => {
+        if (event.currentTarget.dataset.fallbackApplied) return;
+        event.currentTarget.dataset.fallbackApplied = "true";
+        event.currentTarget.removeAttribute("srcset");
+        if (fallbackSrc) event.currentTarget.src = fallbackSrc;
+        if (typeof onError === "function") onError(event);
+      }}
     />
   );
 });

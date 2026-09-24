@@ -3,38 +3,61 @@ import { createPortal } from "react-dom";
 import { resolveImageUrl } from "../../services/api";
 import { Download } from "lucide-react";
 
-const hasOverflow = (text) => {
-  if (!text) return false;
-  const cleanText = text.replace(/(<([^>]+)>)/gi, "");
-  return cleanText.length > 150 || (cleanText.match(/\r?\n/g) || []).length >= 4;
-};
+const getPlainText = (html = "") => html
+  .replace(/<script[\s\S]*?<\/script>/gi, " ")
+  .replace(/<style[\s\S]*?<\/style>/gi, " ")
+  .replace(/<[^>]+>/g, " ")
+  .replace(/&nbsp;|&#160;/gi, " ")
+  .replace(/&amp;/gi, "&")
+  .replace(/&quot;|&#34;/gi, '"')
+  .replace(/&#39;|&apos;/gi, "'")
+  .replace(/&lt;/gi, "<")
+  .replace(/&gt;/gi, ">")
+  .replace(/\s+/g, " ")
+  .trim();
+
+const hasOverflow = (text) => getPlainText(text).length > 150;
 
 const FacilitiesSection = memo(function FacilitiesSection({ data }) {
   const items = useMemo(() => data?.facilities || [], [data]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = async (imageUrl, fileName) => {
+    if (!imageUrl || isDownloading) return;
+
+    setIsDownloading(true);
+
     try {
-      const response = await fetch(imageUrl, { mode: 'cors' });
+      const response = await fetch(imageUrl, { mode: "cors", cache: "no-store" });
+      if (!response.ok) throw new Error(`Image request failed with status ${response.status}`);
+
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName || 'downloaded-image.jpg';
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = fileName || "event-flyer.jpg";
+      link.style.display = "none";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+
+      window.setTimeout(() => {
+        link.remove();
+        window.URL.revokeObjectURL(objectUrl);
+      }, 1000);
     } catch (error) {
-      console.error('Failed to download image via fetch:', error);
-      const link = document.createElement('a');
+      console.error("Failed to download image via fetch:", error);
+      const link = document.createElement("a");
       link.href = imageUrl;
-      link.target = '_blank';
-      link.download = fileName || 'downloaded-image.jpg';
+      link.download = fileName || "event-flyer.jpg";
+      link.rel = "noopener noreferrer";
+      link.target = "_blank";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      link.remove();
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -89,7 +112,7 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
           {scrollingItems.map((item, index) => (
             <div 
               key={`${item.id || index}-${index}`} 
-              className="flex-shrink-0 w-[350px] md:w-[400px] mx-4 flex flex-col shadow-md hover:shadow-xl transition-shadow duration-300"
+              className="flex-shrink-0 w-[350px] md:w-[400px] mx-4 flex flex-col overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
             >
               {/* Header */}
               <div className="bg-[#D89324] py-3 px-4 text-center">
@@ -112,12 +135,13 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
               </div>
               
               {/* Description */}
-              <div className="bg-[#E9EEF4] p-6 flex-grow flex flex-col items-center justify-center text-center">
-                <div 
-                  className="text-gray-800 text-sm leading-relaxed line-clamp-4 text-ellipsis overflow-hidden mb-3"
+              <div className="bg-[#E9EEF4] p-6 flex-grow min-w-0 flex flex-col items-center justify-center text-center">
+                <p
+                  className="w-full max-w-full text-gray-800 text-sm leading-relaxed line-clamp-4 overflow-hidden break-words [overflow-wrap:anywhere] mb-3"
                   style={{ color: '#1a1a1a' }}
-                  dangerouslySetInnerHTML={{ __html: item.description || item.story || "" }}
-                />
+                >
+                  {getPlainText(item.description || item.story)}
+                </p>
                 {hasOverflow(item.description || item.story) && (
                   <button 
                     onClick={() => setSelectedItem(item)}
@@ -147,13 +171,14 @@ const FacilitiesSection = memo(function FacilitiesSection({ data }) {
             >
               &times;
             </button>
-            <button 
-              className="absolute -top-12 right-12 text-white hover:text-gray-300 transition-colors flex items-center gap-1.5 text-sm bg-black/40 px-3 py-1.5 rounded-md border border-white/20 hover:bg-black/60 cursor-pointer"
-              onClick={() => handleDownload(selectedImage, 'event-flyer.jpg')}
-              title="Download Image"
+            <button
+              className="absolute -top-12 right-12 text-white hover:text-gray-300 transition-colors flex items-center gap-1.5 text-sm bg-black/40 px-3 py-1.5 rounded-md border border-white/20 hover:bg-black/60 cursor-pointer disabled:cursor-wait disabled:opacity-60"
+              onClick={() => handleDownload(selectedImage, "event-flyer.jpg")}
+              title={isDownloading ? "Downloading image" : "Download image"}
+              disabled={isDownloading}
             >
               <Download className="w-4 h-4" />
-              <span>Download</span>
+              <span>{isDownloading ? "Downloading..." : "Download"}</span>
             </button>
             <img 
               src={selectedImage} 

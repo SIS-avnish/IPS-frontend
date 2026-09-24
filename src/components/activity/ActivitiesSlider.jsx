@@ -43,6 +43,14 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
 
+  useEffect(() => {
+    setIndex((currentIndex) => Math.min(currentIndex, Math.max(0, slides.length - 1)));
+  }, [slides.length]);
+
+  useEffect(() => {
+    setCurrentGalleryIndex((currentIndex) => Math.min(currentIndex, Math.max(0, gallery.length - 1)));
+  }, [gallery.length]);
+
   const prev = () => setIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
   const next = () => setIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
 
@@ -76,11 +84,29 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
 
     const timer = setInterval(() => {
       setIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
-    }, 7000);
+    }, 10000);
 
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  useEffect(() => {
+    const nextSlide = slides[index + 1] || [];
+    nextSlide.forEach((event) => {
+      if (!event.thumbnail_image || isVideoUrl(event.thumbnail_image)) return;
+      const image = new Image();
+      image.src = event.thumbnail_image;
+    });
+  }, [index, slides]);
+
+  useEffect(() => {
+    if (!gallery.length) return;
+    [gallery[currentGalleryIndex], gallery[(currentGalleryIndex + 1) % gallery.length]]
+      .filter((image) => image && !isVideoUrl(image))
+      .forEach((imageUrl) => {
+        const image = new Image();
+        image.src = imageUrl;
+      });
+  }, [currentGalleryIndex, gallery]);
   const openGalleryModal = (galIndex) => {
     setCurrentGalleryIndex(galIndex);
     setIsGalleryOpen(true);
@@ -111,20 +137,20 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
             <button
               onClick={prev}
               className="border border-red-400 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 bg-white"
-              >
+            >
               <ChevronLeft className="w-4 h-4 text-red-500" aria-hidden="true" />
             </button>
             <button
               onClick={next}
               className="border border-red-400 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-50 bg-white"
-              >
+            >
               <ChevronRight className="w-4 h-4 text-red-500" aria-hidden="true" />
             </button>
           </div>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 pt-4 transition-all duration-300">
-          {slides[index].map((event, i) => {
+          {(slides[index] || []).map((event, i) => {
             const eventCollegeSlug = event.collegeSlug || collegeSlug;
             const linkTo = event._isActivity
               ? `/${eventCollegeSlug}/activity/${event.id}`
@@ -148,11 +174,11 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
                         playsInline
                       />
                     ) : (
-                      <img
+                      <Media
                         src={event.thumbnail_image}
                         alt={event.title || `event-${i}`}
                         className="w-full h-[320px] sm:h-[260px] object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="eager"
+                        aspectRatio="3/2"
                       />
                     )
                   ) : (
@@ -220,7 +246,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
               onClick={closeGalleryModal}
               className="absolute top-1 right-38 bg-black text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors z-10"
               aria-label="Close gallery"
-              >
+            >
               <X className="w-5 h-5" aria-hidden="true" />
             </button>
             <button
@@ -233,11 +259,11 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
             </button>
 
             <div className="relative w-full flex justify-center">
-              <img
+              <Media
                 src={gallery[currentGalleryIndex]}
                 alt={`gallery-${currentGalleryIndex}`}
                 className="w-150 mx-auto h-auto max-h-[80vh] object-contain"
-                loading="eager"
+                priority
               />
             </div>
 
@@ -247,7 +273,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
                   onClick={prevGallery}
                   className="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-black w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
                   aria-label="Previous image"
-                  >
+                >
                   <ChevronLeft className="w-6 h-6" aria-hidden="true" />
                 </button>
 
@@ -255,7 +281,7 @@ const EventSlider = memo(({ title, content, events = [], collegeSlug, gallery = 
                   onClick={nextGallery}
                   className="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-black w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl transition-colors"
                   aria-label="Next image"
-                  >
+                >
                   <ChevronRight className="w-6 h-6" aria-hidden="true" />
                 </button>
 

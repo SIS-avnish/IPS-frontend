@@ -26,12 +26,23 @@ const SOCIAL_ICONS = {
 export default memo(function Footer() {
 
   const location = useLocation();
-  const pathParts = location.pathname.split("/");
+  const pathParts = location.pathname.split("/").filter(Boolean);
 
-  const activeCollege =
-    pathParts[1] && !["about", "contact", "placements", "facilities", "404.html", "404"].includes(pathParts[1])
-      ? pathParts[1]
-      : "ipsa";
+  const getCollegeSlugFromSubdomain = () => {
+    if (typeof window === 'undefined') return null;
+    const hostname = window.location.hostname;
+    const parts = hostname.split('.');
+    if (parts.length > 3) {
+      return parts[0]; 
+    }
+    return null;
+  };
+
+  const excludeFromCollegeSlug = ["about", "contact", "placements", "facilities", "404.html", "404", "activities", "events", "news", "alumni", "student-council", "social-activities", "all-faculty", "placement", "ipsadmissions"];
+
+  const pathCollege = pathParts[0] && !excludeFromCollegeSlug.includes(pathParts[0].toLowerCase()) ? pathParts[0] : null;
+
+  const activeCollege = pathCollege || getCollegeSlugFromSubdomain() || "ipsa";
 
   const [collegeLogo, setCollegeLogo] = useState(null);
   const [socialLinks, setSocialLinks] = useState([]);
@@ -140,7 +151,12 @@ export default memo(function Footer() {
           {sections.map((sec, i) => (
             <div key={i}>
               <h6 className="text-[#00BFFF] font-medium mb-3">
-                <a href={`https://${sec.slug}.ipsa.ac.in/${sec.slug}`} target="_blank" rel="noopener noreferrer" className="text-xl text-[#00A7C4] hover:text-white transition">
+                <a 
+                  href={`https://${sec.slug}.ipsa.ac.in/${sec.slug}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xl text-[#00A7C4] hover:text-white transition"
+                >
                   {sec.title}
                 </a>
               </h6>

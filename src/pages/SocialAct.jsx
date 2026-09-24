@@ -10,11 +10,9 @@ import ScratchHtml from '../components/common/ScratchHtml'
 import Media from '../components/common/Media'
 import useSEO from '../hooks/useSEO'
 import StudentTestimonials from '../components/others/StudentTestimonials'
-import { fetchActivities } from '../services/api'
+import { fetchActivities, fetchPageData } from '../services/api'
 import ActivitiesSlider from '../components/activity/ActivitiesSlider'
 
-// const PAGE_BASE = 'https://portal.ipsacademyindore.edu.in/api'
-const PAGE_BASE = 'https://portal.ipsa.ac.in/api'
 
 function getSectionEntries(sections) {
   if (!sections || typeof sections !== 'object') return []
@@ -224,21 +222,13 @@ const SocialAct = () => {
         setLoading(true)
 
         const slug = collegeSlug || 'coc'
-        const response = await fetch(`${PAGE_BASE}/${slug}/pages/activities/social?_ts=${Date.now()}`, {
-          headers: { accept: 'application/json' },
-          cache: 'no-store',
-        })
+        const [data, activitiesList] = await Promise.all([
+          fetchPageData(slug, 'activities/social'),
+          fetchActivities(slug, 'social').catch(() => []),
+        ])
 
-        if (!response.ok) {
-          throw new Error(`Failed to load social page data (${response.status})`)
-        }
-
-        const data = await response.json()
         setPageData(data)
         setSections(data.sections || {})
-
-        // Fetch social activities list
-        const activitiesList = await fetchActivities(slug, "social").catch(() => [])
         const normalizedActivities = Array.isArray(activitiesList)
           ? activitiesList
           : Array.isArray(activitiesList?.activities)

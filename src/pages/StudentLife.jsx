@@ -18,13 +18,14 @@ const StudentLife = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const isUpcoming = location.pathname.includes("upcoming-activities");
+
   useSEO(pageData);
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
-        const isUpcoming = location.pathname.includes("upcoming-activities");
         const activityType = isUpcoming ? "upcoming-activities" : (subSlug || "events");
         const pageName = `activities/${activityType}`;
         const useIpsaAggregate = collegeSlug === "ipsa" && ["cultural", "events", "workshop"].includes(activityType);
@@ -96,6 +97,7 @@ const StudentLife = () => {
         <StudentTestimonials
           title={sections.testimonials.title}
           testimonials={sections.testimonials.items}
+          hideSubtitle={isUpcoming}
         />
       )}
       <ScratchSections sections={sections} exclude={['hero', 'a_calendar_full_of', 'a_calender_full_of', 'testimonials']} />

@@ -4,6 +4,32 @@ import DOMPurify from 'isomorphic-dompurify';
  * Merges duplicate style attributes in HTML tags.
  * e.g., <div style="color: red" style="font-weight: bold"> -> <div style="color: red; font-weight: bold;">
  */
+export function scopeCss(css, prefix = '.cms-content') {
+  let cleanCss = css.replace(/(?:body|html|\*)\s*\{[^}]+\}/gi, '');
+  cleanCss = cleanCss.replace(/\/\*[\s\S]*?\*\//g, '');
+  return cleanCss.replace(/([^{]+)\{([^}]+)\}/g, (match, selector, declarations) => {
+    const trimmedSelector = selector.trim();
+    if (trimmedSelector.startsWith('@')) {
+      const innerScoped = declarations.replace(/([^{]+)\{([^}]+)\}/g, (innerMatch, innerSelector, innerDeclarations) => {
+        const scopedInnerSelector = innerSelector.split(',').map(s => {
+          const cleanSel = s.trim();
+          if (!cleanSel) return '';
+          if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+          return `${prefix} ${cleanSel}`;
+        }).join(', ');
+        return `${scopedInnerSelector} {${innerDeclarations}}`;
+      });
+      return `${trimmedSelector} {${innerScoped}}`;
+    }
+    const scopedSelector = trimmedSelector.split(',').map(s => {
+      const cleanSel = s.trim();
+      if (!cleanSel) return '';
+      if (cleanSel === 'body' || cleanSel === 'html' || cleanSel === '*') return prefix;
+      return `${prefix} ${cleanSel}`;
+    }).join(', ');
+    return `${scopedSelector} {${declarations}}`;
+  });
+}
 export function mergeDuplicateStyles(html) {
   if (!html) return "";
   
@@ -71,8 +97,13 @@ DOMPurify.addHook('uponSanitizeElement', (node) => {
 export function cleanCmsHtml(html) {
   if (!html) return "";
   try {
+    // 0. Scope any embedded style tags
+    let preprocessed = html.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, css) => {
+      return `<style>${scopeCss(css, '.cms-content')}</style>`;
+    });
+
     // 1. Preprocess: merge duplicate styles
-    const preprocessed = mergeDuplicateStyles(html);
+    preprocessed = mergeDuplicateStyles(preprocessed);
 
     // 2. Sanitize with DOMPurify
     const sanitized = DOMPurify.sanitize(preprocessed, {

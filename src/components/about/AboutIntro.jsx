@@ -71,21 +71,7 @@ export default memo(function AboutIntro({ aboutData, ecosystemData, growthImage 
           </p>
         </motion.div>
         
-        {aboutImg && (
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="w-full mt-6 mb-12"
-          >
-            <Media
-              src={aboutImg}
-              alt="About IPS"
-              className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md"
-            />
-          </motion.div>
-        )}
+
 
         {/* feature section */}
         <div className="grid md:grid-cols-2 gap-14 mt-10 items-start">
