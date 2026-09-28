@@ -1,4 +1,5 @@
 import axios from "axios";
+import { normalizeMediaUrl } from "../lib/mediaUrl";
 
 // Prevent infinite hangs during pre-rendering or SSR
 if (typeof window === "undefined") {
@@ -27,6 +28,7 @@ const API_CACHE_PREFIX = "ipsa-api-cache:";
 const CACHE_TTL = {
     page: 15 * 60 * 1000,
     list: 5 * 60 * 1000,
+    news: 60 * 1000,
     detail: 15 * 60 * 1000,
     static: 60 * 60 * 1000,
 };
@@ -104,6 +106,7 @@ function fetchCached(cacheKey, request, options = {}) {
         freshTtl = CACHE_TTL.page,
         maxAge = CACHE_MAX_AGE,
         shouldCache = () => true,
+        returnStale = true,
     } = options;
     const cachedEntry = getCachedEntry(cacheKey, maxAge);
     const isFresh = cachedEntry && Date.now() - cachedEntry.timestamp <= freshTtl;
@@ -112,7 +115,7 @@ function fetchCached(cacheKey, request, options = {}) {
 
     const existingRequest = requestPromises.get(cacheKey);
     if (existingRequest) {
-        return cachedEntry ? Promise.resolve(cachedEntry.data) : existingRequest;
+        return cachedEntry && returnStale ? Promise.resolve(cachedEntry.data) : existingRequest;
     }
 
     const requestPromise = Promise.resolve()
@@ -125,7 +128,7 @@ function fetchCached(cacheKey, request, options = {}) {
 
     requestPromises.set(cacheKey, requestPromise);
 
-    if (cachedEntry) {
+    if (cachedEntry && returnStale) {
         requestPromise.catch(() => undefined);
         return Promise.resolve(cachedEntry.data);
     }
@@ -225,9 +228,10 @@ export function fetchCollegeFaculties(collegeSlug) {
  * Relative paths like "/uploads/..." are prefixed with the media server base.
  */
 export function resolveImageUrl(path) {
-    if (!path) return "";
-    if (path.startsWith("http")) return path;
-    return `${MEDIA_BASE}${path}`;
+    const normalized = normalizeMediaUrl(path);
+    if (!normalized) return "";
+    if (/^(https?:|\/\/|data:|blob:)/i.test(normalized)) return normalized;
+    return `${MEDIA_BASE}${normalized.startsWith("/") ? "" : "/"}${normalized}`;
 }
 
 /**
@@ -240,7 +244,8 @@ export function fetchCollegeNews(collegeSlug) {
         cacheKey,
         `${SERVER_BASE}/${collegeSlug}/news`,
         { headers: { accept: "application/json" } },
-        { freshTtl: CACHE_TTL.list }
+        // News is editorial content: refresh it quickly after a CMS update.
+        { freshTtl: CACHE_TTL.news, returnStale: false }
     );
 }
 
@@ -337,7 +342,7 @@ export function fetchColleges() {
  * e.g. fetchActivities("ipsa", "cultural")
  */
 export function fetchActivities(collegeSlug, activityType) {
-    const cacheKey = `${collegeSlug}/activities/${activityType}`;
+    const cacheKey = `${collegeSlug}/activities-list/${activityType}`;
     return fetchWithCache(
         cacheKey,
         `${SERVER_BASE}/${collegeSlug}/activities`,

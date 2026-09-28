@@ -1,28 +1,7 @@
 import { memo } from "react";
+import { normalizeMediaSrcSet, normalizeMediaUrl } from "../../lib/mediaUrl";
 
 const VIDEO_EXTENSIONS = [".mp4", ".webm", ".ogg", ".mov", ".avi", ".mkv", ".m4v"];
-const MEDIA_BASE = "https://portal.ipsa.ac.in";
-
-function normalizeMediaUrl(src) {
-  if (!src || typeof src !== "string") return src;
-  if (/^(https?:|data:|blob:)/i.test(src)) return src;
-  if (/^\/(uploads|media|storage)\//i.test(src)) return MEDIA_BASE + src;
-  return src;
-}
-
-function normalizeSrcSet(srcSet) {
-  if (!srcSet || typeof srcSet !== "string") return srcSet;
-
-  return srcSet
-    .split(",")
-    .map((candidate) => {
-      const [url, descriptor] = candidate.trim().split(/\s+/, 2);
-      return [normalizeMediaUrl(url), descriptor].filter(Boolean).join(" ");
-    })
-    .filter(Boolean)
-    .join(", ");
-}
-
 /**
  * Checks if a given URL is a video asset.
  */
@@ -129,7 +108,7 @@ export default memo(function Media({
     ...style,
   };
 
-  let srcSet = normalizeSrcSet(providedSrcSet);
+  let srcSet = normalizeMediaSrcSet(providedSrcSet);
   let optimizedSrc = normalizedSrc;
 
   if (!srcSet && isCloudinary) {

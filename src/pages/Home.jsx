@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { fetchPageData, fetchCollegeCourses } from "../services/api";
 import { PageSkeleton } from "../components/common/SkeletonLoader";
 import useSEO from "../hooks/useSEO";
@@ -8,12 +8,9 @@ import StatsSection from "../components/home/StatsSection";
 import ExperienceSection from "../components/home/ExperienceSection";
 import CoursesAccordion from "../components/home/CoursesAccordion";
 import FacilitiesSection from "../components/home/FacilitiesSection";
-import { ScratchSections } from "../components/common/ScratchHtml";
 
 export default function Home({ initialServerState }) {
-  const collegeSlug = "ipsa"; // Default college slug for home page
-  
-  // Determine if we have valid pre-fetched server state for the home page
+  const collegeSlug = "ipsa";
   const hasInitialState = !!(
     initialServerState &&
     initialServerState.collegeSlug === collegeSlug &&
@@ -21,40 +18,39 @@ export default function Home({ initialServerState }) {
     initialServerState.pageData
   );
 
-  const [sections, setSections] = useState(() => 
-    hasInitialState ? initialServerState.pageData.sections : null
-  );
-  const [pageData, setPageData] = useState(() => 
+  const [pageData, setPageData] = useState(() =>
     hasInitialState ? initialServerState.pageData : null
   );
-  const [courses, setCourses] = useState(() => 
-    hasInitialState ? initialServerState.courses : []
+  const [courses, setCourses] = useState(() =>
+    hasInitialState ? initialServerState.courses || [] : []
   );
   const [loading, setLoading] = useState(() => !hasInitialState);
   const [error, setError] = useState(null);
+  const sections = pageData?.sections;
 
   useSEO(pageData);
 
   useEffect(() => {
-    // If we already loaded data from SSR, skip client-side fetch on mount
-    if (hasInitialState) {
-      return;
-    }
+    if (hasInitialState) return;
+    let active = true;
 
     Promise.all([
       fetchPageData(collegeSlug, "home"),
       fetchCollegeCourses(collegeSlug),
     ])
       .then(([data, coursesData]) => {
+        if (!active) return;
         setPageData(data);
-        setSections(data.sections);
         setCourses(coursesData);
       })
       .catch((err) => {
-        console.error("Failed to fetch home page data:", err);
-        setError(`Failed to load page data. Details: ${err.message}`);
+        if (active) setError(err.message);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => { active = false; };
   }, [collegeSlug, hasInitialState]);
 
   if (loading) {
@@ -64,7 +60,7 @@ export default function Home({ initialServerState }) {
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-600 text-lg">
-        {error}
+        Failed to load page data. Details: {error}
       </div>
     );
   }
@@ -82,18 +78,11 @@ export default function Home({ initialServerState }) {
       <ExperienceSection data={sections?.["360_video"]} />
       <CoursesAccordion data={sections?.courses} courses={courses} />
 
-      {/* Second Facilities Section from facilities_1 */}
       {sections?.facilities_1 && (
         <div className="mt-16 mb-10">
           <FacilitiesSection data={sections.facilities_1} />
         </div>
       )}
-
-      {/* 
-        Temporarily commented out ScratchSections because the backend API 
-        is sending test/SSTI payloads that are displaying on the screen.
-      */}
-      {/* <ScratchSections sections={sections} exclude={['here', 'why_ips', 'stats', 'excellence', '360_video', 'courses']} /> */}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import DOMPurify from 'isomorphic-dompurify';
+import { normalizeCmsMediaUrls } from './mediaUrl';
 
 /**
  * Merges duplicate style attributes in HTML tags.
@@ -98,7 +99,7 @@ export function cleanCmsHtml(html) {
   if (!html) return "";
   try {
     // 0. Scope any embedded style tags
-    let preprocessed = html.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, css) => {
+    let preprocessed = normalizeCmsMediaUrls(html).replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, css) => {
       return `<style>${scopeCss(css, '.cms-content')}</style>`;
     });
 

@@ -6,6 +6,7 @@ import Hero from '../components/others/Hero'
 import { fetchCollegeNewsDetail, fetchPageData } from '../services/api'
 import useSEO from '../hooks/useSEO'
 import SafeHtml from '../components/common/SafeHtml'
+import { normalizeMediaUrl } from '../lib/mediaUrl'
 
 const NewsDetail = () => {
   const { collegeSlug, newsId } = useParams()
@@ -214,7 +215,7 @@ const NewsDetail = () => {
                     onClick={() => handleGalleryClick(image, index)}
                   >
                     <img
-                      src={image}
+                      src={normalizeMediaUrl(image)}
                       alt={`${news.title} - Gallery ${index + 1}`}
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
@@ -270,7 +271,7 @@ const NewsDetail = () => {
 
             {/* Image */}
             <img
-              src={selectedMedia}
+              src={normalizeMediaUrl(selectedMedia)}
               alt="Gallery modal"
               className="max-w-150 max-h-[80vh] rounded-lg object-contain shadow-2xl"
             />
@@ -342,7 +343,7 @@ const NewsDetail = () => {
                 autoPlay
                 className="rounded-lg bg-black"
               >
-                <source src={selectedMedia} />
+                <source src={normalizeMediaUrl(selectedMedia)} />
                 Your browser does not support the video tag.
               </video>
             )}

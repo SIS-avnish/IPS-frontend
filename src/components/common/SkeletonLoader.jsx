@@ -3,6 +3,8 @@
  * Variants: "page" (full page), "hero", "card", "text", "inline".
  */
 
+import BrandLoader from "./BrandLoader";
+
 const shimmerClass = "animate-pulse bg-gray-200 rounded";
 
 function SkeletonBlock({ className = "" }) {
@@ -11,28 +13,7 @@ function SkeletonBlock({ className = "" }) {
 
 /** Full page skeleton — replaces the spinner on page loads */
 export function PageSkeleton() {
-  return (
-    <div className="w-full min-h-screen">
-      {/* Hero skeleton */}
-      <SkeletonBlock className="w-full h-[60vh] rounded-none" />
-
-      {/* Content skeleton */}
-      <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
-        <SkeletonBlock className="h-8 w-1/3" />
-        <SkeletonBlock className="h-4 w-2/3" />
-        <SkeletonBlock className="h-4 w-1/2" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="space-y-3">
-              <SkeletonBlock className="h-48 w-full" />
-              <SkeletonBlock className="h-4 w-3/4" />
-              <SkeletonBlock className="h-4 w-1/2" />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <BrandLoader />;
 }
 
 /** Hero area skeleton */
