@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "dev:ssr": "node server.js",
-    "build:ssr": "vite build && cross-env SSR=true vite build",
-    "start:ssr": "cross-env NODE_ENV=production node server.js",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
+    "dev:ssr": "node init && node server.js",
+    "build:ssr": "node init && vite build && cross-env SSR=true vite build",
+    "start:ssr": "node init && cross-env NODE_ENV=production node server.js",
     "preview": "vite preview",
     "lint": "eslint ."
   },
